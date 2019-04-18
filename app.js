@@ -20,6 +20,9 @@
                     });
                 });
             },
+
+
+
             getUserInfo: function() {
                 var n = this;
                 (0, o.getOpenid)().then(function(e) {
@@ -28,6 +31,9 @@
                     }));
                 }).catch(function() {});
             },
+
+          
+
             globalData: {
                 userInfo: null,
                 scene: null,

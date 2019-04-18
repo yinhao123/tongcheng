@@ -13,7 +13,7 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.6.5",
-	"appid": "wx598c41a36513d668",
+	"appid": "wx6ae74f9106e7adb1",
 	"projectname": "%E5%90%8C%E7%A8%8B%E6%B1%BD%E8%BD%A6%E7%A5%A8",
 	"debugOptions": {
 		"hidedInDevtools": []
@@ -37,7 +37,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 3,
+			"current": 4,
 			"list": [
 				{
 					"id": -1,
@@ -65,6 +65,12 @@
 					"name": "可用优惠券",
 					"pathName": "pages/bus/webapp/cards/cards",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "登录页",
+					"pathName": "pages/getAuthInfo/getAuthInfo",
 					"scene": null
 				}
 			]

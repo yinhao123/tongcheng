@@ -37,7 +37,7 @@
 
 .container .noticepic {
     width: 30px;
-    background: url(https://img1.40017.cn/touch/bus/wx_bus/labaPro.png) no-repeat 15px center;
+    background: url(/images/labaPro.png) no-repeat 15px center;
     position: absolute;
     left: 0;
     top: 0;

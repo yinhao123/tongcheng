@@ -81,7 +81,15 @@ var e = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? func
         if ("[object Object]" == t.call(e)) for (var n in e) return !1;
         return !0;
     }
+
+
+
+
+
+
+    // 网路请求函数 
     function u(url, data, methods, header, o) {
+      console.log("执行这个请求函数");
         var i = null, a = null;
         return header = Object.assign({
             "content-type": "application/json",
@@ -96,6 +104,9 @@ var e = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? func
                 header: header,
                 method: methods || "POST",
                 success: function(e) {
+                   console.log("成功获取到数据");
+                   console.log(e);
+
                     var t = e.data;
                     !c(t) && c(t.header) ? u(t) : !c(t.header) && t.header.isSuccess ? u(t.body) : s(t.header);
                 },
@@ -286,7 +297,9 @@ var e = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? func
         },
         setEvent: function() {}
     };
-}, function(e, t, n) {
+}, 
+
+function(e, t, n) {
     t.__esModule = !0;
     var r, o = function(e) {
         return e && e.__esModule ? e : {
@@ -932,7 +945,44 @@ var e = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? func
             default: e
         };
     }
+
+    // 重写 微信登录获取code（新）
+    function login() {
+      wx.login({
+        success(res) {
+          if (res.code) {
+            // 发起网络请求
+            wx.request({
+              url: 'http://ticket-api.toqidian.com/api/login',
+              data: {
+                code: res.code
+              },
+              success:function(res){
+                console.log(res.code);
+                if(res.code == "success"){
+                  console.log("登录成功");
+                  console.log(res);
+                  wx.setStorage({
+                    key: 'userid',
+                    data: res.user_id,
+                  })
+                  
+                  wx.setStorage({
+                    key: 'access_token',
+                    data: res.access_token,
+                  })
+                }
+              }
+            })
+          } else {
+            console.log('登录失败！' + res.errMsg)
+          }
+        }
+      })
+    }
+    // 微信登录方法，获取code（原来）
     function o() {
+      console.log("方法中的o方法");
         return new Promise(function(e, t) {
             var n = wx.getStorageSync("tongcheng.openid"), r = wx.getStorageSync("tongcheng.unionid"), o = wx.getStorageSync("tongcheng.loginInfo");
             return n && r ? void e(o) : void wx.login({
@@ -940,9 +990,14 @@ var e = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? func
                     console.log("login", n), (0, c.$http)(u.default.wxOpenId, {
                         code: n.code
                     }).then(function(t) {
-                        console.log(t), wx.setStorageSync("tongcheng.openid", t.openId), wx.setStorageSync("tongcheng.unionid", t.unionId), 
-                        wx.setStorageSync("tongcheng.encryopenid", t.encryOpenId), wx.setStorageSync("tongcheng.aesOpenId", t.aesOpenId), 
-                        wx.setStorageSync("tongcheng.memberid", t.memberId), wx.setStorageSync("tongcheng.loginInfo", t), 
+                    
+                        console.log(t), 
+                        wx.setStorageSync("tongcheng.openid", t.openId), 
+                        wx.setStorageSync("tongcheng.unionid", t.unionId), 
+                        wx.setStorageSync("tongcheng.encryopenid", t.encryOpenId), 
+                        wx.setStorageSync("tongcheng.aesOpenId", t.aesOpenId), 
+                        wx.setStorageSync("tongcheng.memberid", t.memberId),
+                        wx.setStorageSync("tongcheng.loginInfo", t), 
                         e(t);
                     }).catch(function(e) {
                         t(e);
