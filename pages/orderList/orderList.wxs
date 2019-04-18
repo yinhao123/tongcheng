@@ -1,0 +1,19 @@
+'use strict';
+
+function highLight(item) {
+    var gStateIds = [3, 5, 7, 10, 13];
+    var oStateIds = [1, 2, 6, 11, 12];
+    var rStateIds = [4, 8, 14];
+    var color = '';
+    if (gStateIds.indexOf(item.orderState) > -1) {
+        color = 'success'
+    } else if (oStateIds.indexOf(item.orderState) > -1) {
+        color = 'warning'
+    } else if (rStateIds.indexOf(item.orderState) > -1) {
+        color = 'danger'
+    };
+    return (color)
+};
+module.exports = ({
+    highLight: highLight,
+});

@@ -1,0 +1,79 @@
+<scroll-view class="insurance-box" scrollY="true">
+    <view class="insurance" wx:if="{{codeIndex>-1}}">
+        <view class="insType" wx:if="{{idx===codeIndex}}" wx:for="{{insLists}}" wx:for-index="idx" wx:for-item="one" wx:key="{{one.code}}">
+            <view bindtap="bntToggleInsType" class="insTitle isList hideIcon {{one.isShrink?'isShrink':''}}" data-instype="{{one.code}}" wx:if="{{one.value.length>=3}}">{{one.name}}</view>
+            <view bindtap="btnSwitchSelectIns" class="insTitle isSwitch" data-instype="{{one.code}}" wx:if="{{one.value.length==2}}">
+                <view>{{one.name}}<text catchtap="btnInsDetail" class="text-icon" data-code="{{one.code}}"></text>
+                </view>
+                <text class="describe" wx:if="{{one.shortDescribe}}">{{one.shortDescribe}}</text>
+                <view class="ricon {{one.isCheck?'ricon-check':''}}"></view>
+            </view>
+            <view class="listUl {{one.isShrink?'isShrink':''}}">
+                <block wx:if="{{one.value.length>=3}}">
+                    <view bindtap="btnSelectIns" class="list {{item.pubID==defInsMulti[idx].pubID?'select':''}}" data-code="{{item.insCode}}" data-pid="{{item.pubID}}" wx:for="{{one.value}}" wx:key="{{item.pubID}}">
+                        <block wx:if="{{item.pubID}}">
+                            <view class="text">
+                                <text class="perPrice">¥{{item.insCusPayTc}}/份</text>
+                                <text catchtap="btnInsDetail" class="text-icon" data-pid="{{item.pubID}}"></text>
+                            </view>
+                            <view class="info">保额<text class="quota">{{item.insQuota}}万</text>
+                                <text wx:if="{{index==0&&item.insCode==4}}">，给您旅途最高保障</text>
+                                <text wx:if="{{index==1&&item.insCode==4}}">，一路平安相伴</text>
+                            </view>
+                            <view class="chose"></view>
+                        </block>
+                        <block wx:else>
+                            <view class="nobuy">不购买</view>
+                            <view class="info">建议购买，安心出行</view>
+                            <view class="chose"></view>
+                        </block>
+                    </view>
+                </block>
+            </view>
+        </view>
+    </view>
+    <view class="insurance" wx:else>
+        <view class="insType" wx:for="{{insLists}}" wx:for-index="idx" wx:for-item="one" wx:key="{{one.code}}">
+            <view bindtap="bntToggleInsType" class="insTitle isList {{one.isShrink?'isShrink':''}}" data-instype="{{one.code}}" wx:if="{{one.value.length>=3}}">{{one.name}}</view>
+            <view bindtap="btnSwitchSelectIns" class="insTitle isSwitch" data-instype="{{one.code}}" wx:if="{{one.value.length==2}}">
+                <view>{{one.name}}<text catchtap="btnInsDetail" class="text-icon" data-code="{{one.code}}"></text>
+                </view>
+                <text class="describe" wx:if="{{one.shortDescribe}}">{{one.shortDescribe}}</text>
+                <view class="ricon {{one.isCheck?'ricon-check':''}}"></view>
+            </view>
+            <view class="listUl {{one.isShrink?'isShrink':''}}">
+                <block wx:if="{{one.value.length>=3}}">
+                    <view bindtap="btnSelectIns" class="list {{item.pubID==defInsMulti[idx].pubID?'select':''}}" data-code="{{item.insCode}}" data-pid="{{item.pubID}}" wx:for="{{one.value}}" wx:key="{{item.pubID}}">
+                        <block wx:if="{{item.pubID}}">
+                            <view class="text">
+                                <text class="perPrice">¥{{item.insCusPayTc}}/份</text>
+                                <text catchtap="btnInsDetail" class="text-icon" data-pid="{{item.pubID}}"></text>
+                            </view>
+                            <view class="info">保额<text class="quota">{{item.insQuota}}万</text>
+                                <text wx:if="{{index==0&&item.insCode==4}}">，给您旅途最高保障</text>
+                                <text wx:if="{{index==1&&item.insCode==4}}">，一路平安相伴</text>
+                            </view>
+                            <view class="chose"></view>
+                        </block>
+                        <block wx:else>
+                            <view class="nobuy">不购买</view>
+                            <view class="info">建议购买，安心出行</view>
+                            <view class="chose"></view>
+                        </block>
+                    </view>
+                </block>
+            </view>
+        </view>
+    </view>
+</scroll-view>
+<view class="ins-layer" wx:if="{{showPop}}">
+    <view class="title">{{title}}</view>
+    <view class="insurance-explain">
+        <view wx:for="{{detail}}">{{item}}</view>
+    </view>
+    <view class="close-box flex-box">
+        <view bindtap="goDetailLink" class="close-link flex1" data-link="{{insLink}}" wx:if="{{!!insLink}}">条款详情</view>
+        <view bindtap="btnClosePop" class="close close1 flex1"></view>
+    </view>
+</view>
+<view bindtap="btnConfirm" class="add-ok" wx:if="{{codeIndex===-1}}">确定</view>

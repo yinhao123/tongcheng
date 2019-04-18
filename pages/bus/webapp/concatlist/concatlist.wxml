@@ -1,0 +1,85 @@
+<block wx:if="{{handleType!='addFreeChild'&&handleType!='editFreeChild'}}">
+    <view class="add-main">
+        <view class="flex-box bor-bottom">
+            <view class="add-label">{{handleType=='adult'?'姓名':'儿童姓名'}}</view>
+            <view class="flex1">
+                <input bindblur="inputName" class="add-input" maxlength="15" placeholder="请输入姓名" placeholderClass="{{addName?'f-color':''}}" type="text" value="{{addName}}"></input>
+            </view>
+        </view>
+        <view class="flex-box">
+            <view class="add-label">身份证号</view>
+            <view class="flex1">
+                <input bindchange="inputIDCardEv" bindinput="inputIDCard" class="add-input" maxlength="20" placeholder="请输入正确的身份证号码" type="idcard" value="{{IDSpace}}"></input>
+            </view>
+        </view>
+    </view>
+    <block wx:if="{{handleType=='adult'}}">
+        <view bindtap="btnAddSubmit" class="add-ok" data-child="0" wx:if="{{isAdd}}">确定</view>
+        <view bindtap="btnEditSubmit" class="add-ok" data-child="0" wx:else>确定</view>
+    </block>
+    <block wx:else>
+        <view bindtap="btnAddSubmit" class="add-ok" data-child="1" wx:if="{{isAdd}}">确定</view>
+        <view bindtap="btnEditSubmit" class="add-ok" data-child="1" wx:else>确定</view>
+    </block>
+    <view class="childExplain" wx:if="{{handleType=='child'}}">
+        <view class="title">儿童票说明</view>
+        <view>1. 身高在<text>1.2米-1.5米</text>的儿童需购买半价儿童票(提供座位)，身高超过1.5米的儿童需购买全票。身高1.2米以下儿童若无需座位可至车站申请免票儿童票。</view>
+        <view>2. 儿童（未满<text>18周岁</text>）至少需要由一位成人陪同乘车,每笔订单最多购买2张儿童票。具体票价以实际收取为准。</view>
+        <view>3. 请根据儿童实际身高购票，以免造成儿童身高与所购车票不符而无法乘车，耽误行程。</view>
+    </view>
+</block>
+<form bindsubmit="btnFreeChildSubmit" wx:else>
+    <view class="freeChild">
+        <block wx:if="{{handleType=='addFreeChild'}}">
+            <view class="FCLeft">当前车次剩余携童票数：<text>{{FCTicketLeft}}</text>
+            </view>
+            <view class="FCCount flex-box flex-box-center">
+                <text>申请携童票数量</text>
+                <view class="flex-box subPlusBox">
+                    <view bindtap="btnSubFC" class="sub {{freeChildren.length==0&&'disabled'}}">
+                        <text>－</text>
+                    </view>
+                    <view class="val">{{freeChildren.length}}</view>
+                    <view bindtap="btnPlusFC" class="plus {{freeChildren.length==adultPassNum&&'disabled'}}">
+                        <text>＋</text>
+                    </view>
+                </view>
+            </view>
+            <view class="oneItem" wx:for="{{freeChildren}}" wx:key="unique">
+                <view class="flex-box bor-bottom">
+                    <view class="add-label">携童姓名</view>
+                    <view class="flex1">
+                        <input bindblur="fnSyncFCNameId" class="add-input" data-key="name" data-unique="{{item.unique}}" maxlength="15" name="{{'name'+item.unique}}" placeholder="请输入与证件一致的儿童姓名" placeholderClass="placeholder" type="text" value="{{item.name}}"></input>
+                    </view>
+                </view>
+                <view class="flex-box">
+                    <view class="add-label">携童身份证号</view>
+                    <view class="flex1">
+                        <input bindblur="fnSyncFCNameId" class="add-input" data-key="id" data-unique="{{item.unique}}" maxlength="20" name="{{'id'+item.unique}}" placeholder="请输入儿童身份证号码" placeholderClass="placeholder" type="idcard" value="{{item.id}}"></input>
+                    </view>
+                </view>
+            </view>
+        </block>
+        <view class="oneItem" style="margin-top:30px" wx:else>
+            <view class="flex-box bor-bottom">
+                <view class="add-label">携童姓名</view>
+                <view class="flex1">
+                    <input class="add-input" maxlength="15" name="freeChildName" placeholder="请输入与证件一致的儿童姓名" placeholderClass="placeholder" type="text" value="{{editFreechild.name}}"></input>
+                </view>
+            </view>
+            <view class="flex-box">
+                <view class="add-label">携童身份证号</view>
+                <view class="flex1">
+                    <input class="add-input" maxlength="20" name="freeChildId" placeholder="请输入儿童身份证号码" placeholderClass="placeholder" type="idcard" value="{{editFreechild.cardNo}}"></input>
+                </view>
+            </view>
+        </view>
+    </view>
+    <button class="add-ok" formtype="submit">确定</button>
+    <view class="childExplain">
+        <view class="title">携童票说明</view>
+        <view>1. 身高在<text>1.2米</text>以下的儿童可免费申请携童票（<text>不提供座位</text>），请根据儿童实际身高购票，若儿童身高不符合车站规定条件，车站有权要求用户补足差价，同程不承担因儿童身高与所购车票不符而影响行程的责任。</view>
+        <view>2. 携童票数量有限（一般为班车核定载客人数的10%），如您选择的班次已无携童票余票数，请改乘其他班次或购买儿童票。</view>
+        <view>3. 一个成人仅可申请一张携童票，若携带儿童超过一人或需要座位，请购买儿童票或全票。</view>
+    </view>
+</form>

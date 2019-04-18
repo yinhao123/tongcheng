@@ -1,0 +1,187 @@
+.container {
+    height: 100%;
+    padding-bottom: 50rpx;
+}
+
+.container .topinfo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+.container .header {
+    width: 100%;
+    height: 180rpx;
+    background: -webkit-gradient(linear,left top,right top,color-stop(40%,#5ad479),to(#0acc9b));
+    background: -webkit-linear-gradient(left,#5ad479 40%,#0acc9b);
+    background: -o-linear-gradient(left,#5ad479 40%,#0acc9b);
+    background: linear-gradient(90deg,#5ad479 40%,#0acc9b);
+    color: #fff;
+}
+
+.container .header image {
+    width: 110rpx;
+    height: 110rpx;
+    border-radius: 50%;
+    margin: 0 36rpx;
+}
+
+.container .header .nickname {
+    font-size: 40rpx;
+}
+
+.container .header .about {
+    font-size: 28rpx;
+    margin-right: 20rpx;
+}
+
+.container .header .arrow {
+    display: inline-block;
+    border: 4rpx solid #fff;
+    transform: rotate(-45deg);
+    border-width: 0 4rpx 4rpx 0;
+    width: 18rpx;
+    height: 18rpx;
+}
+
+.container .tab-list {
+    height: 90rpx;
+    line-height: 90rpx;
+    background: #fff;
+    color: #666;
+    font-size: 28rpx;
+    box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,.1);
+}
+
+.container .tab-list .tab {
+    height: 100%;
+}
+
+.container .tab-list .tab.active {
+    color: #21ba66;
+    position: relative;
+}
+
+.container .tab-list .tab.active:before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translate3d(-50%,0,0);
+    bottom: 0;
+    height: 8rpx;
+    width: 120rpx;
+    background: #21ba66;
+    border-radius: 10rpx;
+}
+
+.container .body {
+    margin-top: 292rpx;
+}
+
+.container .order-box {
+    overflow-y: auto;
+    height: 100%;
+}
+
+.container .order-list {
+    background: #fff;
+    width: 685rpx;
+    border-radius: 20rpx;
+    margin: 22rpx auto 0;
+    padding: 25rpx 22rpx;
+}
+
+.container .order-list:first-of-type {
+    margin-top: 0;
+}
+
+.container .order-list .icon-bus {
+    background: url(https://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/mina-bus-app/bus.png) center no-repeat;
+    background-size: 100% 100%;
+    display: inline-block;
+    width: 30rpx;
+    height: 30rpx;
+    vertical-align: middle;
+    margin-right: 20rpx;
+    margin-top: -5rpx;
+}
+
+.container .order-title {
+    font-size: 28rpx;
+    border-bottom: 1rpx solid #e3e3e3;
+    padding-bottom: 25rpx;
+    margin-bottom: 21rpx;
+}
+
+.container .order-title-left {
+    color: #666;
+}
+
+.container .order-title-right {
+    color: #999;
+}
+
+.container .order-title-right.success {
+    color: #3c6;
+}
+
+.container .order-title-right.warning {
+    color: #ff7300;
+}
+
+.container .order-title-right.danger {
+    color: #f10;
+}
+
+.container .bus-info-box {
+    font-size: 32rpx;
+    margin-bottom: 22rpx;
+}
+
+.container .bus-info-box .bus-info {
+    color: #333;
+}
+
+.container .bus-info-box .bus-price {
+    color: #ff6540;
+}
+
+.container .bus-date {
+    color: #999;
+    font-size: 24rpx;
+}
+
+.container .no-more-data {
+    color: #333;
+    font-size: 30rpx;
+    margin: 40rpx auto 20rpx;
+}
+
+.no-data {
+    color: #999;
+    font-size: 30rpx;
+    margin: 40rpx auto 20rpx;
+}
+
+.no-data image {
+    width: 172rpx;
+    height: 162rpx;
+    margin: 168rpx 0 32rpx 0;
+}
+
+.no-data .gotohomebtn {
+    display: block;
+    font-size: 32rpx;
+    border-radius: 12rpx;
+    background-color: #fff;
+    width: 350rpx;
+    height: 90rpx;
+    text-align: center;
+    line-height: 90rpx;
+    border: 1px solid #ddd;
+    color: #666;
+    margin: 40rpx auto 0 auto;
+}

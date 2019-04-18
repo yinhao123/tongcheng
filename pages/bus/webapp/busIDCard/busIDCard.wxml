@@ -1,0 +1,51 @@
+<view class="idcard-content">
+    <view class="photo-box">
+        <view bindtap="uploadIDCard" class="img-box">
+            <text class="icon icon-camera"></text>
+        </view>
+        <view class="txt-box">
+            <text class="txt-tip">拍照识别身份证</text>
+            <text bindtap="showDemo" class="txt-demo">点击查看示例</text>
+        </view>
+    </view>
+    <view class="input-box">
+        <view class="flex-box input-item">
+            <text class="left-name">乘客类型</text>
+            <picker bindchange="bindPickerChange" class="flex1" mode="selector" range="{{PTypeArrs}}" rangeKey="name" value="{{index}}">
+                <view class="picker">{{PTypeArrs[index].name}}</view>
+            </picker>
+        </view>
+        <view class="flex-box input-item">
+            <text class="left-name">姓名</text>
+            <view class="flex1">
+                <input bindblur="inputName" placeholder="请输入姓名" placeholderClass="placeholder" type="text" value="{{addName}}"></input>
+            </view>
+        </view>
+        <view class="flex-box input-item">
+            <text class="left-name">身份证号</text>
+            <view class="flex1">
+                <input bindinput="inputIDCard" maxlength="20" placeholder="请输入正确的身份证号" placeholderClass="placeholder" type="idcard" value="{{IDSpace}}"></input>
+            </view>
+        </view>
+    </view>
+    <view class="tip">请仔细填写证件信息，以免耽误您的行程</view>
+    <view class="btn-box">
+        <button bindtap="submitData" size="default" type="primary">确定</button>
+    </view>
+    <view class="tip-box" wx:if="{{type==1}}">
+        <view class="tip-title">儿童票说明</view>
+        <view class="tip-p">1. 身高在<text class="tip-color">1.2米-1.5米</text>的儿童需购买儿童票(提供座位)，身高超过1.5米的儿童需购买全票。身高1.2米以下儿童若无需座位可至车站申请免票儿童票。</view>
+        <view class="tip-p">2. 儿童（未满<text class="tip-color">18周岁</text>）至少需要由一位成人陪同乘车,每笔订单最多购买2张儿童票。具体票价以实际收取为准。</view>
+        <view class="tip-p">3. 请根据儿童实际身高购票，以免造成儿童身高与所购车票不符而无法乘车，耽误行程。</view>
+    </view>
+</view>
+<view class="dialog-box" wx:if="{{hasShowDemo}}">
+    <div class="dialog-content">
+        <view class="demo-title">请按照推荐方式拍照</view>
+        <image class="img-demo" mode="aspectFit" src="https://file.40017.cn/groundtraffic/bus/weixin/busidcard/idcard-demo.png"></image>
+        <view class="demo-tip">建议您横握手机，正对证件拍照，保持四角对齐，不留多余空间，确保照片无反光、无折角、不倾斜</view>
+        <view class="btn-box">
+            <button bindtap="closeDemo" size="default" type="primary">确定</button>
+        </view>
+    </div>
+</view>

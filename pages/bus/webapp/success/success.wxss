@@ -1,0 +1,1175 @@
+@charset "UTF-8";
+
+.new-fbox {
+    display: -webkit-box;
+    display: -webkit-flex;
+}
+
+.new-flex {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+}
+
+.bor-top {
+    border-top: 1px solid #eee;
+}
+
+.bor-bottom {
+    border-bottom: 1px solid #eee;
+}
+
+.bor-uad {
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.radiusShadow {
+    margin: 10px;
+    box-shadow: 1px 2px 2px 0 rgba(204,204,204,.2);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.main {
+    padding-bottom: 20px;
+}
+
+.top {
+    padding: 18px 15px 10px;
+    padding-top: 18px;
+    background-image: url(https://img1.40017.cn/touch/bus/wx_bus//top-bottom.png),url(https://img1.40017.cn/touch/bus/wx_bus//top-bg.jpg);
+    background-position: 0 bottom,0 0;
+    background-repeat: no-repeat,no-repeat;
+    background-size: 100% auto,100% auto;
+    background-color: #12af68;
+}
+
+.top .statusTitle {
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    font-size: 18px;
+    line-height: 24px;
+    height: 24px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    text-shadow: 0 1px 2px #078b26;
+}
+
+.top .status {
+    padding-top: 1px;
+    line-height: 1;
+    color: #fff;
+    background-size: 100%;
+}
+
+.top .expectTime {
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #fff;
+    padding: 2px 0 4px 0;
+}
+
+.top .desc {
+    font-size: 12px;
+    line-height: 1.2;
+    color: #fff;
+    padding-bottom: 6px;
+}
+
+.top .fastOrder {
+    -webkit-box-pack: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #fff;
+    padding: 10px 0 16px 0;
+}
+
+.top .fastOrder>view {
+    padding: 0 15px;
+    border: 1px solid #079c4a;
+    line-height: 24px;
+    height: 24px;
+}
+
+.top .fastOrder .title {
+    background-color: #079c4a;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.top .fastOrder .dd {
+    background-color: #fff;
+    color: #079c4a;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    overflow: hidden;
+}
+
+.top .fastOrder .dd .li {
+    text-align: center;
+}
+
+.top .circle {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    position: relative;
+    box-sizing: border-box;
+    background: transparent url(https://img1.40017.cn/touch/bus/wx_bus/top-circle.png) no-repeat scroll 0 0;
+    background-size: 100% 100%;
+    margin: 0 auto;
+    text-align: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+.top .point {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #d9ff15;
+    transform-origin: 0 80px;
+    transform: rotate(0turn) scale(.96);
+    animation: spin 3s infinite linear;
+}
+
+@-webkit-keyframes spin {
+    to {
+        transform: rotate(1turn) scale(.96);
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(1turn) scale(.96);
+    }
+}
+
+.top .order-suc .circle {
+    background-image: url(https://img1.40017.cn/touch/bus/wx_bus/order-suc.png);
+}
+
+.top .order-fail .circle {
+    background-image: url(https://img1.40017.cn/touch/bus/wx_bus/order-fail.png);
+}
+
+.btn {
+    background-color: #f2f4f7;
+    padding: 12px 8px;
+    border-bottom: 1px solid #dcdcdc;
+    background-image: -webkit-linear-gradient(256deg,#0ec189,#17b763);
+    background-image: linear-gradient(194deg,#0ec189,#17b763);
+}
+
+.btn .left,.btn .right {
+    display: block;
+    background-color: #fff;
+    height: 42px;
+    margin: 0 7px;
+    border: 1px solid #dfdfdf;
+    border-radius: 4px;
+    line-height: 42px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.btn .left {
+    color: #09bb07;
+}
+
+.btn .right {
+    color: #666;
+}
+
+.btn .disable,.btn .gray {
+    color: #999;
+}
+
+.shuttleBus {
+    padding: 10px 0;
+    background-color: #fff;
+}
+
+.shuttleBus .item {
+    -webkit-box-align: center;
+    align-items: center;
+    width: 50%;
+    padding: 0 14px;
+}
+
+.shuttleBus .sendOff {
+    border-right: 1px solid rgba(204,204,204,.4);
+}
+
+.shuttleBus image {
+    display: block;
+    width: 24%;
+}
+
+.shuttleBus .item .wrap {
+    width: 76%;
+    box-sizing: border-box;
+    padding-left: 15px;
+}
+
+.shuttleBus .pickUp image {
+    transform: rotateY(180deg);
+}
+
+.shuttleBus .where {
+    font-size: 12px;
+    color: #999;
+    display: block;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+.shuttleBus .place {
+    font-size: 15px;
+    color: #333;
+    line-height: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cross {
+    background-color: #fff;
+}
+
+.cross .single-text {
+    height: 44px;
+    line-height: 44px;
+    padding-left: 15px;
+    font-size: 16px;
+    color: #666;
+    border-width: 1px 0;
+    border-image: url(https://img1.40017.cn/touch/bus/wx_bus/border-dc.png) 2 0 stretch;
+}
+
+.cross .tabs {
+    text-align: center;
+    height: 44px;
+    line-height: 44px;
+}
+
+.cross .tabs text {
+    display: inline-block;
+    padding: 0 12px;
+    font-size: 16px;
+    color: #999;
+}
+
+.cross .thisone text {
+    height: 42px;
+    color: #333;
+    border-bottom: 2px solid #09bb07;
+}
+
+.cross .title {
+    height: 44px;
+    padding-left: 15px;
+    line-height: 44px;
+    font-size: 16px;
+    color: #666;
+}
+
+.cross .hotel {
+    height: 300px;
+}
+
+.cross .hotel .list {
+    padding: 10px 15px;
+}
+
+.cross .hotel .pic {
+    width: 71px;
+    height: 65px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-right: 15px;
+}
+
+.cross .hotel .image {
+    width: 100%;
+    height: 100%;
+}
+
+.cross .hotel .info {
+    height: 65px;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+}
+
+.cross .hotel .name {
+    padding-top: 3px;
+    margin-bottom: 24px;
+    font-size: 16px;
+    line-height: 1;
+    color: #262626;
+}
+
+.cross .hotel .score {
+    font-size: 11px;
+    color: #ff6815;
+    line-height: 22px;
+}
+
+.cross .hotel .num {
+    font-size: 14px;
+    margin-right: 1px;
+}
+
+.cross .hotel .price {
+    text-align: right;
+    font-size: 14px;
+    color: #999;
+    line-height: 22px;
+}
+
+.cross .hotel .rmb {
+    color: #ff6815;
+}
+
+.cross .hotel .money {
+    font-size: 18px;
+    color: #ff6815;
+    padding: 0 2px;
+}
+
+.cross .hotel .more {
+    display: block;
+    height: 44px;
+    font-size: 16px;
+    line-height: 44px;
+    color: #666;
+    text-align: center;
+}
+
+.cross .cars .list {
+    padding: 12px 15px 10px;
+}
+
+.cross .cars .pic {
+    width: 65px;
+    height: 65px;
+    margin-right: 18px;
+    overflow: hidden;
+}
+
+.cross .cars .image {
+    width: 100%;
+    height: 100%;
+}
+
+.cross .cars .info {
+    height: 65px;
+    overflow: hidden;
+}
+
+.cross .cars .name {
+    padding-top: 12px;
+    margin-bottom: 10px;
+    line-height: 1;
+    font-size: 16px;
+    color: #262626;
+}
+
+.cross .cars .intro {
+    font-size: 14px;
+    color: #999;
+}
+
+.cross .cars .more {
+    display: block;
+    height: 44px;
+    font-size: 16px;
+    line-height: 44px;
+    color: #666;
+    text-align: center;
+}
+
+.cross .shipContent {
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    padding: 10px 15px 10px 24px;
+}
+
+.cross .shipContent>view {
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.cross .shipContent image {
+    width: 38px;
+    margin-right: 15px;
+}
+
+.cross .shipContent .shipDeparture {
+    font-size: 15px;
+    color: #333;
+}
+
+.cross .shipContent .shipReduce {
+    display: block;
+    font-size: 12px;
+    color: #666;
+}
+
+.cross .shipContent text {
+    font-size: 14px;
+    color: #999;
+}
+
+.cross .shipContent text:after {
+    content: "a";
+    color: transparent;
+    display: inline-block;
+    margin-left: 5px;
+    width: 7px;
+    background: url(https://img1.40017.cn/cn/s/WX/final/arrow_ico.png) no-repeat 50% 50%;
+    background-size: 7px 13px;
+}
+
+.qa {
+    margin-bottom: 10px;
+}
+
+.qa .title {
+    height: 44px;
+    line-height: 44px;
+    background-color: #fff;
+    padding: 0 15px;
+    position: relative;
+}
+
+.qa .text {
+    font-size: 16px;
+    color: #666;
+}
+
+.qa .ser {
+    text-align: right;
+    font-size: 14px;
+    color: #0095df;
+}
+
+.qa .qabox {
+    background-color: #fff;
+    padding: 0 0;
+}
+
+.qa .ques {
+    padding: 14px 25px 14px 15px;
+    line-height: 1;
+    font-size: 14px;
+    color: #333;
+}
+
+.qa .ques:first-child {
+    border: none;
+}
+
+.qa .answer {
+    overflow: hidden;
+    transition-duration: .5s;
+    transition-property: height;
+    transform: translateZ(0);
+}
+
+.qa .reply {
+    padding: 10px 15px;
+    line-height: 24px;
+    font-size: 14px;
+    color: #666;
+    text-align: justify;
+}
+
+.arrow-down {
+    position: relative;
+}
+
+.arrow-down:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    width: 10px;
+    height: 10px;
+    margin-top: -8px;
+    border: 1px solid #bbb;
+    transform: rotate(45deg);
+    border-width: 0 1px 1px 0;
+}
+
+.arrow-up:after {
+    margin-top: -3px;
+    border-width: 1px 0 0 1px;
+}
+
+.h-zero {
+    height: 0;
+}
+
+.contact,.out-failed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.6);
+    z-index: 1008611;
+}
+
+.out-failed .content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 276px;
+    margin: -200px 0 0 -138px;
+    z-index: 1008666;
+    padding: 20px;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.out-failed .content .title {
+    font-size: 18px;
+    color: #333;
+    margin: 15px 0;
+    line-height: 1;
+}
+
+.out-failed .content .desc {
+    font-size: 15px;
+    color: #666;
+    text-align: left;
+}
+
+.out-failed .content text {
+    color: #ff6815;
+}
+
+.out-failed .content button {
+    background-color: #ff6815;
+    color: #fff;
+    border: 0;
+    font-size: 20px;
+    padding: 5px 0;
+    width: 100%;
+    border-radius: 5px;
+    margin-top: 15px;
+    line-height: 1.4;
+}
+
+.out-failed .content:before {
+    content: " ";
+    display: block;
+    width: 30px;
+    height: 30px;
+    background: transparent url(//img1.40017.cn/touch/bus/wx_bus/failed.jpg) no-repeat scroll 0 0;
+    background-size: 100% 100%;
+    margin: 0 auto;
+}
+
+.phoneBox {
+    position: absolute;
+    border-radius: 5px;
+    left: 50%;
+    top: 40%;
+    width: 270px;
+    height: 59px;
+    margin-left: -135px;
+    background: #fff;
+    z-index: 10002;
+    line-height: 100%;
+    display: block;
+}
+
+.icon_service {
+    background: url(http://img1.40017.cn/touch/bus/wx_bus/detailphone.png) no-repeat;
+    background-position: 0 -32px;
+    background-size: 25px;
+    height: 20px;
+    width: 20px;
+    margin-left: 15px;
+}
+
+.icon_service1 {
+    margin-top: -19px;
+    line-height: 18px;
+    margin-left: 43px;
+}
+
+.icon_service1 view {
+    font-size: 12px;
+    font-family: Microsoft Yahei;
+    color: #666;
+}
+
+.phone_box1 {
+    margin-top: 16px;
+    line-height: 44px;
+    height: 44px;
+    border-bottom: 1px solid #dcdcdc;
+}
+
+.phone_box2 {
+    margin-top: 10px;
+}
+
+.icon_service1 text {
+    border-top: 1px solid #ff6815;
+    font-size: 12px;
+    font-family: Microsoft Yahei;
+    color: #fff;
+    background: #ff6815;
+    padding: 1px 6px 1px 6px;
+    margin-left: 5px;
+    border-radius: 2px;
+}
+
+.icon_phone {
+    float: left;
+    background: url(http://img1.40017.cn/touch/bus/wx_bus/detailphone.png) no-repeat;
+    background-position: 0 -60px;
+    background-size: 25px;
+    height: 20px;
+    width: 20px;
+    margin-left: 15px;
+}
+
+.icon_phone1 {
+    line-height: 18px;
+    margin-left: 43px;
+}
+
+.state_Name {
+    padding: 2px 0 10px 0;
+    font-size: 12px;
+}
+
+.state_position {
+    width: 100px;
+    margin: 0 auto;
+}
+
+.modal-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    visibility: visible;
+    opacity: .6;
+    transition-duration: 250ms;
+    z-index: 10000;
+}
+
+.phone_text1 {
+    font-size: 12px;
+    color: #999;
+}
+
+.icon_phone1 .title {
+    height: 20px;
+    line-height: 20px;
+    margin-bottom: 3px;
+    font-size: 16px;
+    color: #666;
+}
+
+.couponPop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,.7);
+    text-align: center;
+    z-index: 99;
+}
+
+.coupon .coupon-img {
+    width: 100%;
+    height: 100%;
+    background: url(http://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/card_share.png) no-repeat;
+    background-size: 100% auto;
+    position: relative;
+}
+
+.coupon .coupon-img button {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    bottom: 0;
+    background-color: transparent;
+    opacity: 0;
+}
+
+.couponPop .coupon-img .close-coupon {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    right: 32px;
+    top: 50%;
+    margin-top: -160px;
+}
+
+.couponPop .coupon-img .share-btn {
+    width: 170px;
+    height: 34px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: 118px;
+    margin-left: -85px;
+}
+
+.coupon {
+    position: fixed;
+    bottom: 20%;
+    right: 10px;
+    z-index: 98;
+}
+
+.coupon .coupon-img {
+    width: 50px;
+    height: 61px;
+    background: url(http://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/red_envelope.png) no-repeat;
+    background-size: 100% auto;
+}
+
+.couponPop .centerC-img {
+    width: 79.72%;
+    height: 60%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%,-50%,0);
+}
+
+.couponPop .main-bg {
+    width: 100%;
+    height: 100%;
+    background: url(http://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/carshare01.png) 0 center no-repeat;
+    background-size: 100% auto;
+    position: relative;
+}
+
+.couponPop .main-bg button {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    bottom: 0;
+    background-color: transparent;
+    opacity: 0;
+}
+
+.couponPop .coupon-closeBtn {
+    position: absolute;
+    right: 0;
+    top: -30px;
+    width: 25px;
+    height: 25px;
+    background: url(http://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/carshare02.png) center no-repeat;
+    background-size: 25px 25px;
+}
+
+.shake {
+    animation: ring 2s ease 2s infinite;
+}
+
+@-webkit-keyframes ring {
+    0% {
+        -webkit-transform: scale(1);
+    }
+
+    10%,20% {
+        -webkit-transform: scale(.9) rotate(-8deg);
+    }
+
+    30%,50%,70%,90% {
+        -webkit-transform: scale(1.1) rotate(8deg);
+    }
+
+    40%,60%,80% {
+        -webkit-transform: scale(1.1) rotate(-8deg);
+    }
+
+    100% {
+        -webkit-transform: scale(1) rotate(0);
+    }
+}
+
+@keyframes ring {
+    0% {
+        transform: scale(1);
+    }
+
+    10%,20% {
+        transform: scale(.9) rotate(-8deg);
+    }
+
+    30%,50%,70%,90% {
+        transform: scale(1.1) rotate(8deg);
+    }
+
+    40%,60%,80% {
+        transform: scale(1.1) rotate(-8deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0);
+    }
+}
+
+.serviceTips {
+    -webkit-box-pack: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #fff;
+    padding: 10px 0 16px 0;
+}
+
+.urgeTips {
+    background-color: #fff7dc;
+    font-size: 12px;
+    color: #9e8052;
+    line-height: 20px;
+    padding: 0 10px;
+    height: 0;
+    text-align: center;
+    transition: all .3s ease-in-out;
+    box-sizing: border-box;
+}
+
+.urgeShow {
+    height: auto;
+    padding: 10px;
+}
+
+.clock {
+    display: inline-block;
+    height: 17px;
+    width: 17px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    border: 1px solid #666;
+    margin-left: 10px;
+    margin-bottom: -3px;
+    position: relative;
+}
+
+.clock::before {
+    content: '';
+    height: 5px;
+    width: 1px;
+    position: absolute;
+    background: #666;
+    left: 8px;
+    margin-left: -1px;
+    bottom: 7px;
+}
+
+.clock .mint {
+    height: 7px;
+    width: 1px;
+    display: inline-block;
+    position: absolute;
+    left: 8px;
+    margin-left: -1px;
+    background: #666;
+    bottom: 7px;
+    transform-origin: center bottom;
+}
+
+.disable .clock {
+    border-color: #999;
+}
+
+.disable .clock .mint,.disable .clock::before {
+    background: #999;
+}
+
+.new-ser {
+    margin-right: -10rpx;
+}
+
+.new-ser::before {
+    content: " ";
+    display: inline-block;
+    width: 42rpx;
+    height: 35rpx;
+    background: url(https://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/icon-kefu.png) center no-repeat;
+    background-size: 42rpx 35rpx;
+    position: relative;
+    top: 2px;
+    left: -2px;
+}
+
+.service-box {
+    width: 212rpx;
+    height: 180rpx;
+    background: #fff;
+    position: absolute;
+    top: 43px;
+    right: 0;
+    z-index: 9;
+    box-shadow: 0 0 10px 0 #ccc;
+    border-radius: 6rpx;
+}
+
+.service-box::after {
+    content: '';
+    position: absolute;
+    top: -15rpx;
+    right: 30rpx;
+    width: 28rpx;
+    height: 20rpx;
+    background: url(https://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/icon-sanjiao.png) no-repeat;
+    background-size: 28rpx 20rpx;
+    z-index: 10;
+}
+
+.service-box .service-item {
+    color: #333;
+    font-size: 32rpx;
+    height: 90rpx;
+    line-height: 90rpx;
+    padding-left: 20rpx;
+    position: relative;
+}
+
+.service-box .service-item:first-of-type::after {
+    content: '';
+    height: 1px;
+    width: 122rpx;
+    background: #ccc;
+    position: absolute;
+    bottom: 0;
+    right: 15rpx;
+}
+
+.icon {
+    display: inline-block;
+    width: 33rpx;
+    height: 32rpx;
+    vertical-align: middle;
+    margin-right: 16rpx;
+}
+
+.icon.icon-kefuphone {
+    background: url(https://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/icon-phone.png) no-repeat;
+    background-size: 100%;
+}
+
+.icon.icon-kefu {
+    background: url(https://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/icon-ting.png) no-repeat;
+    background-size: 100%;
+}
+
+.vlist {
+    position: relative;
+    z-index: 1;
+    margin-top: 20rpx;
+}
+
+.vlist .modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 9;
+}
+
+.coupon-title {
+    font-size: 25rpx;
+    color: #666;
+    margin-bottom: 20rpx;
+}
+
+.coupon-box {
+    margin: 0 20rpx;
+    overflow: hidden;
+    overflow-x: auto;
+}
+
+.coupon-box .coupon-item {
+    border-radius: 8rpx;
+    height: 170rpx;
+    position: relative;
+    margin-bottom: 26rpx;
+}
+
+.coupon-box .coupon-item .price-title {
+    width: 25vw;
+    color: #ff6743;
+    font-size: 28rpx;
+    text-align: center;
+}
+
+.coupon-box .coupon-item .price-title span {
+    font-size: 60rpx;
+    margin-left: 8rpx;
+}
+
+.coupon-box .coupon-item .c-info {
+    padding-left: 34rpx;
+}
+
+.coupon-box .coupon-item .c-info .c-title {
+    font-size: 36rpx;
+    letter-spacing: 0rpx;
+    color: #333;
+    font-weight: 610;
+}
+
+.coupon-box .coupon-item .c-info .c-des {
+    font-size: 28rpx;
+    letter-spacing: -1rpx;
+    color: #999;
+}
+
+.coupon-box2 {
+    margin: 0 20rpx;
+    overflow: hidden;
+    overflow-x: auto;
+    background: #fff;
+    border-radius: 10rpx;
+    padding: 24rpx 30rpx;
+    margin-bottom: 26rpx;
+}
+
+.coupon-box2 .cp-title-box {
+    -webkit-box-align: baseline;
+    align-items: baseline;
+    margin-bottom: 24rpx;
+}
+
+.coupon-box2 .cp-title-box>view:nth-child(1) {
+    font-size: 40rpx;
+    letter-spacing: 0rpx;
+    color: #333;
+    font-weight: 610;
+}
+
+.coupon-box2 .cp-title-box>view:nth-child(2) {
+    font-size: 28rpx;
+    letter-spacing: 0rpx;
+    color: #666;
+    line-height: 1;
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+.coupon-box2 .coupon-item2 {
+    min-height: 170rpx;
+    padding-top: 13rpx;
+}
+
+.coupon-box2 .coupon-item2:not(:last-child) {
+    margin-right: 47rpx;
+}
+
+.coupon-box2 .coupon-item2.smr:not(:last-child) {
+    margin-right: 20rpx;
+}
+
+.coupon-box2 .coupon-item2 .t-box>view {
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 610;
+}
+
+.coupon-box2 .coupon-item2 .price-title {
+    color: #ff6540;
+    font-size: 24rpx;
+    line-height: 1;
+}
+
+.coupon-box2 .coupon-item2 .price-title text {
+    font-size: 36rpx;
+    margin-left: 8rpx;
+}
+
+.coupon-box2 .coupon-item2 .price-name {
+    font-size: 28rpx;
+    font-weight: 400;
+    font-stretch: normal;
+    letter-spacing: 0rpx;
+    color: #624611;
+    margin-left: 5rpx;
+}
+
+.coupon-box2 .coupon-item2 .p-des {
+    font-size: 22rpx;
+    font-weight: 400;
+    font-stretch: normal;
+    letter-spacing: 0rpx;
+    color: #b59049;
+}
+
+.sw-title {
+    font-size: 24rpx;
+    font-weight: 400;
+    font-stretch: normal;
+    letter-spacing: 0rpx;
+    color: #999;
+    margin-bottom: 26rpx;
+    position: relative;
+}
+
+.sw-title::after,.sw-title::before {
+    content: '';
+    width: 90rpx;
+    height: 1px;
+    background: #ccc;
+    top: 50%;
+    position: absolute;
+}
+
+.sw-title::before {
+    left: 30%;
+    transform: translate3d(-30%,-50%,0);
+}
+
+.sw-title::after {
+    right: 30%;
+    transform: translate3d(30%,-50%,0);
+}
+
+.sw-container {
+    margin: 0 20rpx;
+}
+
+.sw-container .sw-item {
+    height: 160rpx;
+    overflow: hidden;
+    margin: 0 auto 20rpx;
+    border-radius: 20rpx;
+}
+
+.sw-container image {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    width: 100%;
+}

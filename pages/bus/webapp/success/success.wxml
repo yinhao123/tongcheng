@@ -1,0 +1,163 @@
+<view class="main">
+    <view class="urgeTips {{urgeShow}}">{{urgeTxt}}</view>
+    <view class="top">
+        <view class="statusTitle">
+            <view animation="{{stAnimation}}" class="state-ul">
+                <view class="state-li" wx:for="{{stateTitle}}">{{item}}</view>
+            </view>
+        </view>
+        <view class="status" id="ticketState">
+            <view class="new-flex order-normal" wx:if="{{state=='virtual'}}">
+                <view class="circle new-fbox">
+                    <view class="">{{virtual.mmdd}}</view>
+                    <view class="expectTime">{{virtual.HHMM}}</view>
+                    <view class="desc">通知出票结果</view>
+                </view>
+            </view>
+            <view class="wait new-flex" wx:elif="{{state=='wait'}}">
+                <view class="circle new-fbox">
+                    <view>预计</view>
+                    <view class="expectTime">{{subscribe.mmdd}}</view>
+                    <view class="desc">开始为您出票</view>
+                </view>
+            </view>
+            <view class="new-flex order-suc" wx:elif="{{state=='success'}}">
+                <view class="circle new-fbox"></view>
+            </view>
+            <view class="new-flex order-fail" wx:elif="{{state=='fail'}}">
+                <view class="circle new-fbox"></view>
+            </view>
+            <view class="new-flex order-normal" wx:else>
+                <view class="circle new-fbox">
+                    <view class="expectTime">{{ticketing.HHMM}}</view>
+                    <view class="desc">预计出票时间</view>
+                    <view class="point"></view>
+                </view>
+            </view>
+        </view>
+        <view class="serviceTips">
+            <view class="serviceTipsL new-flex"></view>
+            <view class="serviceTipsR new-flex"></view>
+        </view>
+        <view class="fastOrder new-fbox" wx:if="{{orderInfo.fastOrder||pillIsShow}}">
+            <view class="title">{{pillTitle}}</view>
+            <view class="dd">
+                <view animation="{{ftAnimation}}" class="ul">
+                    <view class="li" wx:for="{{fastDesc}}">{{item}}</view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="btn new-fbox" id="buttonBox">
+        <view bindtap="toOrderDetail" class="left new-flex" id="checkOrder">查看订单</view>
+        <block wx:if="{{state=='success'}}">
+            <view bindtap="backUrl" class="right new-flex" wx:if="{{isBack}}">预订返程</view>
+            <view bindtap="backUrl" class="right new-flex" wx:else>再来一单</view>
+        </block>
+        <view bindtap="backUrl" class="right new-flex" wx:elif="{{state=='fail'}}">选择其他班次</view>
+        <view bindtap="backUrl" class="right new-flex" wx:elif="{{state=='wait'}}">再来一单</view>
+        <view bindtap="urgeCtrl" class="right new-flex {{urgeBtnClass}}" wx:elif="{{state=='urge'}}">
+            <text>催出票</text>
+            <view class="clock">
+                <text class="mint" hidden="{{hiddenClock}}" style="-webkit-transform:rotate({{rotate}}deg)"></text>
+            </view>
+        </view>
+        <view bindtap="backUrl" class="right new-flex" wx:else>再来一单</view>
+    </view>
+    <view class="vlist" wx:if="{{voucherList.length}}">
+        <view class="coupon-box flex_box flex_column" wx:if="{{voucherList.length==1}}">
+            <view bindtap="getCoupon" class="coupon-item flex_1 flex_box flex_align_center" data-idx="{{index}}" style="" wx:for="{{voucherList}}" wx:key="index">
+                <view class="price-title">¥<span>{{item.price}}</span>
+                </view>
+                <view class="flex_1 c-info">
+                    <view class="c-title textDot">{{util.replaceText(item.activityName)}}</view>
+                    <view class="c-des">{{item.desc}}</view>
+                </view>
+            </view>
+        </view>
+        <view class="coupon-box2" wx:else>
+            <view class="cp-title-box flex_box">
+                <view class="flex_1">优惠立享</view>
+                <view class="flex_1 r">优惠券领取{{voucherList.length}}选1</view>
+            </view>
+            <view class="cp-body flex_box">
+                <view bindtap="getCoupon" class="coupon-item2 flex_1 flex_box flex_column flex_align_center smr" data-idx="{{index}}" style="" wx:for="{{voucherList}}" wx:key="index">
+                    <view class="t-box flex_box flex_align_center">
+                        <view class="price-title">¥<text>{{item.price}}</text>
+                        </view>
+                        <view class="price-name flex_1 textDot">{{util.replaceText(item.activityName)}}</view>
+                    </view>
+                    <view class="p-des">{{item.desc}}</view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="sw-container" wx:if="{{isShowADV&&advise.length}}">
+        <view class="sw-title c">活动推荐</view>
+        <view bindtap="btnToAdvisePage" class="sw-item" data-idx="{{index}}" wx:for="{{advise}}" wx:key="index">
+            <image mode="widthFix" src="{{item.image}}"></image>
+        </view>
+    </view>
+    <view class="qa radiusShadow">
+        <view class="title bor-bottom new-fbox">
+            <view class="text new-flex">常见问题</view>
+            <view bindtap="showKefuFn" class="ser new-ser"></view>
+            <view class="service-box" wx:if="{{showKeFu}}">
+                <view bindtap="callKefu" class="service-item">
+                    <text class="icon icon-kefuphone"></text>
+                    <text>电话咨询</text>
+                </view>
+                <view bindtap="contactSer" class="service-item">
+                    <text class="icon icon-kefu"></text>
+                    <text>在线客服</text>
+                </view>
+            </view>
+        </view>
+        <view class="qabox">
+            <block wx:for="{{qaList}}" wx:key="title">
+                <view bindtap="slideList" class="ques bor-top arrow-down {{item.show&&'arrow-up'}}" data-serial="{{index}}">{{item.title}}</view>
+                <view class="answer" hidden="{{!item.show}}">
+                    <view class="wrap reply bor-top">
+                        <view wx:for="{{item.detail}}" wx:for-item="one" wx:key="index">{{one}}</view>
+                    </view>
+                </view>
+            </block>
+        </view>
+    </view>
+    <view class="out-failed" id="out-failed" wx:if="{{toggleRedPackage}}">
+        <view class="content">
+            <view class="title">亲 很抱歉为您出票失败</view>
+            <view class="desc">赠送您<text>{{redPackagePrice}}元</text>汽车票红包，登陆同程旅游APP，购汽车票抵现金。</view>
+            <button bindtap="hideRedPackage" id="out-failed-btn">知道了</button>
+        </view>
+    </view>
+    <view bindtap="hideServiceCall" class="contact" wx:if="{{showServiceCall}}">
+        <view class="phoneBox">
+            <view class="phoneCall">
+                <view href="tel:4007777777">
+                    <view class="phone_box2">
+                        <view class="icon_phone"></view>
+                        <view catchtap="serviceCall" class="icon_phone1">
+                            <view class="title">客服电话</view>
+                            <view class="phone_text1">拨打400-777-7777，不收取长途费</view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="couponPop" wx:if="{{couponPop}}">
+        <view class="centerC-img">
+            <view class="main-bg">
+                <button openType="share" wx:if="{{shareConfig.id}}"></button>
+            </view>
+            <view catchtap="closeCouponPop" class="coupon-closeBtn"></view>
+        </view>
+    </view>
+    <view class="coupon" wx:if="{{couponSmall}}">
+        <view class="coupon-img shake">
+            <button openType="share" wx:if="{{shareConfig.id}}"></button>
+        </view>
+    </view>
+</view>
+<wxs module="util" src="success.wxs" />

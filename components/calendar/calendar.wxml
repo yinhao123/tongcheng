@@ -1,0 +1,24 @@
+<view class="calendar flex_box flex_column">
+    <view>
+        <view class="tip" wx:if="{{saleDate}}">
+            <icon class="msg-icon" color="#9a7126" size="15" type="info_circle"></icon>今天可提前预约{{saleDate}}之前的汽车票，开售后马上抢票</view>
+        <view class="week-title flex_box flex_align_center">
+            <view class="week flex_1 c" wx:for="{{weeks}}" wx:key="*this">{{item}}</view>
+        </view>
+    </view>
+    <scroll-view scrollY class="calendar-scroll flex_1" scrollTop="{{scrollTop}}" scrollWithAnimation="{{true}}">
+        <view class="month-wrapper" wx:for="{{monthList}}" wx:key="*this">
+            <view class="month-title c">{{item.name}}</view>
+            <view class="month-days flex_box flex_wrap">
+                <view class="grid c" wx:for="{{item.days}}" wx:for-index="sindex" wx:for-item="sitem" wx:key="*this">
+                    <view bindtap="fnSelectedDay" class="day {{!sitem.canSaleDay?'disabled':''}} {{sitem.isSelected?'active':''}} {{sitem.isToday?'today':''}}" data-day="{{sitem.day}}" data-disabled="{{!sitem.canSaleDay}}" data-month="{{item.month}}" data-recentdate="{{sitem.recent}}" data-week="" data-year="{{item.year}}" wx:if="{{sitem.day>0}}">
+                        <view class="jia">{{sitem.festival}}</view>
+                        <view class="num {{sitem.isWeekend?'color':''}}">{{sitem.recent||~~sitem.day}}</view>
+                        <view class="recent">{{sitem.canSaleDay&&!sitem.isSaleDay?'可预约':''}}</view>
+                    </view>
+                    <view class="day" wx:else></view>
+                </view>
+            </view>
+        </view>
+    </scroll-view>
+</view>

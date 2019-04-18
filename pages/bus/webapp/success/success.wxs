@@ -1,0 +1,9 @@
+'use strict';
+var replaceText = function replaceText(str, num) {
+    num = num || 4;
+    console.log('replaceText', str);
+    return (str.length > num ? str.substring(0, num) + '...' : str)
+};
+module.exports = ({
+    replaceText: replaceText,
+});

@@ -1,0 +1,69 @@
+<form bindsubmit="formBookingBtn" reportSubmit="{{true}}">
+    <label>
+        <button formType="submit" hidden="{{true}}" type="primary"></button>
+        <view class="container">
+            <view class="notice-box" wx:if="{{announceList.length}}">
+                <view class="noticepic"></view>
+                <swiper autoplay="true" circular="true" class="notice-box1" current="{{currentIndex}}" duration="500" interval="2000" vertical="true">
+                    <swiper-item wx:for="{{announceList}}" wx:key="item.title">
+                        <view bindtap="showNotice" class="text-notice" data-src="{{item.templateId}}" data-title="{{item.announce}}">{{item.title}}</view>
+                    </swiper-item>
+                </swiper>
+            </view>
+            <view class="banner" wx:if="{{bannerImgs.length}}">
+                <swiper autoplay="{{true}}" circular="{{true}}" indicatorActiveColor="#FF8400" indicatorColor="#fff" indicatorDots="{{bannerImgs.length>1}}" interval="{{3000}}">
+                    <swiper-item bindtap="goPage" data-index="{{index}}" wx:for="{{bannerImgs}}" wx:key="index">
+                        <image class="slide-image" mode="aspectFill" src="{{item.image}}"></image>
+                    </swiper-item>
+                </swiper>
+            </view>
+            <view class="bus-content">
+                <view class="bus-station flex_box">
+                    <view bindtap="goDepCity" class="bus-station-name flex_1 l">
+                        <view class="bus-title">出发城市</view>
+                        <view class="bus-name text-ellipsis">{{util.replaceText(depCity.searchName||depCity.showName,6)}}</view>
+                    </view>
+                    <view bindtap="changeCity" class="change-city"></view>
+                    <view bindtap="goDesCity" class="bus-station-name flex_1 r">
+                        <view class="bus-title">到达城市</view>
+                        <view class="bus-name text-ellipsis">{{util.replaceText(desCity.searchName||desCity.showName,6)}}</view>
+                    </view>
+                </view>
+                <view class="line"></view>
+                <view bindtap="goCalendar" class="bus-datetime flex_box flex_align_center">
+                    <view class="flex_1 flex_box">
+                        <view class="bus-date">{{date}}</view>
+                        <view class="recentday">{{recentdate}}</view>
+                        <view class="week">{{week}}</view>
+                    </view>
+                    <view class="arrow"></view>
+                </view>
+                <view class="btn-box">
+                    <view bindtap="goList" class="btn c">搜索</view>
+                </view>
+                <view class="history-search" wx:if="{{busRecentData.length}}">
+                    <view class="history-title c">最近查询</view>
+                    <view class="history-content flex_box flex_align_center flex_justify_center">
+                        <view bindtap="setRecentCity" class="history c" data-index="{{index}}" wx:for="{{busRecentData}}" wx:key="index">
+                            <text class="city-name">{{util.replaceText(item.depCity.searchName||item.depCity.showName)}}</text>
+                            <text class="sline"></text>
+                            <text class="city-name">{{util.replaceText(item.desCity.searchName||item.desCity.showName)}}</text>
+                        </view>
+                    </view>
+                </view>
+                
+            </view>
+            <view class="agreement layer flex_box flex_align_center" wx:if="{{showUserAgreement}}">
+                <view class="aWrap">
+                    <view class="aTitle c">用户协议</view>
+                    <view class="aContent">请您仔细阅读<text catchtap="fnShowAgreement" data-id="1">《服务协议》</text>、<text catchtap="fnShowAgreement" data-id="2">《隐私政策》</text>、<text catchtap="fnShowAgreement" data-id="3">《软件许可使用协议》</text>、<text catchtap="fnShowAgreement" data-id="4">《免责说明》</text>，如您接受上述协议条款，请点击同意，我们将继续竭诚为您提供服务；如您无法接受协议条款，请停止使用本小程序。</view>
+                    <view class="aBtns flex_box">
+                        <navigator class="flex_1 c aNo" openType="exit" target="miniProgram" url="/pages/index/index">不同意</navigator>
+                        <view bindtap="btnAgree" class="flex_1 c aYes">同意</view>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </label>
+</form>
+<wxs module="util" src="index.wxs" />

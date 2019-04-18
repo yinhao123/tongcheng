@@ -1,0 +1,8 @@
+<view class="container">
+    <view bindtap="fnShowAgreement" class="list flex_box flex_align_center" data-id="{{item.id}}" wx:for="{{list}}">
+        <view class="flex_1">{{item.title}}</view>
+        <view class="r">
+            <text class="arrow"></text>
+        </view>
+    </view>
+</view>

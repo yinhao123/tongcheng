@@ -1,0 +1,54 @@
+'use strict';
+var addZero = function addZero(num) {
+    return (num < 10 ? '0' + num : num)
+};
+var isWeekend = function isWeekend(index) {
+    return (index % 7 == 0 || index % (6 + parseInt(index / 7) * 7) == 0)
+};
+var isFestival = function isFestival(festival, item, day) {
+    return (festival[((nt_0 = (item.year + '-' + addZero(item.month) + '-' + addZero(day)), null == nt_0 ? undefined : 'number' === typeof nt_0 ? nt_0 : "" + nt_0))])
+};
+var date2week = function date2week(dateArr) {
+    var weeks = ['日', '一', '二', '三', '四', '五', '六'];
+    var week = getDate(dateArr).getDay();
+    return (weeks[((nt_1 = (week), null == nt_1 ? undefined : 'number' === typeof nt_1 ? nt_1 : "" + nt_1))])
+};
+var isSelectedDate = function isSelectedDate(dateArr, date) {
+    return (dateArr.join('-') == date)
+};
+var isToday = function isToday(dateObj, day) {
+    var str = '';
+    var todayObj = dateObj.today;
+    if (dateObj.year === todayObj.year && dateObj.month === todayObj.month) {
+        if (day === todayObj.day) {
+            str = '今天'
+        } else if (day - todayObj.day === 1) {
+            str = '明天'
+        } else if (day - todayObj.day === 2) {
+            str = '后天'
+        }
+    };
+    return (str)
+};
+var isSaleDay = function isSaleDay(saleDayObj, dateArr) {
+    var now = getDate().getDate();
+    var saleDate = getDate().setDate(now + saleDayObj.saleDay - 1);
+    var curDate = getDate(dateArr.join('/'));
+    return (curDate > saleDate)
+};
+var isSubscribeDate = function isSubscribeDate(saleDayObj, dateArr) {
+    var now = getDate().getDate();
+    var subscribeDate = getDate().setDate(now + saleDayObj.saleDay + saleDayObj.subscribeDay - 1);
+    var curDate = getDate(dateArr.join('/'));
+    return (curDate < subscribeDate)
+};
+module.exports = ({
+    addZero: addZero,
+    isWeekend: isWeekend,
+    isFestival: isFestival,
+    date2week: date2week,
+    isSelectedDate: isSelectedDate,
+    isToday: isToday,
+    isSaleDay: isSaleDay,
+    isSubscribeDate: isSubscribeDate,
+});

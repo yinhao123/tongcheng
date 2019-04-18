@@ -1,0 +1,467 @@
+.busDetail {
+    font-family: "Microsoft Yahei",sans-serif;
+    margin: 0 10px 0;
+    padding-top: 10px;
+}
+
+.block {
+    display: block;
+}
+
+.fbox {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.fbox-center {
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.flex1 {
+    -webkit-box-flex: 1;
+    flex: 1;
+}
+
+.top {
+    background: #fff;
+    border-radius: 5px;
+    font-size: 14px;
+    box-shadow: 0 3px 3px #e3e3e3;
+}
+
+.address {
+    background: #fff url(https://file.40017.cn/groundtraffic/bus/weixin/listDetail/adr-bg.png) no-repeat;
+    background-size: 100% auto;
+    padding: 10px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    color: #666;
+}
+
+.address:before {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: #fff url(https://file.40017.cn/groundtraffic/bus/weixin/listDetail/address.png) no-repeat;
+    background-size: 100% auto;
+    margin: 5px 10px 0 0;
+}
+
+.adr-info {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    text-align: left;
+}
+
+.address .adr-detail,.address .adr-tit {
+    width: 100%;
+    text-align: left;
+}
+
+.address .adr-tit {
+    font-size: 14px;
+}
+
+.address .adr-detail {
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+.address .openMap {
+    width: 40px;
+    height: 40px;
+    background: url(https://file.40017.cn/groundtraffic/bus/weixin/listDetail/icon-map.png) no-repeat;
+    background-size: 100% auto;
+    margin-top: 5px;
+}
+
+.start-time::before {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: url(https://file.40017.cn/groundtraffic/bus/weixin/listDetail/time.png) no-repeat;
+    background-size: 100% auto;
+    margin-right: 8px;
+}
+
+.start-time text {
+    font-size: 20px;
+}
+
+.bus-info {
+    background: -webkit-gradient(linear,right top,left top,from(#04a43f),to(#0eb67d));
+    background: -webkit-linear-gradient(right,#04a43f,#0eb67d);
+    background: linear-gradient(to left,#04a43f,#0eb67d);
+    box-shadow: 0 3px 3px #92c8b5;
+    border-radius: 5px;
+    color: #fff;
+    padding: 10px;
+}
+
+.station-name {
+    margin-top: 5px;
+}
+
+.station-name:before {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: url(https://file.40017.cn/groundtraffic/bus/weixin/listDetail/station.png) no-repeat;
+    background-size: 100% auto;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.packageBox {
+    background: #fff;
+    border-radius: 5px;
+    margin-top: 10px;
+    padding: 0 10px;
+}
+
+.item-list {
+    height: 80px;
+    border-top: 1px solid #e6e6e6;
+}
+
+.item-list:first-child {
+    border-top: 0 none;
+}
+
+.item-list .left {
+    padding-right: 20rpx;
+}
+
+.item-list .left .price {
+    font-size: 48rpx;
+    color: #ff6815;
+}
+
+.item-list .left .price text {
+    font-size: 12px;
+}
+
+.item-list .center .ser-price {
+    font-size: 16px;
+    color: #ff6815;
+}
+
+.item-list .center .litTxt {
+    font-size: 12px;
+}
+
+.item-list .ser-tips {
+    display: inline-block;
+    height: 16px;
+    background: -webkit-gradient(linear,right top,left top,from(#f63),to(#ff8933));
+    background: -webkit-linear-gradient(right,#f63,#ff8933);
+    background: linear-gradient(to left,#f63,#ff8933);
+    border-radius: 8px 8px 8px 0;
+    color: #fff;
+    font-size: 10px;
+    padding: 0 6px;
+    margin-left: 8px;
+}
+
+.item-list view {
+    font-size: 14px;
+    color: #999;
+}
+
+.item-list .text {
+    font-size: 28rpx;
+    color: #999;
+    display: block;
+}
+
+.item-list .text:after {
+    display: inline-block;
+    content: '';
+    border: 1px solid #999;
+    top: 50%;
+    width: 14rpx;
+    height: 14rpx;
+    transform: rotate(45deg);
+    border-width: 1rpx 1rpx 0 0;
+    margin-left: 5rpx;
+}
+
+.item-list .right {
+    width: 60px;
+}
+
+.item-list .right view {
+    width: 60px;
+    height: 36px;
+    line-height: 36px;
+    background: #09bb07;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.item-list .service {
+    width: 100%;
+    display: block;
+}
+
+.notice-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1001;
+    background: rgba(0,0,0,.9);
+}
+
+.notice-top .nmain {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 100px;
+    z-index: 1008612;
+    padding: 30px 15px 0;
+    line-height: 2;
+    color: #fff;
+    font-size: 14px;
+    text-align: justify;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    word-break: break-all;
+}
+
+.close {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    z-index: 1008612;
+}
+
+.close:before {
+    content: '';
+    height: 2px;
+    width: 40px;
+    background-color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -21px;
+    transform: rotate(-45deg);
+}
+
+.close::after {
+    content: '';
+    height: 2px;
+    width: 40px;
+    background-color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -21px;
+    transform: rotate(45deg);
+}
+
+.notice-top-in {
+    display: block;
+}
+
+.aglin-left {
+    text-align: left!important;
+    -webkit-box-align: left!important;
+    align-items: left!important;
+    -webkit-box-align: left!important;
+    align-items: left!important;
+}
+
+.map-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 10010;
+}
+
+.backbg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background-color: #000;
+    opacity: .6;
+}
+
+#map {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    left: 0;
+    top: 0;
+}
+
+.map-des {
+    position: absolute;
+    width: 100%;
+    height: 100px;
+    z-index: 100;
+    left: 0;
+    bottom: 0;
+    background: #fff;
+}
+
+.address-box {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 99999;
+}
+
+.address-box .address-text {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 50px;
+    background-color: #fff;
+    padding: 20px 0 3px;
+    z-index: 10099;
+}
+
+.address-box .address-btn {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 50px;
+    padding-top: 4px;
+    z-index: 99999;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    border-top: 1px solid #e4e4e4;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+
+.address-box .address-btn .btn-single {
+    -webkit-box-flex: 1;
+    flex: 1;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    box-sizing: border-box;
+    font-size: 16px;
+    color: #09bb07;
+    position: relative;
+}
+
+.address-box .address-btn .btn-single::after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 36px;
+    width: 1px;
+    background: #e4e4e4;
+    right: 0;
+    top: 2px;
+}
+
+.checkStation {
+    border-right: 1px solid #e4e4e4;
+}
+
+.address-box .first-line {
+    background: url(http://img1.40017.cn/touch/bus/wx_bus/station_logo.png) 15px center/32px 20px no-repeat;
+    font-size: 18px;
+    height: 20px;
+    line-height: 20px;
+    padding-left: 58px;
+    margin-bottom: 15px;
+}
+
+.address-box .sec-line {
+    padding: 0 14px;
+    font-size: 14px;
+    padding-bottom: 12px;
+    line-height: 1;
+}
+
+.address-box .add-line {
+    line-height: 1.3;
+    padding-bottom: 10px;
+    display: -webkit-box;
+    display: -webkit-flex;
+}
+
+.address-box .address-text text {
+    color: #666;
+    margin-right: 6px;
+}
+
+.cpsb-box {
+    margin: 5px 5px 10px;
+    padding: 15px 9px;
+    height: 65px;
+    box-sizing: border-box;
+    position: relative;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 2px #e0e0e0;
+}
+
+.cpsb-box::after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    border-left: 1px solid #bebebe;
+    border-top: 1px solid #bebebe;
+    transform: rotate(135deg);
+    position: absolute;
+    right: 12px;
+    top: 24px;
+}
+
+.zaban {
+    font-size: 16px;
+    height: 16px;
+    line-height: 16px;
+    overflow: hidden;
+    color: #333;
+}
+
+.zabans {
+    font-size: 12px;
+    height: 12px;
+    line-height: 12px;
+    color: #666;
+    margin-top: 6px;
+}
+
+@media screen and (max-width:320px) {
+    .item-list .left {
+        width: 50px;
+    }
+
+    .item-list .left .price {
+        font-size: 40rpx;
+    }
+
+    .item-list .text {
+        font-size: 24rpx;
+    }
+}

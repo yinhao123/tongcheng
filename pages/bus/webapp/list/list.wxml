@@ -1,0 +1,193 @@
+<form bindsubmit="formListBtn" reportSubmit="{{true}}">
+    <label>
+        <button formType="submit" hidden="{{true}}" type="primary"></button>
+        <view class="page-bus-list">
+            <view class="data-six-switcher flex_box flex_align_center">
+                <view bindtap="btnSelectDate" class="flex_1 date-item {{item.isSelected?'selected':''}} {{item.canSelect?'':'canSelect'}}" data-index="{{idx}}" wx:for="{{sixDayArrs}}" wx:for-index="idx" wx:key="idx">
+                    <view>{{item.weekend}}</view>
+                    <view>{{item.showDate}}</view>
+                </view>
+                <view bindtap="btnToCalendar" class="flex_1 date-item-all">
+                    <view>全部</view>
+                    <view>日期</view>
+                </view>
+            </view>
+            <scroll-view class="skeleton" wx:if="{{!busList.length&&loading}}">
+                <image mode="widthFix" src="https://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/skeleton.png" wx:for="{{[1,2,3,4,5,6,7,8,9,10]}}" wx:key="item"></image>
+            </scroll-view>
+            <scroll-view bindscroll="evListScroll" bindscrolltolower="evBusLower" class="bus-list box_bb" scrollTop="{{scrollTop}}" scrollY="true">
+                <view bindtap="showMsgTip" class="station-info" style="width:auto" wx:if="{{isHasStation&&recommendMsg}}">
+                    <view class="station-info-box">
+                        <view class="important-icon1"></view>
+                        <view class="important-text">{{recommendMsg}}</view>
+                    </view>
+                </view>
+                <view class="couponTips" wx:if="{{isShowDisInfo}}">
+                    <view class="ci_icon"></view>
+                    <view class="ci_notice">{{discountInfo}}</view>
+                    <view bindtap="btnCloseTips" class="close_tips"></view>
+                </view>
+                <view class="notice-box" wx:if="{{announceList.length}}">
+                    <view class="noticepic"></view>
+                    <swiper autoplay="true" circular="true" class="notice-box1" current="{{currentIndex}}" duration="500" interval="2000" vertical="true">
+                        <swiper-item wx:for="{{announceList}}" wx:key="item.title">
+                            <view bindtap="btnShowAnnounce" class="text-notice" data-src="{{item.templateId}}" data-title="{{item.announce}}">{{item.title}}</view>
+                        </swiper-item>
+                    </swiper>
+                </view>
+                <view bindtap="btnToBook" class="schlist new-border-b {{lists.canBooking===true?'booking':'disabled-click'}} {{isZheHang&&indexList>=2?'hide':''}}" data-indexlist="{{indexList}}" wx:for="{{busList}}" wx:for-index="indexList" wx:for-item="lists" wx:key="scheduleId">
+                    <view class="new-tworight" wx:if="{{lists.canBooking===true}}">
+                        <view class="single-tags flex_box" wx:if="{{lists.canBooking===true&&lists.preferential.preferentialMode==0}}">
+                            <view class="decline">{{lists.preferential.showInformation}}</view>
+                            <view class="decline-icon"></view>
+                        </view>
+                        <view class="single-tags flex_box" wx:elif="{{lists.canBooking===true&&lists.preferential.preferentialMode==1}}">
+                            <view class="decline">{{lists.preferential.backShowInformation}}</view>
+                            <view class="decline-icon"></view>
+                        </view>
+                        <block wx:elif="{{lists.canBooking===true&&lists.preferential.preferentialMode==2}}">
+                            <view class="single-tags flex_box">
+                                <view class="decline">{{lists.preferential.showInformation}}</view>
+                                <view class="decline-icon"></view>
+                            </view>
+                            <view class="single-tags flex_box">
+                                <view class="decline">{{lists.preferential.backShowInformation}}</view>
+                                <view class="decline-icon"></view>
+                            </view>
+                        </block>
+                    </view>
+                    <view class="schline flex_box flex_align_center">
+                        <block wx:if="{{lists.runningSchFlag==1}}">
+                            <view class="new-time new-time-liushui" wx:if="{{lists.runningStartTime&&lists.runningEndTime}}">
+                                <view class="new-time-start">{{lists.runningStartTime}}<text class="txt">首</text>
+                                </view>
+                                <view class="new-time-end">{{lists.runningEndTime}}<text class="txt">末</text>
+                                </view>
+                            </view>
+                            <view class="new-time" wx:elif="{{lists.runningStartTime&&!lists.runningEndTime}}">{{lists.runningStartTime}}<view class="new-watext">后乘车</view>
+                            </view>
+                            <view class="new-time" wx:elif="{{!lists.runningStartTime&&lists.runningEndTime}}">{{lists.runningEndTime}}<view class="new-watext">前乘车</view>
+                            </view>
+                            <view class="new-time" wx:else>{{lists.dptTime}}<view class="new-watext">前乘车</view>
+                            </view>
+                        </block>
+                        <view class="new-time" wx:else>{{lists.dptTime}}<view class="new-watext" wx:if="{{lists.runningSchFlag==1&&lists.bookingType==1}}">前乘车</view>
+                        </view>
+                        <view class="station-place flex_1 text-ellipsis">
+                            <view class="flex_box flex_align_center p-f-line">
+                                <view class="new-stname flex_box flex_align_center flex_1 text-ellipsis">
+                                    <view class="station-wrap text-ellipsis">{{lists.dptStation}}</view>
+                                    <text catchtap="openMap" class="openMap" data-index="{{indexList}}" wx:if="{{lists.dptStationInfo&&lists.dptStationInfo.Latitude&&lists.dptStationInfo.Longitude}}"></text>
+                                </view>
+                                <view class="new-price">
+                                    <text class="new-rmb">¥</text>{{lists.ticketPrice}}</view>
+                            </view>
+                            <view class="flex_box flex_align_center p-s-line">
+                                <view class="new-stname flex_box flex_align_center flex_1 text-ellipsis">
+                                    <view class="station-wrap text-ellipsis" wx:if="{{lists.isPassingStation==0}}">{{lists.arrStation}}</view>
+                                    <view class="station-wrap text-ellipsis" wx:else>{{lists.arrStation}}</view>
+                                </view>
+                                <view class="new-reduce">
+                                    <block wx:if="{{lists.ticketLeft>=0&&lists.bookingType==1}}">
+                                        <view class="tickleft" wx:if="{{lists.ticketLeft>=65||lists.ticketLeft==0}}">有票</view>
+                                        <view class="tickleft" wx:elif="{{lists.ticketLeft>0&&lists.ticketLeft<=5}}">余<text class="leftred yp-num">{{lists.ticketLeft}}</text>张</view>
+                                        <view class="tickleft" wx:else>余<text class="yp-num">{{lists.ticketLeft}}</text>张</view>
+                                    </block>
+                                    <view class="tickleft" wx:if="{{lists.bookingType==2}}">预约购票</view>
+                                    <view class="tickleft" wx:if="{{lists.bookingType==4}}">已发车</view>
+                                    <view class="tickleft" wx:elif="{{lists.bookingType==3}}">暂停网售</view>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="schline-two flex_box flex_align_center">
+                        <view catchtap="btnShowRunTime" class="new-seize" wx:if="{{lists.runTimeScope&&lists.runTimeScope.length>0}}">
+                            <view class="new-abtime">约{{lists.runTimeScopeTime}}小时<text></text>
+                            </view>
+                        </view>
+                        <view catchtap="btnShowRunTime" class="new-seize" wx:elif="{{!!lists.runTime&&lists.runTime>0}}">
+                            <view class="new-abtime">约{{lists.runTime}}小时<text></text>
+                            </view>
+                        </view>
+                        <view class="new-seize" wx:else></view>
+                        <view class="new-bustips flex_1 flex_box flex_align_center">
+                            <view class="tips-box flex_box flex_align_center" wx:if="{{lists.runningSchFlag==1&&lists.bookingType==1}}">
+                                <view class="new-guimg"></view>
+                                <view class="new-water">流水班</view>
+                            </view>
+                            <view class="tips-box flex_box flex_align_center" wx:if="{{lists.runningSchFlag!=1&&lists.bookingType==1&&lists.ExtraSchFlag!=1&&lists.canBooking&&lists.isPassingStation==0}}">
+                                <view class="new-guimg"></view>
+                                <view class="new-gutext">固定班</view>
+                            </view>
+                            <view class="tips-box flex_box flex_align_center new-add" wx:if="{{lists.runningSchFlag!=1&&lists.bookingType==1&&lists.ExtraSchFlag==1}}">
+                                <view class="new-addimg"></view>
+                                <view class="new-gutext new-addtext">加班车</view>
+                            </view>
+                            <view class="tips-box flex_box flex_align_center new-add" wx:if="{{lists.isPassingStation!=0&&lists.bookingType==1}}">
+                                <view class="new-addimg"></view>
+                                <view class="new-gutext new-addtext">过路车</view>
+                            </view>
+                            <view class="yytime-box" wx:if="{{lists.bookingType==2&&lists.regularTime}}">
+                                <view class="new-gutext">预计{{lists.regularTime[5]}}{{lists.regularTime[6]}}{{lists.regularTime[7]}}{{lists.regularTime[8]}}{{lists.regularTime[9]}}{{lists.regularTime[10]}}为您出票</view>
+                            </view>
+                            <view class="new-gutext no-book">
+                                <block wx:if="{{lists.bookingType==2&&lists.regularTime&&lists.scheduleTicketType||lists.bookingType==1&&lists.scheduleTicketType}}">
+                                    <block wx:if="{{lists.scheduleTicketType==1}}">儿童票</block>
+                                    <block wx:elif="{{lists.scheduleTicketType==2}}">学生票</block>
+                                    <block wx:elif="{{lists.scheduleTicketType==3}}">军人票</block>
+                                    <block wx:elif="{{lists.scheduleTicketType==4}}">残疾票</block>
+                                    <block wx:elif="{{lists.scheduleTicketType==5}}">老年票</block>
+                                    <block wx:elif="{{lists.scheduleTicketType==6}}">成人票 | 儿童票</block>
+                                    <block wx:else></block>
+                                </block>
+                                <block wx:if="{{(lists.bookingType==4||lists.bookingType==3)&&!list.canBooking}}">该班次已不可订</block>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+                <view bindtap="showMore" class="open-more" wx:if="{{isZheHang}}">查看更多</view>
+                <view class="no_more c" wx:if="{{busList.length&&isShowNoMore}}">没有更多车次啦</view>
+                <view class="no-result-rcd" wx:if="{{!busList.length&&isShowNoResult}}">
+                    <image src="https://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/no-result.png?v=20180501"></image>
+                    <view class="normal-texts">{{noResultTxt[0]}}</view>
+                    <view class="normal-texts">{{noResultTxt[1]}}</view>
+                    <view bindtap="btnToIndex" class="goto">更换其他线路</view>
+                </view>
+            </scroll-view>
+        </view>
+        <block wx:if="{{busList.length}}">
+            <view class="ul-wrap {{isShowFilter?'ease-Up':'ease-Down none'}}">
+                <view class="selected-bar flex_box">
+                    <view bindtap="btnCancel" class="btn flex_1 selected-cancel">取消</view>
+                    <view bindtap="btnSure" class="btn flex_1 r selected-sure">确定</view>
+                </view>
+                <scroll-view class="new-popbox" scrollTop="{{filterTop}}" scrollY="true">
+                    <view bindtap="btnSelecteOption" class="pop-li {{item.selected?'checked':''}}" data-idx="{{index}}" wx:for="{{renderList}}" wx:key="item.id">{{item.name}}</view>
+                </scroll-view>
+            </view>
+            <view class="filterStation">
+                <view class="nav-box flex_box">
+                    <view bindtap="btnActive" class="nav-li flex_1 {{'departureStation'==activeCat?'active':''}} {{fromStation?'checked active':''}}" data-cat="departureStation">出发车站</view>
+                    <view bindtap="btnActive" class="nav-li flex_1 {{'arrivalStation'==activeCat?'active':''}} {{toStation?'checked active':''}}" data-cat="arrivalStation">到达车站</view>
+                    <view bindtap="btnActive" class="nav-li flex_1 {{'dptTimeSpan'==activeCat?'active':''}} {{timeSpan?'checked active':''}}" data-cat="dptTimeSpan">发车时段</view>
+                </view>
+                <view class="iphoneX"></view>
+            </view>
+        </block>
+        <view bindtap="btnHideMask" class="mask" wx:if="{{isShowMask}}"></view>
+        <view class="notice-content" wx:if="{{isShowNotice}}">
+            <view class="notice-content-inner">
+                <view class="notice-content-innert">
+                    <image src="{{announceImg}}"></image>
+                </view>
+                <view class="notice-content-innerm">
+                    <view class="notice-content-innermm">{{curText}}</view>
+                </view>
+                <view bindtap="btnCloseAnnouncePop" class="notice-sure">确定</view>
+            </view>
+        </view>
+        <view bindtap="btnCloseRunning" class="running-time-mask" wx:if="{{showRunning}}">
+            <view class="rt-content">该时间，仅供参考。可能受堵车、运行线路等状况影响，请以实际行车时长为准!</view>
+        </view>
+    </label>
+</form>

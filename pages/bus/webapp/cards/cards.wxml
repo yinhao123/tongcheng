@@ -1,0 +1,79 @@
+<view class="c-wrapper">
+    <view class="tab-wrap flex-box">
+        <view bindtap="useShow" class="flex1 {{isUseShow?'selected':''}}">可用券(<text>{{canUseNumber}}</text>)</view>
+        <view bindtap="rejectShow" class="flex1 {{isUnUseShow?'selected':''}}" wx:if="{{pageDate.cannotUseNumber>0}}">不可用券(<text>{{cannotUseNumber}}</text>)</view>
+    </view>
+    <view class="card-box">
+        <view class="can-use {{isUnUseShow?'none':''}}" id="useWrap">
+            <block wx:if="{{pageDate.canUseNumber>0}}">
+                <view bindtap="chooseCards" class="can-choose card-item flex-box {{list.isCanUse?'':'none'}} {{list.hasSelected=='hasSelected'?'selected':''}}" data-code="{{list.code}}" data-index="{{indexList}}" wx:for="{{pageDate.canUseList}}" wx:for-index="indexList" wx:for-item="list">
+                    <view class="css-circle-wrap">
+                        <view class="circle" wx:for="{{circle}}"></view>
+                    </view>
+                    <view class="price-wrap">
+                        <view class="price-box red-text">
+                            <text>¥</text>{{list.showPrice}}</view>
+                    </view>
+                    <view class="intro-wrap">
+                        <view class="intro">{{list.desc}}</view>
+                        <view class="expire">{{list.validity}}</view>
+                        <view class="chose"></view>
+                    </view>
+                </view>
+                <view class="no-more flex-box">
+                    <view class="center-text">没有更多优惠券了</view>
+                </view>
+            </block>
+            <view class="without-bg" wx:else>
+                <view class="with-out-img">
+                    <image mode="aspectFit" src="http://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/icon-nocards.png"></image>
+                    <view class="tipsTitle">很遗憾</view>
+                    <view class="tipsDesc">您暂无可以使用的优惠券</view>
+                </view>
+            </view>
+        </view>
+        <view class="cannot-use {{isUseShow?'none':''}}" id="rejectWrap">
+            <block wx:if="{{pageDate.cannotUseNumber>0}}">
+                <view class="card-item flex-box reject-use {{list.isCanUse?'none':''}}" data-code="{{list.code}}" data-index="{{indexList}}" wx:for="{{pageDate.cannotUseList}}" wx:for-index="indexList" wx:for-item="list">
+                    <view class="css-circle-wrap">
+                        <view class="circle" wx:for="{{circle}}"></view>
+                    </view>
+                    <view class="price-wrap">
+                        <view class="price-box">
+                            <text>¥</text>{{list.showPrice}}</view>
+                    </view>
+                    <view class="intro-wrap">
+                        <view class="intro">{{list.desc}}</view>
+                        <view class="expire">{{list.validity}}</view>
+                        <view class="state {{list.reason}}"></view>
+                    </view>
+                </view>
+                <view class="card-item flex-box reject-use {{list.isCanUse?'none':''}}" wx:for="{{pageDate.canUseList}}" wx:for-index="indexList" wx:for-item="list">
+                    <view class="css-circle-wrap">
+                        <view class="circle" wx:for="{{circle}}"></view>
+                    </view>
+                    <view class="price-wrap">
+                        <view class="price-box">
+                            <text>¥</text>{{list.showPrice}}</view>
+                    </view>
+                    <view class="intro-wrap">
+                        <view class="intro">{{list.desc}}</view>
+                        <view class="expire">{{list.validity}}</view>
+                        <view class="state {{list.reason}}"></view>
+                    </view>
+                </view>
+                <view class="no-more flex-box">
+                    <view class="center-text">没有更多优惠券了</view>
+                </view>
+            </block>
+            <view class="without-bg" wx:else>
+                <view class="with-out-img">
+                    <img src="http://img1.40017.cn/touch/bus/wx_bus/ticket.jpg"></img>
+                    <view>暂无可用优惠卡券</view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view bindtap="submitBtn" class="submit-btn btn-color">确定</view>
+    <view class="pop eitherOrAct" wx:if="{{showTips}}">立减活动和优惠券不能同时使用</view>
+</view>

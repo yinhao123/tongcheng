@@ -1,0 +1,192 @@
+<view class="main tui-gai-box suixin-wrap">
+    <view bindtap="btnSelect" class="suixin-box selected" data-key="tui">
+        <view class="top-title gai-title">退票</view>
+        <view class="book-detail" id="bookDetail">
+            <view class="normal-line new-fbox">
+                <view class="normal-key">退票时间：</view>
+                <text class="normal-value" id="refundTime" wx:if="{{refundTimeHasDate}}">发车前<text class="red">{{refundTime}}</text>
+                </text>
+                <text class="normal-value" id="refundTime" wx:else>发车前，具体以车站公布时间为准</text>
+            </view>
+            <view class="normal-line new-fbox">
+                <view class="normal-key">退票方式：</view>
+                <text class="normal-value" id="refundWay" wx:if="{{(busInfo.isRefundChange||busInfo.isRefundOrder)&&busInfo.isClickRfd||busInfo.isRefund}}">支持<text class="red">在线退票</text>（我的-汽车票订单详情-退票）</text>
+                <text class="normal-value" id="refundWay" wx:else>该车次暂不支持在线退票，请前往发车站窗口退票</text>
+            </view>
+            <view class="normal-line new-fbox">
+                <view class="normal-key">手续费用：</view>
+                <view class="normal-value" id="tuiFee" wx:if="{{!busInfo.isClickRfd&&busInfo.ExtraSchFlag||!refundTxt}}">
+                    <block wx:if="{{refundTicketStr.length>0}}" wx:for="{{refundTicketStr}}">
+                        <block wx:if="{{index!=0}}">发车前<text class="red">{{item.validFrom}}</text>-<text class="red">{{item.validTo}}</text>内收取票面价的<text class="red">{{item.refundFeeRate}}%</text>。</block>
+                        <block wx:else>发车前<text class="red">{{item.validFrom}}</text>外收取票面价的<text class="red">{{item.refundFeeRate}}%</text>{{refundTicketStr.length==1?'。':'，'}}</block>
+                    </block>具体请以发车车站实际情况为准</view>
+                <view class="normal-value" id="tuiFee" wx:else>发车前{{startStr}}{{endStr}}退票收取票面价<text class="red">{{coefficient}}%</text>；</view>
+            </view>
+            <view class="normal-line space-box" wx:if="{{(!busInfo.isClickRfd&&busInfo.ExtraSchFlag||!refundTxt)&&shortrefundTicketStr.length>0}}">
+                <view class="new-fbox tp-line">
+                    <block wx:if="{{shortrefundTicketStr.length>0}}" wx:for="{{shortrefundTicketStr}}" wx:for-index="itemI" wx:key="itemI">
+                        <view class="space-one space-first" wx:if="{{itemI==0&&!!item.validTo}}">
+                            <view class="flex1 space-bt-text {{shortrefundTicketStr.length==2?'space-le-bt-text':''}}">{{item.validTo}}</view>
+                        </view>
+                        <view class="flex1 space-one" wx:if="{{!!item.validFrom&&item.refundFeeRate}}">
+                            <view class="space-tp-txt">收取票价<text>{{item.refundFeeRate}}%</text>
+                            </view>
+                            <view class="flex1 space-bt-text">前{{item.validFrom}}</view>
+                        </view>
+                        <view class="space-one {{!!item.refundFeeRate?' ':'short-width'}}{{shortrefundTicketStr.length==1&&!item.validFrom||!!item.refundFeeRate&&shortrefundTicketStr[0].validFrom?'flex1':''}}" wx:if="{{shortrefundTicketStr.length==1&&!!shortrefundTicketStr[0].validFrom||itemI+1==shortrefundTicketStr.length||itemI+1==refundTicketStr.length&&!item.validFrom}}">
+                            <view class="space-tp-txt" wx:if="{{!!item.refundFeeRate&&!shortrefundTicketStr[0].validFrom&&shortrefundTicketStr.length==1}}">收取票价<text>{{item.refundFeeRate}}%</text>
+                            </view>
+                            <view class="space-tp-txt" wx:elif="{{!!item.refundFeeRate&&!shortrefundTicketStr[1].validFrom&&shortrefundTicketStr.length==2}}">收取票价<text>{{item.refundFeeRate}}%</text>
+                            </view>
+                            <view class="flex1 space-bt-text">发车时间</view>
+                        </view>
+                        <view class="space-one space-dot-one short-width2" wx:if="{{itemI+1==shortrefundTicketStr.length}}">
+                            <view class="space-tp-txt">发车后不予退票</view>
+                        </view>
+                    </block>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="suixin-tui new-fbox">
+        <view class="i-itaic">i</view>
+        <view class="suixin-tui-select">
+            <view>退票手续费为车站统一收取，平台仅为代收</view>
+            <view bindtap="showBuy" wx:if="{{busInfo.refundSuixin&&busInfo.isRefund}}">
+                <block wx:if="{{!isBuySuixin}}">嫌手续费比例太高? 查看省钱攻略 ></block>
+                <block wx:else>已享受最低比例退票手续费服务，退票时可节省￥{{maxSavePrice}}元 ></block>
+            </view>
+        </view>
+    </view>
+    <view bindtap="btnSelect" class="suixin-box selected" data-key="gai">
+        <view class="top-title qian-title">改签</view>
+        <view class="book-detail" id="bookCDetail">
+            <view class="normal-line new-fbox">
+                <text class="normal-key">改签时间：</text>
+                <text class="normal-value" id="gaiTime">{{gaiTime}}</text>
+            </view>
+            <view class="normal-line new-fbox">
+                <text class="normal-key">改签方式：</text>
+                <text class="normal-value" id="gai_way" wx:if="{{busInfo.isClickRfd&&busInfo.isRefundChange}}">
+                    <text class="red">支持在线改签</text>（我的-汽车票订单详情-改签）</text>
+                <text class="normal-value" id="gai_way" wx:else>至<text class="red">发车站窗口</text>发起改签</text>
+            </view>
+            <view class="normal-line new-fbox">
+                <text class="normal-key">手续费用：</text>
+                <text class="normal-value red">不收取，具体以车站实际公示为准</text>
+            </view>
+        </view>
+    </view>
+    <view bindtap="btnSelect" class="suixin-box selected" data-key="qu">
+        <view class="top-title tui-title">取票</view>
+        <view class="book-detail tui-detail">
+            <block wx:if="{{busInfo.dptStationInfo}}">
+                <view class="normal-line new-fbox">
+                    <view class="normal-key">取票方式：</view>
+                    <text class="normal-value" wx:if="{{busInfo.dptStationInfo&&busInfo.dptStationInfo.ticketDelivery=='身份证'}}">凭<text class="red">{{busInfo.dptStationInfo.ticketDelivery}}</text>取票乘车</text>
+                    <text class="normal-value" wx:else>凭短信中<text class="red">{{busInfo.supplierId&&busInfo.supplierId==37?'取票验证码':'取票号、取票密码'}}及身份证</text>等信息取票</text>
+                </view>
+                <view class="normal-line new-fbox" wx:if="{{busInfo.dptStationInfo&&busInfo.dptStationInfo.takeTicketStartTime&&busInfo.dptStationInfo.takeTicketEndTime}}">
+                    <text class="normal-key">取票时间：</text>
+                    <text class="normal-value">
+                        <text class="red">{{busInfo.dptStationInfo.takeTicketStartTime+'-'+busInfo.dptStationInfo.takeTicketEndTime}}</text>
+                    </text>
+                </view>
+                <view class="normal-line new-fbox">
+                    <view class="normal-key">取票地点：</view>
+                    <view class="normal-value">
+                        <text class="red">{{busInfo.dptStationInfo.takeTicketAddress?busInfo.dptStationInfo.takeTicketAddress:'自助取票机或取票窗口'}}</text>
+                    </view>
+                </view>
+                <view class="normal-line new-fbox">
+                    <view class="normal-key">发车站地址：</view>
+                    <view class="normal-value">{{busInfo.dptStationInfo.StationAddress?busInfo.dptStationInfo.StationAddress:busInfo.dptStation}}</view>
+                </view>
+                <view class="normal-line new-fbox" wx:if="{{busInfo.dptStationInfo.ContactPhoneNo}}">
+                    <view class="normal-key">发车站电话：</view>
+                    <view class="normal-value">{{busInfo.dptStationInfo.ContactPhoneNo}}</view>
+                </view>
+            </block>
+            <block wx:else>
+                <view class="normal-line new-fbox">
+                    <view class="normal-key">取票方式：</view>
+                    <view class="normal-value">
+                        <text class="red">取票号+取票密码</text>（具体请见取票短信）</view>
+                </view>
+                <view class="normal-line new-fbox">
+                    <view class="normal-key">取票地点：</view>
+                    <view class="normal-value">
+                        <view class="red">自助取票机或取票窗口</view>
+                    </view>
+                </view>
+                <view class="normal-line new-fbox">
+                    <view class="normal-key">发车站地址：</view>
+                    <view class="normal-value">{{busInfo.dptStation}}</view>
+                </view>
+            </block>
+        </view>
+    </view>
+    <view bindtap="btnSelect" class="suixin-box" data-key="other" id="qiWrap" wx:if="{{isShowOhter}}">
+        <view class="top-title qi-title">其他</view>
+        <view class="book-detail">
+            <view class="special-line" wx:if="{{busInfo.ExtraSchFlag==1&&busInfo.bookingType}}">
+                <text class="normal-key">加班车：</text>该班次为当客流较大时车站临时加开的班次，如需退票需至<text class="red">车站窗口</text>办理。</view>
+            <view class="special-line" wx:if="{{busInfo.runningSchFlag==1}}">
+                <text class="normal-key">流水班：</text>该班次为流水发车，购票后在车站工作时间内均可取票乘车。</view>
+            <view class="special-line" wx:if="{{busInfo.isPassingStation==1}}">
+                <text class="normal-key">过路车：</text>该班次的到达站仅为途中经停站，过路车可能存在<text class="red">不进站</text>的情况。</view>
+            <view class="special-line" wx:if="{{busInfo.bookingType==2}}">
+                <text class="normal-key">预约：</text>该班次暂未到达预售期，可提前支付订单预约车票，待车站放票后第一时间为您出票<text class="normal-key">出票时间：</text>预计<text class="red">{{busInfo.regularTimeFormat}}</text>
+                <text class="normal-key">票价：</text>暂时上浮<text class="red">{{RiseRatio?RiseRatio+'%':'30%'}}</text>，出票成功后退还差价'</view>
+        </view>
+    </view>
+    <view class="suixin-box min-box">
+        <view bindtap="btnToggleNotice" class="arrows {{isShowNotice?'bt':''}}">详细购票须知<text class="arr-de"></text>
+        </view>
+        <view class="notice-wrap new-bmain" wx:if="{{isShowNotice}}">
+            <view class="{{item.length<8?'sec-title':''}}" wx:for="{{notice}}" wx:key="*this">{{item}}</view>
+        </view>
+    </view>
+    <view class="notice-top {{isShowRefundPop?'notice-top-in':''}}">
+        <view class="nmain">
+            <view class="nmain-tit"></view>
+            <view wx:for="{{busInfo.refundInfo}}" wx:key="*this">{{item}}</view>
+        </view>
+        <view bindtap="btnRefundPop" class="close"></view>
+    </view>
+</view>
+<view bindtap="closePop" class="suixin-pop-cover" data-id="cover" hidden="{{!isShowPopBuy}}">
+    <view catchtap="closePop" class="suixin-pop" data-id="inner">
+        <view catchtap="closePop" class="close-pop" data-id="cover">×</view>
+        <view class="suixin-pop-tp">
+            <view class="suixin-title">随心退<text catchtap="btnRefundPop" class="tui-msg"></text>
+            </view>
+            <view class="suixin-des">随心退是我们平台推出的减少您退票损失的服务，如您未来可能退票，建议现在购买</view>
+            <view class="suixin-show new-fbox">
+                <view class="suixin-left">不购买退票手续费</view>
+                <view class="suixin-right t-r flex1">
+                    <text class="grey-text">￥{{busInfo.ticketPrice}}×{{refundFeeRateOld}}%=</text>
+                    <text class="c-3">{{saveOld}}/张</text>
+                </view>
+            </view>
+            <view class="suixin-show new-fbox">
+                <view class="suixin-left flex1">购买后退票手续费</view>
+                <view class="suixin-right t-r">
+                    <text class="grey-text">￥{{busInfo.ticketPrice}}×{{refundFeeRateNew}}%=</text>
+                    <text class="c-3">{{saveNew}}/张</text>
+                </view>
+            </view>
+            <view class="suixin-show new-fbox">
+                <view class="suixin-left flex1">最多为您节省金额</view>
+                <view class="suixin-right t-r">
+                    <text class="save-price">￥{{maxSavePrice}}/张</text>
+                </view>
+            </view>
+        </view>
+        <view catchtap="btnChooseRfd" class="suixin-buy">
+            <block wx:if="{{!isBuySuixin}}">立即购买</block>
+            <block wx:else>取消购买</block>
+            <text class="price-detail">￥{{busInfo.refundPice}}/份</text>
+        </view>
+    </view>
+</view>

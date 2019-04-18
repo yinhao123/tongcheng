@@ -1,0 +1,54 @@
+<view class="search-box flex_box">
+    <view class="search-content flex_1">
+        <icon class="search-icon" size="18" type="search"></icon>
+        <input bindblur="fnBlurInput" bindfocus="fnFocusInput" bindinput="fnInput" class="search" focus="{{focus}}" placeholder="北京/beijing" placeholderClass="" value="{{inputVal}}"></input>
+        <icon catchtap="fnClearInput" class="clear-icon" hidden="{{!showClear}}" size="18" type="clear"></icon>
+    </view>
+    <view catchtap="fnCancle" class="btn-cancel" hidden="{{!focus&&!inputVal}}">取消</view>
+</view>
+<scroll-view scrollWithAnimation class="city-content" scrollTop="{{scrollTop}}" scrollY="true">
+    <blcok wx:if="{{!inputVal}}">
+        <view class="history-box" wx:if="{{historyList.length}}">
+            <view class="title">历史搜索</view>
+            <view class="flex_box flex_wrap">
+                <view bindtap="fnSelectedCity" class="city-item c {{item.showName===selectedCity&&'selected'}}" data-index="{{index}}" data-name="historyList" wx:for="{{historyList}}" wx:key="index">{{item.showName}}</view>
+            </view>
+        </view>
+        <view class="hotcity-box" wx:if="{{hotCityList.length}}">
+            <view class="title">热门城市</view>
+            <view class="flex_box flex_wrap">
+                <view bindtap="fnSelectedCity" class="city-item c {{item.showName===selectedCity&&'selected'}}" data-index="{{index}}" data-name="hotCityList" wx:for="{{hotCityList}}" wx:key="index">{{item.showName}}</view>
+            </view>
+        </view>
+        <view class="letter-box">
+            <view class="title">更多城市</view>
+            <view class="flex_box flex_wrap" id="letter">
+                <view bindtap="getLetter" class="letter c {{selectedLetter===item?'selected':''}}" data-letter="{{item}}" wx:for="{{letters}}" wx:key="index">{{item}}</view>
+            </view>
+            <view class="letter-city-list">
+                <view bindtap="fnSelectedCity" class="letter-city-item flex_box" data-index="{{index}}" data-name="letterList" wx:if="{{letterList.length}}" wx:for="{{letterList}}" wx:key="index">
+                    <view class="flex_1">{{item.showName}}</view>
+                    <view class="pname">{{item.parentName}}</view>
+                </view>
+                <view class="no-letter-data" wx:if="{{!letterList.length&&isLetterClick}}">暂无符合条件的数据信息</view>
+            </view>
+        </view>
+    </blcok>
+    <scroll-view scrollY class="auto-complete" style="height:94vh" wx:else>
+        <block wx:for="{{searchList}}" wx:for-index="findex" wx:for-item="fitem" wx:key="findex">
+            <view bindtap="fnSelectedCity" class="city-list flex_box" data-index="{{findex}}" data-name="searchList">
+                <view class="flex_1">
+                    <text class="{{item==inputVal?'red':''}}" wx:for="{{util.getInt(fitem.showName,inputVal)}}" wx:key="*this">{{item}}</text>
+                </view>
+                <view class="city-tip">{{fitem.pShowName}}</view>
+            </view>
+            <view bindtap="fnSelectedCity" class="city-list flex_box" data-index="{{findex}}" data-name="searchList" data-sindex="{{sindex}}" data-sname="stations" style="margin-left:20rpx" wx:if="{{fitem.stations.length>0}}" wx:for="{{fitem.stations}}" wx:for-index="sindex" wx:for-item="sitem" wx:key="sindex">
+                <view class="flex_1">
+                    <text class="{{item==inputVal?'red':''}}" wx:for="{{util.getInt(sitem.stationName,inputVal)}}" wx:key="index">{{item}}</text>
+                </view>
+                <view class="city-tip">{{sitem.pShowName}}</view>
+            </view>
+        </block>
+    </scroll-view>
+</scroll-view>
+<wxs module="util" src="city.wxs" />

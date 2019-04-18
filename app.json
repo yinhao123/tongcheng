@@ -1,0 +1,61 @@
+{
+    "pages": [
+        "pages/index/index",
+        "pages/calendar/calendar",
+        "pages/orderList/orderList",
+        "pages/city/city",
+        "pages/getAuthInfo/getAuthInfo",
+        "pages/webview/webview",
+        "pages/bus/webapp/list/list",
+        "pages/bus/webapp/busDetail/busDetail",
+        "pages/bus/webapp/booking/booking",
+        "pages/bus/webapp/insurance/insurance",
+        "pages/bus/webapp/booktips/booktips",
+        "pages/bus/webapp/concatlist/concatlist",
+        "pages/bus/webapp/orderdetail/orderdetail",
+        "pages/bus/webapp/notices/notices",
+        "pages/bus/webapp/cards/cards",
+        "pages/bus/webapp/busIDCard/busIDCard",
+        "pages/bus/webapp/senddoor/senddoor",
+        "pages/bus/webapp/valueadd/valueadd",
+        "pages/bus/webapp/success/success",
+        "pages/userAgreement/userAgreement",
+        "pages/aboutTC/aboutTC",
+        "pages/serviceList/serviceList",
+        "pages/businessLicense/businessLicense"
+    ],
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTitleText": "汽车票预定",
+        "navigationBarTextStyle": "black"
+    },
+    "tabBar": {
+        "color": "#666",
+        "selectedColor": "#33cc66",
+        "borderStyle": "black",
+        "backgroundColor": "#ffffff",
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "text": "首页",
+                "iconPath": "images/bus.png",
+                "selectedIconPath": "images/bus-active.png"
+            },
+            {
+                "pagePath": "pages/orderList/orderList",
+                "text": "我的",
+                "iconPath": "images/order.png",
+                "selectedIconPath": "images/order-active.png"
+            }
+        ],
+        "position": "bottom"
+    },
+    "networkTimeout": {
+        "request": 40000,
+        "downloadFile": 30000
+    },
+    "navigateToMiniProgramAppIdList": [
+        "wx381a393cd6daf202"
+    ]
+}

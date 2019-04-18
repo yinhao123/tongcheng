@@ -1,0 +1,8 @@
+<view class="container">
+    <view class="p" wx:for="{{curData.content}}">{{item}}</view>
+    <view class="flex_box btn-box c">
+        <!-- <view bindtap="btnService" class="flex_1">服务协议</view> -->
+        <!-- <view bindtap="btnBusinessLicense" class="flex_1">营业执照</view> -->
+        <view bindtap="btnLogout" class="flex_1">注销账户</view>
+    </view>
+</view>

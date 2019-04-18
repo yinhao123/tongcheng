@@ -1,0 +1,3 @@
+<view class="container">
+    <view class="p" wx:for="{{curData.content}}">{{item}}</view>
+</view>

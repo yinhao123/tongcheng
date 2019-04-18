@@ -1,0 +1,26 @@
+<view class="sendpage">
+    <view id="sendMain">
+        <view class="slist new-fbox">
+            <label class="label">姓名</label>
+            <input bindblur="inputName" class="text new-flex" maxlength="15" placeholder="请输入收件人姓名" type="text" value="{{addName}}"></input>
+        </view>
+        <view class="slist new-fbox">
+            <view class="label" for="sendTel">手机号码</view>
+            <input bindblur="blurPhone" bindinput="inputPhoneNum" class="text new-flex" focus="{{phoneFocus}}" maxlength="13" placeholder="请输入收件人手机号码" type="number" value="{{phoneSpace}}"></input>
+        </view>
+        <view class="slist arrow new-fbox">
+            <view class="label" for="sendArea">所在地区</view>
+            <picker bindchange="bindRegionChange" class="new-flex region-box" customItem="{{customItem}}" mode="region" value="{{region}}">
+                <view class="text region-text empty-text" wx:if="{{isEmptyRegion}}">请选择所在地区</view>
+                <view class="text region-text" wx:elif="{{!isEmptyRegion}}">{{region[0]}}，{{region[1]}}，{{region[2]}}</view>
+            </picker>
+        </view>
+        <view class="slist new-fbox">
+            <view class="label">详细地址</view>
+            <input bindblur="blurAddress" bindinput="inputAddress" class="text new-flex" placeholder="请填写省市信息及详细地址" type="text" value="{{addressDetail}}"></input>
+        </view>
+    </view>
+    <button bindtap="submitAddress" class="submit">确定</button>
+    <view class="sendtips">寄送至发车站所在城市预计1-2日送达，寄送至发车站所在城市以外预计3日内送达</view>
+</view>
+<view class="select-city" id="cistListBox"></view>

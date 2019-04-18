@@ -1,0 +1,3 @@
+<view class="container">
+    <calendar bindcalendar="getCalendar" saleDayObj="{{saleDay}}" selectedDay="{{selectedDay}}"></calendar>
+</view>

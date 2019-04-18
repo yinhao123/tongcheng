@@ -1,0 +1,1148 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family:iconfont;src:url(https://file.40017.cn/groundtraffic/bus/common/iconfont/iconfonts.eot?v=20180719);src:url(https://file.40017.cn/groundtraffic/bus/common/iconfont/iconfonts.eot?v=20180719) format("embedded-opentype"),url(https://file.40017.cn/groundtraffic/bus/common/iconfont/iconfonts.ttf?v=20180719) format("truetype"),url(https://file.40017.cn/groundtraffic/bus/common/iconfont/iconfonts.svg?v=20180719) format("svg");
+}
+
+.iconf {
+    font-family: iconfont!important;
+}
+
+.l {
+    text-align: left;
+}
+
+.c {
+    text-align: center;
+}
+
+.r {
+    text-align: right;
+}
+
+.box_bb {
+    box-sizing: border-box;
+}
+
+.box_cb {
+    box-sizing: content-box;
+}
+
+.flex_box {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.flex_1 {
+    -webkit-box-flex: 1;
+    flex: 1;
+}
+
+.flex_align_center {
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+page {
+    background: #efeff4;
+    font-family: 'Microsoft Yahei';
+    height: 100%;
+}
+
+.page-bus-list {
+    height: 100%;
+}
+
+.data-six-switcher {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100rpx;
+    width: 100%;
+    background-color: #1ec983;
+    color: #fff;
+    z-index: 2;
+    padding-left: 18rpx;
+    background-image: -webkit-gradient(linear,right top,left top,from(#05c6a4),to(#3c6)),-webkit-gradient(linear,left top,left bottom,from(#fff),to(#fff));
+    background-image: -webkit-linear-gradient(right,#05c6a4 0,#3c6 100%),-webkit-linear-gradient(#fff,#fff);
+    background-image: -o-linear-gradient(right,#05c6a4 0,#3c6 100%),-o-linear-gradient(#fff,#fff);
+    background-image: linear-gradient(-90deg,#05c6a4 0,#3c6 100%),linear-gradient(#fff,#fff);
+    background-blend-mode: normal,normal;
+    box-shadow: 0 22rpx 22rpx -20rpx rgba(51,51,51,.3) inset;
+    overflow: hidden;
+}
+
+.date-item {
+    height: 100rpx;
+    font-size: 28rpx;
+    color: #fff;
+}
+
+.date-item-all {
+    height: 100rpx;
+    color: #fff;
+    font-size: 24rpx;
+    box-shadow: -2rpx 0 21rpx #12ca96;
+    background-color: rgba(5,186,135,.9);
+}
+
+.date-item.selected {
+    background-color: #fff;
+    color: #33cc62;
+    box-shadow: 0 22rpx 22rpx -20rpx rgba(51,51,51,.3) inset;
+}
+
+.date-item.selected view:nth-child(1),.date-item.selected view:nth-child(6),.date-item.selected:nth-child(1) view:nth-child(1),.date-item.selected:nth-child(1) view:nth-child(2),.date-item.selected:nth-child(6) view:nth-child(1),.date-item.selected:nth-child(6) view:nth-child(2) {
+    text-align: center;
+    text-indent: 0;
+}
+
+.date-item.canSelect {
+    background-color: #d9d9d9;
+    color: #fff;
+}
+
+.date-item:nth-child(6),.date-item:nth-child(6) view:nth-child(2) {
+    text-align: right;
+}
+
+.date-item:nth-child(6) view:nth-child(1) {
+    text-indent: 30rpx;
+}
+
+.date-item:nth-child(1),.date-item:nth-child(1) view:nth-child(2) {
+    text-align: left;
+}
+
+.date-item:nth-child(1) view:nth-child(1) {
+    text-align: left;
+    text-indent: 20rpx;
+}
+
+.date-item view,.date-item-all view {
+    text-align: center;
+    height: 40rpx;
+    line-height: 40rpx;
+}
+
+.date-item view:nth-child(1) {
+    font-size: 24rpx;
+    margin-top: 10rpx;
+}
+
+.date-item view:nth-child(2) {
+    font-weight: 500;
+}
+
+.date-item-all view:nth-child(1) {
+    margin-top: 10rpx;
+}
+
+.couponTips {
+    height: 40px;
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+    border-bottom: 1px solid #ececec;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.couponTips .ci_icon {
+    width: 26px;
+    height: 40px;
+    background: url(//img1.40017.cn/touch/bus/wx_bus/coupon_icon.png) no-repeat center center;
+    background-size: 16px auto;
+    float: left;
+    margin-left: 5px;
+}
+
+.couponTips .ci_notice {
+    font-size: 12px;
+    color: #666;
+    line-height: 40px;
+}
+
+.couponTips .ci_notice text {
+    color: #ff6815;
+}
+
+.couponTips .close_tips {
+    font-family: iconfont!important;
+    position: absolute;
+    right: 10px;
+    top: 0;
+    width: 30px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+}
+
+.couponTips .close_tips:after {
+    content: '\e62f';
+    font-size: 14px;
+    font-weight: 700;
+    color: #bbb;
+}
+
+.notice-box {
+    height: 30px;
+    position: relative;
+    overflow: hidden;
+    background: #fff7dc;
+}
+
+.notice-box1 {
+    position: absolute;
+    top: 0;
+    height: 30px;
+    left: 0;
+    line-height: 30px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 40px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.notice-box1 .text-notice {
+    display: block;
+    height: 30px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 12px;
+    color: #9e8052;
+    box-sizing: border-box;
+    line-height: 30px;
+}
+
+.noticepic {
+    width: 30px;
+    background: url(https://img1.40017.cn/touch/bus/wx_bus/labaPro.png) no-repeat 15px center;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 30px;
+    background-size: 15px auto;
+}
+
+.notice-content {
+    background: rgba(0,0,20,.8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    overflow: hidden;
+    font-size: 14px;
+    color: #fff;
+}
+
+.notice-content-inner {
+    position: absolute;
+    width: 252px;
+    margin-left: -126px;
+    left: 50%;
+    top: 50%;
+    height: 320px;
+    margin-top: -200px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    overflow: hidden;
+}
+
+.notice-content-innert {
+    height: 90px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.notice-content-innert image {
+    width: 100%;
+    height: 100%;
+}
+
+.notice-content-innerm {
+    background: #fff;
+    height: 180px;
+    overflow: auto;
+    font-size: 12px;
+}
+
+.notice-content-innermt {
+    color: #333;
+    font-weight: 700;
+    text-align: center;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.notice-content-innermm {
+    color: #333;
+    padding: 15px 20px 20px 20px;
+    line-height: 26px;
+}
+
+.notice-sure {
+    text-align: center;
+    border-top: 1px solid #ccc;
+    background: #fff;
+    height: 50px;
+    padding-top: 15px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #333;
+    letter-spacing: 5px;
+}
+
+.no-result-rcd {
+    text-align: center;
+    padding-top: 110px;
+}
+
+.no-result-rcd.marTop120 {
+    padding-top: 70px;
+}
+
+.no-result-rcd image {
+    width: 105px;
+    height: 105px;
+}
+
+.no-result-rcd .normal-texts {
+    font-size: 14px;
+    line-height: 22px;
+    color: #999;
+    margin-top: 10px;
+}
+
+.no-result-rcd .normal-texts:nth-child(1) {
+    margin-top: 0;
+}
+
+.no-result-rcd .goto {
+    margin: 5px auto 0;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    color: #479fea;
+    font-size: 16px;
+    display: inline-block;
+}
+
+.bus-list {
+    height: 100%;
+    padding-top: 100rpx;
+    padding-bottom: 51px;
+}
+
+.new-border-b {
+    position: relative;
+}
+
+.new-border-b:after {
+    position: absolute;
+    content: '';
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    border-bottom: 1px solid #dcdcdc;
+    transform: scale(1,.5);
+    transform-origin: center bottom;
+}
+
+.schlist {
+    background-color: #fff;
+    padding: 16px 10px 2px;
+    line-height: 1;
+    margin: 5px 5px 0;
+    border-radius: 5px;
+}
+
+.station-place {
+    position: relative;
+    padding-left: 17px;
+}
+
+.schedule-list .station-place:before,.station-place:before {
+    content: ' ';
+    display: block;
+    height: 26px;
+    width: 2px;
+    background-color: #e8e7e7;
+    position: absolute;
+    left: 6px;
+    top: 10px;
+}
+
+.station-place:before {
+    background-color: #d7d7d7!important;
+}
+
+.schline .p-f-line::before,.schline .p-s-line::before {
+    content: ' ';
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 100%;
+    box-sizing: border-box;
+    position: absolute;
+}
+
+.schline .p-f-line::before {
+    background-color: #ccc;
+    left: 4px;
+    top: 8px;
+}
+
+.schline .p-s-line::before {
+    left: 4px;
+    bottom: 8px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    z-index: 9;
+}
+
+.schline .p-f-line .station-wrap {
+    font-weight: 700;
+}
+
+.schline .p-s-line .station-wrap {
+    color: #666;
+}
+
+.sch-padding {
+    padding: 5px 15px 9px;
+}
+
+.schlist .schline {
+    height: 46px;
+}
+
+.schlist .schline-two {
+    height: 30px;
+    border-top: 1px dashed #ccc;
+    margin-top: 8px;
+    position: relative;
+}
+
+.schlist .schline-two:after,.schlist .schline-two:before {
+    content: ' ';
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    position: absolute;
+    background-color: #efeff4;
+    top: -5px;
+}
+
+.schlist .schline-two:before {
+    left: -15px;
+}
+
+.schlist .schline-two:after {
+    right: -15px;
+}
+
+.schlist .no-book {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 30px;
+    line-height: 30px;
+}
+
+.schlist .new-time {
+    width: 88px;
+    font-weight: 700;
+    font-size: 22px;
+    color: #333;
+}
+
+.schlist .new-time.new-time-liushui {
+    font-weight: 500;
+    vertical-align: bottom;
+}
+
+.schlist .new-time.new-time-liushui .txt {
+    color: #999;
+    font-size: 22rpx;
+    vertical-align: bottom;
+    float: right;
+}
+
+.new-time-start {
+    font-size: 22rpx;
+    margin-bottom: 12rpx;
+    width: 80%;
+    font-weight: 700;
+}
+
+.new-time-end {
+    font-size: 22rpx;
+    width: 80%;
+    font-weight: 700;
+}
+
+.schlist .new-stname {
+    font-size: 14px;
+    color: #333;
+    height: 24px;
+    line-height: 24px;
+}
+
+.schlist .new-price {
+    width: 65px;
+    text-align: right;
+    font-size: 20px;
+    color: #ff6815;
+}
+
+.schlist .new-rmb {
+    margin-right: 3px;
+    font-size: 14px;
+}
+
+.schlist .new-seize {
+    box-sizing: border-box;
+}
+
+.schlist .new-reduce {
+    width: 60px;
+    text-align: right;
+}
+
+.schlist .new-addr {
+    font-family: iconfont!important;
+    font-size: 12px;
+    color: #999;
+}
+
+.schlist .new-addr span {
+    font-family: iconfont!important;
+    margin-right: 4px;
+    font-size: 14px;
+}
+
+.schlist .new-single {
+    width: 56px;
+    height: 16px;
+    line-height: 16px;
+    border: 1px solid #ff6815;
+    border-radius: 2px;
+    text-align: center;
+    font-size: 12px;
+    color: #ff6815;
+}
+
+.schlist .new-state {
+    font-size: 12px;
+    color: #12b7f5;
+}
+
+.schlist .new-sticon {
+    font-family: iconfont!important;
+    min-width: 14px;
+    height: 14px;
+    margin-right: 3px;
+    border-radius: 2px;
+    line-height: 14px;
+    text-align: center;
+    font-style: normal;
+    font-size: 10px;
+    color: #fff;
+}
+
+.schlist .new-dp {
+    background-color: #58b8ea;
+}
+
+.schlist .new-ds {
+    background-color: #54d7ad;
+}
+
+.schlist .new-ps {
+    background-color: #fcab38;
+}
+
+.schlist .tips-box {
+    box-sizing: border-box;
+    height: 18px;
+    line-height: 16px;
+    border: 1px solid #09bb07;
+    border-radius: 3px;
+    padding: 0 5px;
+    margin-right: 8px;
+}
+
+.schlist .new-watext {
+    color: #999;
+    font-weight: 400;
+    margin-top: 5px;
+}
+
+.schlist .new-abtime {
+    font-size: 24rpx;
+    color: #999;
+}
+
+.new-abtime text {
+    font-family: iconfont!important;
+    margin: 0 8rpx;
+    font-size: 32rpx;
+    color: #bebebe;
+    line-height: 20rpx;
+}
+
+.new-abtime text::after {
+    content: '\e61a';
+    color: #bebebe;
+    font-size: 26rpx;
+    display: inline-block;
+    line-height: 20rpx;
+    position: relative;
+    top: 3rpx;
+    margin-left: 3rpx;
+}
+
+.schlist .tickleft {
+    font-size: 12px;
+    color: #999;
+}
+
+.schlist .leftred {
+    color: #ff6815;
+}
+
+.schlist .new-guimg {
+    background: url(http://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/bus_icon2.png) 0 center no-repeat;
+    background-size: 11px 11px;
+    width: 14px;
+    height: 16px;
+}
+
+.schlist .new-addimg {
+    background: url(http://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/bus_icon1.png) 0 center no-repeat;
+    background-size: 11px 11px;
+    width: 14px;
+    height: 16px;
+}
+
+.schlist .new-add {
+    border: 1px solid #0095df;
+}
+
+.schlist .new-add .new-addtext {
+    color: #0095df;
+}
+
+.schline .passWrap {
+    margin-left: 5px;
+    font-size: 12px;
+    color: #666;
+}
+
+.schlist .no-book {
+    font-size: 12px;
+    color: #999!important;
+}
+
+.schlist .new-gutext,.schlist .new-water {
+    font-size: 10px;
+    color: #09bb07;
+}
+
+.schlist .yytime-box .new-gutext {
+    font-size: 12px;
+    color: #999;
+}
+
+.schlist .yytime-box .new-gutext::before {
+    font-family: iconfont;
+    content: '\e610';
+    color: #ddd;
+    margin-right: 4px;
+}
+
+.schlist .new-sign {
+    background-color: #09bb07;
+    width: 70px;
+    height: 22px;
+    border-radius: 4px;
+    line-height: 22px;
+    text-align: center;
+    font-size: 12px;
+    color: #fff;
+}
+
+@media only screen and (max-width:358px) {
+    .schlist .new-watext {
+        font-size: 12px;
+    }
+
+    .schlist .new-time {
+        width: 65px;
+    }
+
+    .schlist .new-seize {
+        width: 70px;
+    }
+}
+
+@media only screen and (max-width:373px) and (min-width:359px) {
+    .schlist .new-watext {
+        font-size: 12px;
+    }
+
+    .schlist .new-time {
+        width: 88px;
+    }
+
+    .schlist .new-seize {
+        width: 96px;
+    }
+}
+
+@media only screen and (min-width:374px) {
+    .schlist .new-watext {
+        font-size: 12px;
+    }
+
+    .schlist .new-time {
+        width: 92px;
+    }
+
+    .schlist .new-seize {
+        width: 98px;
+    }
+}
+
+.schlist .new-tworight {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 10px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.schlist .decline {
+    font-size: 10px;
+    color: #ff6815;
+    background: #ffefea;
+    border-bottom: 1px solid #ffd4bd;
+    line-height: 18px;
+    padding-left: 8px;
+}
+
+.schlist .decline::before {
+    display: inline-block;
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: url(http://img1.40017.cn/touch/bus/wx_bus/lijian.png) no-repeat center center;
+    background-size: 10px auto;
+    margin-right: 3px;
+    vertical-align: middle;
+}
+
+.schlist .decline-icon {
+    content: '';
+    display: inline-block;
+    width: 13px;
+    height: 19px;
+    background: url(http://img1.40017.cn/touch/bus/wx_bus/lijian2.png) no-repeat;
+    background-size: 13px auto;
+}
+
+.single-tags:nth-child(1) {
+    position: relative;
+    z-index: 9;
+}
+
+.single-tags:nth-child(2) {
+    position: relative;
+    left: -10px;
+}
+
+.disabled-click {
+    background-color: #fff;
+    color: #aaa;
+    padding: 16px 10px 3px;
+}
+
+.disabled-click .new-sticon {
+    background-color: #d7d7d7;
+}
+
+.disabled-click .new-addr,.disabled-click .new-price,.disabled-click .new-single,.disabled-click .new-state,.disabled-click .new-stname,.disabled-click .new-time,.disabled-click .new-wainfo,.disabled-click .new-watext,.disabled-click .p-s-line .station-wrap,.disabled-click .passWrap,.disabled-click .tickleft {
+    color: #aaa;
+}
+
+.disabled-click .new-single,.disabled-click .new-watext {
+    border-color: #aaa;
+}
+
+.no_more {
+    font-size: 14px;
+    height: 45px;
+    line-height: 45px;
+}
+
+.filterStation,.ul-wrap {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 100;
+    width: 100%;
+}
+
+.filterStation {
+    height: 51px;
+}
+
+.ul-wrap {
+    bottom: 51px;
+    z-index: 99;
+    width: 100%;
+    background-color: #2e343b;
+    transform: translate3d(0,100%,0);
+    transition-duration: .3s;
+}
+
+.ease-Up {
+    animation: animations 2s ease-out easeUp;
+    transform: translate3d(0,0,0)!important;
+}
+
+.ease-Down {
+    transform: translate3d(0,100%,0);
+    transition-duration: .3s;
+}
+
+.selected-bar {
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    background-color: #2e343b;
+}
+
+.selected-bar .btn {
+    display: inline-block;
+    font-size: 16px;
+    color: #fff;
+    background-color: #2e343b;
+}
+
+.selected-cancel {
+    margin-left: 15px;
+}
+
+.selected-sure {
+    margin-right: 15px;
+}
+
+.new-popbox {
+    background-color: #fff;
+    width: 100%;
+    padding: 0;
+    max-height: 241px;
+    overflow: auto;
+    border: none;
+    font-size: 12px;
+}
+
+.new-popbox .pop-li {
+    position: relative;
+    font-size: 14px;
+    line-height: 14px;
+    color: #333;
+    background-image: url(https://img1.40017.cn/touch/bus/wx_bus/btbg2.png);
+    background-repeat: no-repeat;
+    background-size: 17px 380px;
+    background-position: 15px -188px;
+    padding: 10px 0 10px 40px;
+    border: 0;
+}
+
+.new-popbox .pop-li.checked {
+    background-position: 15px -226px;
+    color: #09bb07;
+}
+
+.new-popbox .pop-li:first-child {
+    margin-top: 10px;
+}
+
+.new-popbox .pop-li:last-child {
+    margin-bottom: 10px;
+}
+
+.nav-box {
+    border: 0;
+    background-color: #2e343b;
+    width: 100%;
+    height: 51px;
+}
+
+.nav-box .nav-li {
+    position: relative;
+    background: url(https://img1.40017.cn/touch/bus/wx_bus/btbg2.png) no-repeat #2e343b;
+    background-size: 17px 380px;
+    padding: 31px 0 0!important;
+    border: 0;
+    text-align: center;
+    font-size: 10px;
+    color: #bbb;
+    line-height: 15px;
+    height: 51px;
+}
+
+.nav-box .nav-li:nth-child(1) {
+    background-position: center -13px;
+}
+
+.nav-box .nav-li:nth-child(2) {
+    background-position: center -100px;
+}
+
+.nav-box .nav-li:nth-child(3) {
+    background-position: center -268px;
+}
+
+.nav-box .active:nth-child(1) {
+    background-position: center -56px;
+}
+
+.nav-box .active:nth-child(2) {
+    background-position: center -144px;
+}
+
+.nav-box .active:nth-child(3) {
+    background-position: center -312px;
+}
+
+.nav-box .active {
+    color: #09bb07;
+}
+
+.nav-box .checked:after {
+    content: ' ';
+    display: block;
+    width: 12px;
+    height: 10px;
+    position: absolute;
+    left: 50%;
+    top: 7px;
+    background-image: url(//file.40017.cn/img140017cnstage/touch/bus/wx_bus/btbg2.png);
+    background-repeat: no-repeat;
+    background-size: 17px 380px;
+    background-position: center -366px;
+    transform: translate3d(12px,0,0);
+}
+
+.mask {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    opacity: .4;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 98;
+    transition: all .2s ease-in-out;
+}
+
+.running-time-mask {
+    background: rgba(0,0,0,0);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 101;
+}
+
+.rt-content {
+    border-radius: 6px;
+    background: rgba(0,0,20,.8);
+    text-align: center;
+    width: 80%;
+    padding: 10rpx;
+    font-size: 14px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-left: -40%;
+    margin-top: -10%;
+    color: #fff;
+}
+
+.skeleton {
+    width: 100%;
+    padding-top: 100rpx;
+}
+
+.skeleton image {
+    display: block;
+    width: 98%;
+    margin: 0 auto;
+    margin-top: 6px;
+}
+
+.openMap {
+    width: 72rpx;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.openMap::after {
+    content: '';
+    display: inline-block;
+    width: 40rpx;
+    height: 36rpx;
+    text-align: center;
+    background: url(//img1.40017.cn/touch/bus/wx_bus/location_icon.png) center center no-repeat;
+    background-size: 20rpx auto;
+    vertical-align: middle;
+}
+
+.station-info {
+    height: 110rpx;
+    position: relative;
+    overflow: hidden;
+    background: -webkit-gradient(linear,left top,left bottom,from(#fcf6e3),to(#fef6dc));
+    background: -webkit-linear-gradient(#fcf6e3,#fef6dc);
+    background: -o-linear-gradient(#fcf6e3,#fef6dc);
+    background: linear-gradient(#fcf6e3,#fef6dc);
+    margin: 5px;
+    border-radius: 5px;
+    padding: 5px 0;
+}
+
+.station-info-box {
+    width: 100%;
+}
+
+.station-info-box view.important-text {
+    width: 88%;
+    color: #947335;
+    font-size: 24rpx;
+    box-sizing: border-box;
+    font-weight: bolder;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.station-info-box {
+    padding-left: 36px!important;
+}
+
+.station-info .noLines-map {
+    position: absolute;
+    padding: 0 20px;
+    font-size: 13px;
+    border: 1px solid #dcdcdc;
+    color: #333;
+    height: 27px;
+    text-align: center;
+    line-height: 27px;
+    right: 5px;
+    top: 5px;
+    border-radius: 4px;
+}
+
+.station-info-box view.important-icon {
+    font-family: iconfont!important;
+    width: 26px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    height: 26px;
+    line-height: 26px;
+    transform: translate3d(0,-50%,0);
+    text-align: right;
+}
+
+.station-with-info view.address-icon {
+    width: 26px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 30px;
+    background: url(//img1.40017.cn/touch/bus/wx_bus/addresspoint.png) center no-repeat;
+    background-size: 13px 14px;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
+.station-info-box view.important-icon:after {
+    width: 30px;
+    font-size: 16px;
+    content: '\e61a';
+    color: #ff6815;
+}
+
+.station-info-box view.important-icon1 {
+    background-color: #947335;
+    border-radius: 50%;
+    display: inline-block;
+    width: 42rpx;
+    height: 42rpx;
+    position: absolute;
+    left: 16rpx;
+    top: 50%;
+    transform: translate3d(0,-50%,0);
+}
+
+.station-info-box view.important-icon1:after {
+    content: '!';
+    font-size: 40rpx;
+    font-weight: bolder;
+    color: transparent;
+    background: -webkit-gradient(linear,left top,left bottom,from(#fcf6e3),to(#fef6dc));
+    background: -webkit-linear-gradient(#fcf6e3,#fef6dc);
+    background: -o-linear-gradient(#fcf6e3,#fef6dc);
+    background: linear-gradient(#fcf6e3,#fef6dc);
+    -webkit-background-clip: text;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.iphoneX {
+    display: none;
+}
+
+@media only screen and (device-width:375px) and (device-height:812px) and (-webkit-device-pixel-ratio:3) {
+    .iphoneX {
+        width: 100%;
+        height: 50rpx;
+        background-color: #2e343b;
+        position: relative;
+        z-index: 999;
+        display: block;
+    }
+
+    .filterStation {
+        height: 68px;
+    }
+
+    .ul-wrap {
+        bottom: 68px;
+    }
+
+    .bus-list {
+        padding-bottom: 68px;
+    }
+}

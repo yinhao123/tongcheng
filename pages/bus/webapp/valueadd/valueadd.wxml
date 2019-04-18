@@ -1,0 +1,20 @@
+<view class="valueadd">
+    <view bindtap="btnSelectService" class="item {{item.serviceId==slectedVAItem.serviceId?'select':''}}" data-sid="{{item.serviceId}}" wx:for="{{slectedVAList}}" wx:key="{{item.serviceId}}">
+        <view class="subtitle" wx:if="{{item.sellPrice}}">
+            <text>{{item.serviceName+item.sellPrice+'元/人'}}</text>
+            <text catchtap="btnValueaddDetail" class="text-icon" data-pid="{{item.serviceId}}"></text>
+        </view>
+        <view class="subtitle" wx:else>
+            <text>{{item.serviceName}}</text>
+        </view>
+        <block wx:if="{{item.serviceDescription&&item.serviceDescription.length>0}}">
+            <view class="paragraph" wx:for="{{item.serviceDescription}}" wx:key="*this">{{item}}</view>
+        </block>
+        <view class="chose"></view>
+    </view>
+    <view class="valueadd-layer" wx:if="{{showPop}}">
+        <view class="title">{{title}}</view>
+        <view class="valueadd-explain" wx:for="{{detail}}">{{item}}</view>
+        <view bindtap="btnClosePop" class="layer-close"></view>
+    </view>
+</view>

@@ -1,0 +1,702 @@
+<view class="orderdetail-wrap body {{showrefundPage?'lockPage':''}}">
+    <view class="urgeTips {{urgeShow}}">{{urgeTxt}}</view>
+    <view class="pageView-content scroll-content new-main" id="orderDetail">
+        <view class="activity-status" wx:if="{{item.itemCode=='BusYiyuanFree'&&orderDetail.orderStateName!='待付款'&&orderDetail.orderStateName!='已取消'&&orderDetail.orderStateName!='超时取消'}}" wx:for="{{orderDetail.pricesInfo}}">已参加{{item.name}}活动！<text bindtap="linkToYy" class="activity-url">查看活动>></text>
+        </view>
+        <view class="new-status">
+            <view class="top-status new-fbox">
+                <view class="new-status-icon {{iconClass}}"></view>
+                <view class="status-txts">
+                    <view class="status-name">
+                        <text class="left-name">{{neworderStateName?neworderStateName:orderDetail.orderStateName}}</text>
+                        <text bindtap="closePopPrice" class="right-price">¥<text class="price-box">{{orderDetail.payAmount}}</text>
+                            <text class="subsidy" wx:if="{{subsidyTxt}}">({{subsidyTxt}})</text>
+                        </text>
+                    </view>
+                    <view class="status-detail" wx:if="{{orderDetail.orderStateName=='待付款'&&!neworderStateName&&orderDetail.vipSubscribe===1&&orderDetail.vipSubscribePayState===0}}">此单为预约订单，{{!!orderDetail.RegularTimestr?'预计'+orderDetail.RegularTimestr+'自动为您购票':'到达预售期立马为您抢票'}}</view>
+                    <view class="status-detail" wx:if="{{orderDetail.orderStateName=='待付款'&&!neworderStateName&&orderDetail.vipSubscribe===0}}">余票变动频繁，请在<text>{{countdown}}</text>内完成支付</view>
+                    <view class="status-detail" wx:if="{{orderDetail.orderStateName=='已取消'&&!neworderStateName}}">您的订单已取消，返回重新预订</view>
+                    <view class="status-detail" wx:if="{{orderDetail.orderStateName=='出票中'&&!neworderStateName}}">请留意手机短信，我们会第一时间通知您出票结果</view>
+                    <view class="status-detail" wx:if="{{orderDetail.orderStateName=='出票失败'&&!neworderStateName}}">可能由于余票不足，建议您重新预订其他车次。</view>
+                    <view class="status-detail" wx:if="{{orderDetail.orderStateName=='出票成功'&&!neworderStateName}}">
+                        <block wx:if="{{orderDetail.content}}">请{{orderDetail.ticketTimeValue}}凭{{orderDetail.content}}至发车站取票机或窗口取票乘车</block>
+                        <block wx:elif="{{orderDetail.stationInfo.takeTicketStartTime&&orderDetail.getTicketNo&&orderDetail.getTicketPassWord&&orderDetail.stationInfo.takeTicketAddress}}">请在{{orderDetail.stationInfo.takeTicketStartTime}}-{{orderDetail.stationInfo.takeTicketEndTime}}凭票号密码至{{orderDetail.stationInfo.takeTicketAddress}}取票乘车</block>
+                        <block wx:elif="{{orderDetail.getTicketNo&&orderDetail.getTicketPassWord&&orderDetail.stationInfo.takeTicketAddress}}">请凭{{orderDetail.takeOutCheckin}}至{{orderDetail.stationInfo.takeTicketAddress}}取票乘车</block>
+                        <block wx:elif="{{orderDetail.stationInfo.takeTicketAddress}}">凭票号密码等信息至{{orderDetail.stationInfo.takeTicketAddress}}取票乘车</block>
+                        <block wx:else>请凭票号密码等信息至发车站取票乘车</block>
+                    </view>
+                    <view class="status-detail" wx:if="{{orderDetail.orderStateName=='待购票'&&!neworderStateName}}">此单为预约订单，{{!!orderDetail.regularTime?'预计'+orderDetail.regularTime+'自动为您购票':'到达预售期立马为您抢票'}}</view>
+                    <view class="status-detail" wx:if="{{orderDetail.orderStateName=='退票成功'&&!neworderStateName}}">退款将于1-15个工作日内返回您的支付账号</view>
+                    <view class="status-detail" wx:if="{{orderDetail.orderStateName=='改签中'&&!neworderStateName}}">正在为您进行改签，请您留意改签结果短信</view>
+                    <view class="status-detail" wx:if="{{orderDetail.orderStateName=='退票失败'&&!neworderStateName}}">请重新发起退票或至车站退票，重新退票前您也可继续乘坐该班次出行</view>
+                    <view class="status-detail" wx:if="{{orderDetail.orderStateName=='退票申请中'||orderDetail.orderStateName=='退款中'&&!neworderStateName}}">正在为您进行退票，请您留意退票结果短信</view>
+                    <view class="status-detail" wx:if="{{orderDetail.orderStateName=='已发车'||neworderStateName=='已发车'}}">人生就像一场旅行，在乎的不是目的地，而是沿途的风景</view>
+                    <view class="status-detail" wx:if="{{orderDetail.orderStateName=='已退款'&&!neworderStateName}}">您的退款已退还到您的付款账户，请注意查收</view>
+                    <view class="status-detail" wx:if="{{orderDetail.orderStateName=='已改签'&&!neworderStateName}}">请您根据改签订单出票信息出行，该笔订单已作废~</view>
+                </view>
+            </view>
+            <view class="bt-buttons new-fbox">
+                <block wx:if="{{orderDetail.orderStateName=='待付款'&&!neworderStateName}}">
+                    <view bindtap="cancleOrder" class="like-button button-cancel">取消订单</view>
+                    <view bindtap="payNow" class="like-button button-pay" wx:if="{{!payHidden&&!showWxDaiKouBtn}}">立即支付</view>
+                    <view bindtap="wxPayNow" class="like-button button-pay" wx:if="{{showWxDaiKouBtn}}">微信代扣</view>
+                </block>
+                <block wx:if="{{orderDetail.orderStateName=='待购票'}}">
+                    <view bindtap="cancleOrderModal" class="like-button button-cancel">取消订单</view>
+                    <view bindtap="navigateToNotice" class="like-button button-pay">预约购票说明</view>
+                </block>
+                <view bindtap="goIndex" class="like-button button-pay" wx:elif="{{orderDetail.orderStateName=='已取消'}}">继续预订</view>
+                <block wx:elif="{{orderDetail.orderStateName=='出票成功'||orderDetail.orderStateName=='已发车'||neworderStateName=='已发车'}}">
+                    <view bindtap="refundCtrl" class="like-button button-cancel {{refundDisable?'disable':''}}" data-type="{{refundType}}" wx:if="{{showRefundBtn==true}}">{{refundBtnTxt}}</view>
+                    <view bindtap="goIndex" class="like-button button-cancel" wx:if="{{(showBack!=true||showRefundBtn!=true)&&!orderDetail.changeChildOrder}}">继续预订</view>
+                    <view bindtap="goBack" class="like-button button-pay" wx:if="{{showBack==true}}">预订返程</view>
+                </block>
+                <block wx:elif="{{orderDetail.orderStateName=='出票失败'||orderDetail.orderStateName=='已退款'||orderDetail.orderStateName=='已退票'||orderDetail.orderStateName=='退票申请中'||orderDetail.orderStateName=='退款中'}}">
+                    <view bindtap="showRefundBox" class="like-button button-cancel" wx:if="{{!!isShowRefund}}">退款进度</view>
+                    <view bindtap="goIndex" class="like-button button-pay">继续预订</view>
+                </block>
+                <view bindtap="goIndex" class="like-button button-pay" wx:elif="{{orderDetail.orderStateName=='出票失败'}}">继续预订</view>
+                <view bindtap="goIndex" class="like-button button-pay" wx:elif="{{orderDetail.orderStateName=='退票失败'}}">继续预订</view>
+                <block wx:elif="{{orderDetail.orderStateName=='退票申请中'}}">
+                    <view bindtap="showRefundBox" class="like-button button-cancel" wx:if="{{!!isShowRefund}}">退款进度</view>
+                    <view bindtap="goIndex" class="like-button button-pay">继续预订</view>
+                </block>
+                <block wx:elif="{{orderDetail.orderStateName=='支付成功'||orderDetail.orderStateName=='索票成功'||orderDetail.orderStateName=='出票中'}}">
+                    <view bindtap="urgeCtrl" class="like-button button-cancel {{urgeBtnClass}}">
+                        <text>催出票</text>
+                        <view class="clock">
+                            <text class="mint" hidden="{{hiddenClock}}" style="-webkit-transform:rotate({{rotate}}deg)"></text>
+                        </view>
+                    </view>
+                    <view bindtap="goIndex" class="like-button button-pay">继续预订</view>
+                </block>
+                <view bindtap="showRefundTicket" class="like-button button-pay" wx:elif="{{orderDetail.orderStateName=='已改签'&&!!orderChangeSerialId}}">查看改签单</view>
+            </view>
+            <view class="ticket-msg new-fbox new-falign" wx:if="{{orderDetail.content&&(orderDetail.orderStateName=='出票成功'||orderDetail.orderStateName=='已发车'||neworderStateName=='已发车')&&orderDetail.stationInfo}}">
+                <view class="left-msg new-flex1">
+                    <view class="take-number" wx:if="{{orderDetail.isTicketNo&&orderDetail.getTicketNo}}">
+                        <text decode="true">取票号：</text>
+                        <text decode="true">{{getTicketNo}}</text>
+                    </view>
+                    <view class="take-psd" wx:if="{{orderDetail.isTicketPassword&&orderDetail.getTicketPassWord}}">
+                        <text>取票密码：</text>
+                        <text>{{getTicketPassWord}}</text>
+                    </view>
+                    <view class="take-psd" wx:if="{{orderDetail.isVerificationCode&&orderDetail.ticketCode}}">
+                        <text>取票验证码：</text>
+                        <text>{{ticketCode}}</text>
+                    </view>
+                    <view class="take-psd" wx:if="{{orderDetail.isOrderNo&&orderDetail.refOrderId}}">
+                        <text>取票订单号：</text>
+                        <text>{{orderDetail.refOrderId}}</text>
+                    </view>
+                    <view class="take-psd" wx:if="{{orderDetail.isTicketPhoneNo&&(orderDetail.bookingMobileNo||orderDetail.contactInfo.mobileNo)}}">
+                        <text>取票手机号：</text>
+                        <text>{{orderDetail.bookingMobileNo?orderDetail.bookingMobileNo:orderDetail.contactInfo.mobileNo}}</text>
+                    </view>
+                    <view class="take-psd" wx:if="{{orderDetail.isIdentificationCard}}">
+                        <text>取票身份证：</text>
+                        <text>乘车人身份证</text>
+                    </view>
+                </view>
+                <view bindtap="openEwm" class="rigth-ewm" wx:if="{{orderDetail.qrcode||qrCodeList.length||isHasBarCode}}">扫码乘车</view>
+            </view>
+            <view class="ticket-msg new-fbox new-falign" wx:elif="{{(orderDetail.getTicketNo||orderDetail.getTicketPassWord||orderDetail.ticketCode)&&(orderDetail.orderStateName=='出票成功'||orderDetail.orderStateName=='已发车'||neworderStateName=='已发车')}}">
+                <view class="left-msg new-flex1">
+                    <view class="take-number" wx:if="{{orderDetail.getTicketNo}}">
+                        <text decode="true">取票号：</text>
+                        <text decode="true">{{getTicketNo}}</text>
+                    </view>
+                    <view class="take-psd" wx:if="{{orderDetail.getTicketPassWord}}">
+                        <text>取票密码：</text>
+                        <text>{{getTicketPassWord}}</text>
+                    </view>
+                    <view class="take-psd" wx:if="{{orderDetail.ticketCode}}">
+                        <text>取票验证码：</text>
+                        <text>{{ticketCode}}</text>
+                    </view>
+                </view>
+                <view bindtap="openEwm" class="rigth-ewm" wx:if="{{orderDetail.qrcode||qrCodeList.length||isHasBarCode}}">扫码乘车</view>
+            </view>
+            <view class="ticket-msg new-fbox new-falign" wx:elif="{{!orderDetail.getTicketNo&&!orderDetail.getTicketPassWord&&!orderDetail.ticketCode&&(orderDetail.orderStateName=='出票成功'||orderDetail.orderStateName=='已发车'||neworderStateName=='已发车')&&orderDetail.getTicketInfo}}">
+                <view class="left-msg new-flex1 left-des-msg">
+                    <view class="take-number-sec" wx:if="{{orderDetail.getTicketInfo}}">
+                        <text>{{orderDetail.getTicketInfo}}</text>
+                    </view>
+                </view>
+                <view bindtap="openEwm" class="rigth-ewm" wx:if="{{orderDetail.qrcode||qrCodeList.length||isHasBarCode}}">扫码乘车</view>
+            </view>
+        </view>
+        <view bindtap="linktosche" class="cpsb-box" wx:if="{{orderDetail.orderStateName=='出票失败'}}">
+            <view class="zaban">出票失败怎么办？</view>
+            <view class="zabans">立即查看余票充足的临近车次</view>
+        </view>
+        <view class="advanceOrder new-ticket" wx:if="{{isAdvanceOrder}}">
+            <view class="dl">
+                <view bindtap="showChannelFn" class="dt">
+                    <view class="p new-arrow-down {{showChannel?'new-arrow-up':''}}">此单享受<lable class="i">高级预约</lable>服务</view>
+                </view>
+                <view class="dd okChannel declare" style="height:{};" wx:if="{{hasShowChannel}}">
+                    <view class="p">此单享受高级预约服务，支持先出票后付款功能，请保证您的微信账户余额充足，否则扣款失败将导致您购票失败。<lable bindtap="showSubscribeInfo" class="i js-ADexplain">详细说明</lable>
+                    </view>
+                </view>
+                <view class="dd noChannel declare" style="height:{};" wx:if="{{!hasShowChannel}}">
+                    <view class="p">此单享受高级预约服务，支持先出票后付款功能，请提前开通微信授权代扣，授权成功后系统会为您预约购票，购票成功后再扣除实际票款。<lable bindtap="showSubscribeInfo" class="i js-ADexplain">详细说明</lable>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view bindtap="goCardDetail" class="bus-lijian-card new-fbox" wx:if="{{!!orderDetail.preferentialCard.preferentialCardBuyId}}">
+            <view class="lijian-icon">
+                <image mode="aspectFit" src="https://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/li_jian_crad/icon.png"></image>
+            </view>
+            <view class="lijian-box new-flex4">
+                <view>立减卡优惠，本单已减{{availableCard.orderDiscountAmount}}元<text catchtap="fnMonthcardDetail" class="rdetail" data-cardid="{{orderDetail.preferentialCard.preferentialCardBuyId}}"></text>
+                </view>
+                <view class="lijian-subtitle">可享{{availableCard.discountCount}}次购票，单单立减；剩余{{availableCard.surplusUseCount}}次</view>
+                <view class="lijian-arrow new-arrow-down"></view>
+            </view>
+        </view>
+        <view class="ticket-message">
+            <view class="ticket-passport new-fbox" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
+                <text class="dpt-station">{{chuangkou}}</text>
+                <text class="dpt-day new-flex1">{{orderDetail.month}}月{{orderDetail.day}}号</text>
+            </view>
+            <view class="ticket-stationInfo new-fbox">
+                <view class="dpt-des-icon">
+                    <view class="vertical-line"></view>
+                </view>
+                <view class="new-flex1">
+                    <view class="departStation-info new-fbox">
+                        <text class="dpt-name new-flex1" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis">{{orderDetail.dptStation}}</text>
+                        <block wx:if="{{orderDetail.runningSchFlag==1}}">
+                            <text class="about-time" wx:if="{{orderDetail.runningStartTime&&orderDetail.runningEndTime}}">{{orderDetail.runningStartTime}}-{{orderDetail.runningEndTime}}发车</text>
+                            <text class="about-time" wx:elif="{{orderDetail.runningStartTime&&!orderDetail.runningEndTime}}">{{orderDetail.runningStartTime}}后发车</text>
+                            <text class="about-time" wx:elif="{{!orderDetail.runningStartTime&&orderDetail.runningEndTime}}">{{orderDetail.runningEndTime}}前发车</text>
+                            <block wx:else>
+                                <text class="about-time new-flex1" wx:if="runTime>0">{{orderDetail.mmss}}发车</text>
+                            </block>
+                        </block>
+                        <block wx:else>
+                            <text class="about-time new-flex1" wx:if="runTime>0">{{orderDetail.mmss}}发车</text>
+                        </block>
+                    </view>
+                    <view class="desStation-info new-fbox">
+                        <text class="des-name">{{orderDetail.arrStation}}</text>
+                        <text class="new-flex1">{{orderDetail.coachType}}{{orderDetail.coachNo?'/':''}}{{orderDetail.coachNo}}{{orderDetail.coachNo?'次':''}}{{orderDetail.coachType&&orderDetail.scheduleTicketType?'|':''}}{{orderDetail.scheduleTicketType?orderDetail.scheduleTicketType:''}}</text>
+                    </view>
+                </view>
+            </view>
+            <view class="dpt-station-address b-b-1 new-fbox" wx:if="{{orderDetail.stationInfo.dptStationAddress}}">
+                <text class="address-titile" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis">发车站地址</text>
+                <text class="address-detail new-flex1">{{orderDetail.stationInfo.dptStationAddress}}</text>
+                <text bindtap="showMap2" class="icon-pos"></text>
+            </view>
+            <view class="dpt-station-address b-b-1 new-fbox" wx:if="{{orderDetail.stationInfo.dptContactNo}}">
+                <text class="address-titile" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis">发车站电话</text>
+                <text class="address-detail new-flex1">{{orderDetail.stationInfo.dptContactNo}}</text>
+                <text bindtap="makePhoneCall" class="icon-phone" data-tel="{{orderDetail.stationInfo.dptContactNo}}"></text>
+            </view>
+            <view class="tuigai-moudule new-fbox" wx:if="{{orderDetail.orderStateName=='出票成功'}}">
+                <view class="icon">{{showRfTxt1}}</view>
+                <view class="tuigai-text new-flex1" wx:if="{{isTodaySch&&showRfTxt1=='可退'}}">今日{{showRfTxt}}前可<text>在线退票</text>
+                </view>
+                <view class="tuigai-text new-flex1" wx:elif="{{!isTodaySch&&showRfTxt1=='可退'}}">发车当日{{showRfTxt}}前可<text>在线退票</text>
+                </view>
+                <view class="tuigai-text new-flex1" wx:else>{{showRfTxt}}</view>
+            </view>
+        </view>
+        <view class="shuttleBus new-fbox radiusShadow" style="display:none">
+            <view class="sendOff new-fbox btDiv">
+                <view class="img-dptbox"></view>
+                <view>
+                    <text>送我去</text>
+                    <text>苏州汽车北站</text>
+                </view>
+            </view>
+            <view class="pickUp new-fbox btDiv">
+                <view class="img-arrbox"></view>
+                <view>
+                    <text>来接我</text>
+                    <text>南通</text>
+                </view>
+            </view>
+        </view>
+        <view class="new-pass">
+            <view catchtap="slideToggle" class="new-title-pass new-fbox" data-open="passengerBox">
+                <view class="new-text-pass">乘客信息</view>
+                <view class="new-num-pass new-flex1 new-arrow-down {{arrowstatusC}}">{{orderDetail.count}}人</view>
+            </view>
+            <view class="new-detail-pass" hidden="{{!showSlideC}}">
+                <view class="new-ride-pass new-fbox border-top-1" wx:if="{{!orderDetail.isTicketPerson}}">
+                    <view class="new-rtext-pass">取票人：</view>
+                    <view class="new-rbox new-flex1">
+                        <view class="new-rline-pass">
+                            <view class="new-name-pass border-bottom-1">{{orderDetail.contactInfo.name}}<text class="nbsp-style"></text>{{orderDetail.contactInfo.idCard}}</view>
+                        </view>
+                    </view>
+                </view>
+                <view class="new-tel-pass">手机号：<text class="qrsj">{{newPhone}}</text>
+                </view>
+                <view class="new-pbox-pass">
+                    <view class="new-ride-pass new-fbox">
+                        <view class="new-rtext-pass">乘车人：</view>
+                        <view class="new-rbox new-flex1">
+                            <view class="new-rline-pass" wx:for="{{orderDetail.passengersInfo}}" wx:key="{{item}}">
+                                <view class="new-name-pass nobtline">{{item.name}}<text class="nbsp-style"></text>{{item.idCard}}</view>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="new-order-pass new-fbox">
+                        <text class="new-orderid-pass new-flex1">订单号：{{orderDetail.orderSerialId?orderDetail.orderSerialId:orderDetail.refOrderId}}</text>
+                        <text class="new-buytime-pass">{{orderDetail.createOrderTime}} 下单</text>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="free-child new-pass" wx:if="{{orderDetail.carryChildrenCount&&orderDetail.carryChildren&&orderDetail.carryChildren.length}}">
+            <view catchtap="toggleFreeChild" class="new-title-pass new-fbox">
+                <view class="new-text-pass">已申请{{orderDetail.carryChildrenCount}}张携童票</view>
+                <view class="new-num-pass new-flex1 new-arrow-down {{showFreeChild?'new-arrow-up':''}}"></view>
+            </view>
+            <view class="child-list" hidden="{{!showFreeChild}}">
+                <view class="new-ride-pass new-fbox border-top-1" wx:for="{{orderDetail.carryChildren}}">
+                    <view class="new-rtext-pass">携童信息：</view>
+                    <view class="new-rbox new-flex1">
+                        <view class="new-rline-pass">
+                            <view class="new-name-pass border-bottom-1">{{item.name}}<text class="nbsp-style"></text>{{item.cardNo}}</view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <image mode="widthFix" src="https://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/entrytip.png?v=123" style="width:100%" wx:if="{{showEntry}}"></image>
+        <view class="hotelBox" wx:if="{{showHotel}}">
+            <yl-hotel-comp query="{{hotelParams}}"></yl-hotel-comp>
+        </view>
+        <view class="new-qa">
+            <view class="new-title new-fbox">
+                <view class="new-text new-flex1">常见问题</view>
+                <view bindtap="showKefuFn" class="new-ser new-flex1 customerService"></view>
+                <view class="service-box {{showNewKeFu&&'show400'}}" wx:if="{{showKeFu}}">
+                    <view catchtap="callKefu" class="service-item" wx:if="{{showNewKeFu}}">
+                        <text class="icon icon-kefuphone"></text>
+                        <text>电话咨询</text>
+                    </view>
+                    <view catchtap="contactSer" class="service-item">
+                        <text class="icon icon-kefu"></text>
+                        <text>在线客服</text>
+                    </view>
+                </view>
+            </view>
+            <view class="new-qabox">
+                <block wx:if="{{orderDetail.orderStateName=='待付款'}}">
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer1">如何知道是否购票成功？</view>
+                    <view class="new-answer" hidden="{{!answer1}}">
+                        <view class="new-reply">请您留意购票通知的短信，已短信通知的结果为准！</view>
+                    </view>
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer2">成功支付后能保证有票吗？</view>
+                    <view class="new-answer" hidden="{{!answer2}}">
+                        <view class="new-reply">网上购票结果受票量影响，不能保证全部有票，一般会在30分钟内给出购票结果，如30分钟无结果，可以转人工帮您催处理，具体购票结果还请耐心等待，已短信通知为准。</view>
+                    </view>
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer3">具体在哪个站下车？</view>
+                    <view class="new-answer" hidden="{{!answer3}}">
+                        <view class="new-reply">建议您向发车站致电咨询，车站电话可拨打114自助查询。</view>
+                    </view>
+                </block>
+                <block wx:elif="{{orderDetail.orderStateName=='已取消'||orderDetail.orderStateName=='超时取消'}}">
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer1">订单已取消可以重新支付吗？</view>
+                    <view class="new-answer" hidden="{{!answer1}}">
+                        <view class="new-reply">您好，不可重新支付，如在系统设置的时间内，您没有完成支付，需要您重新提交订单并支付。</view>
+                    </view>
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer2">订单“已取消”状态是否退款？</view>
+                    <view class="new-answer" hidden="{{!answer2}}">
+                        <view class="new-reply">如果您的订单是“已取消”状态，表示您一直未支付，如超时未支付系统会取消订单，您并没有支付款项，所以不存在退款问题哦！</view>
+                    </view>
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer3">我并没有操作，为什么订单自动取消了？</view>
+                    <view class="new-answer" hidden="{{!answer3}}">
+                        <view class="new-reply">订单超过20分钟后自动取消，建议您重新进行预订。</view>
+                    </view>
+                </block>
+                <block wx:elif="{{orderDetail.orderStateName=='已退款'||orderDetail.orderStateName=='已退票'||orderDetail.orderStateName=='退票申请中'||orderDetail.orderStateName=='退款中'||orderDetail.orderStateName=='退票成功'}}">
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer1">退款什么时候到账？</view>
+                    <view class="new-answer" hidden="{{!answer1}}">
+                        <view class="new-reply">如果您的订单已是退款状态，款项一般会在1-15个工作日退回到您的原支付账户。	部分银行到账是没有短信提醒的，还需要您关注一下帐户进帐明细。</view>
+                    </view>
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer2">退款会以什么方式退回？</view>
+                    <view class="new-answer" hidden="{{!answer2}}">
+                        <view class="new-reply">您的款项会在1-15个工作日自动退回原支付账户，若通过支付平台绑卡支付，款项退回绑定的银行卡。</view>
+                    </view>
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer3">为什么退款没有到账？</view>
+                    <view class="new-answer" hidden="{{!answer3}}">
+                        <view class="new-reply">退款到账一般需要1-15个工作日。	部分银行到账是没有短信提醒的，请关注帐户进帐明细。也可以咨询下单时相应支付平台客服热线。</view>
+                    </view>
+                </block>
+                <block wx:elif="{{orderDetail.orderStateName=='出票中'||orderDetail.orderStateName=='待购票'}}">
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer1">什么时候可以知道购票结果？</view>
+                    <view class="new-answer" hidden="{{!answer1}}">
+                        <view class="new-reply">1、预售车票，通常情况下，会在30分钟内给出购票结果，如30分钟无结果，可以转人工帮您催处理。	 2、预约车票，我们会在进入预售期后第一时间为您抢票，请您耐心等待，留意购票通知的短信。</view>
+                    </view>
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer2">可以取消订单吗？</view>
+                    <view class="new-answer" hidden="{{!answer2}}">
+                        <view class="new-reply">处于待购票状态的预约订单，可以在线申请取消订单。订单出票成功后，订单不可取消。</view>
+                    </view>
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer3">能够保证预订成功吗？</view>
+                    <view class="new-answer" hidden="{{!answer3}}">
+                        <view class="new-reply">网上购票结果受票量影响，不能保证全部有票，具体购票结果以短信通知为准。	 1、预售车票，通常情况下，会在30分钟内给出购票结果，如30分钟无结果，可以转人工帮您催处理。	2、预约车票，我们会在进入预售期后第一时间为您抢票，请您耐心等待。</view>
+                    </view>
+                </block>
+                <block wx:elif="{{orderDetail.orderStateName=='出票失败'}}">
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer1">为什么会收到购票失败的短信？</view>
+                    <view class="new-answer" hidden="{{!answer1}}">
+                        <view class="new-reply">非常抱歉，购票失败可能存在以下原因：车次无票、余票不足、车次变动、时间变动、价格变动等，没能帮您购买成功，请您谅解。订单退款一般1-15个工作日退至您的原支付账户。</view>
+                    </view>
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer2">购票失败如何退款？</view>
+                    <view class="new-answer" hidden="{{!answer2}}">
+                        <view class="new-reply">您好，若购票失败，退款会在1-15个工作日内全额退至您的原支付账户。</view>
+                    </view>
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer3">购票失败，能否再次购买？</view>
+                    <view class="new-answer" hidden="{{!answer3}}">
+                        <view class="new-reply">十分抱歉，若您购票失败，但仍需出行，建议您购买其他时间段的车次，为您的出行带来不便，请您谅解。	订单退款一般1-15个工作日退至您的原支付账户。</view>
+                    </view>
+                </block>
+                <block wx:elif="{{orderDetail.orderStateName=='出票成功'||orderDetail.orderStateName=='已发车'}}">
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer1">车站电话和地址是什么？</view>
+                    <view class="new-answer" hidden="{{!answer1}}">
+                        <view class="new-reply">车站地址建议咨询当地居民或百度搜索。车站电话建议您可直接咨询114咨询。</view>
+                    </view>
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer2">未收到取票短信怎么办？</view>
+                    <view class="new-answer" hidden="{{!answer2}}">
+                        <view class="new-reply">如果订单状态是“出票成功”未收到取票短信，您可咨询在线客服“转人工”，客服专员会尽快帮您处理！</view>
+                    </view>
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer3">如何取票？</view>
+                    <view class="new-answer" hidden="{{!answer3}}">
+                        <view class="new-reply">1、请您预留充足的时间凭取票号码/取票密码/身份证等凭证到车站售票窗口/自助取票机取票上车；	 2、在客运站营运时间内，建议平时提前30分钟、节假日/高峰期提前1小时进站取票，具体取票信息请见系统短信；	 3、建议优先在自助取票机取票，如无自助取票机，请将取票信息提供给售票窗口或服务台的工作人员取票。</view>
+                    </view>
+                </block>
+                <block wx:elif="{{orderDetail.orderStateName=='退票失败'}}">
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer1">为什么会退票失败？</view>
+                    <view class="new-answer" hidden="{{!answer1}}">
+                        <view class="new-reply">当超过最晚可退票时间、已经取到纸质车票或部分系统原因，均有可能造成退票失败的现象。</view>
+                    </view>
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer2">退票失败后我该怎么做？</view>
+                    <view class="new-answer" hidden="{{!answer2}}">
+                        <view class="new-reply">您可以继续发起退票操作或直接至发车站窗口进行退票，如持续退票失败也可咨询客服核实。</view>
+                    </view>
+                    <view bindtap="slideToggleAnswer" class="new-ques new-arrow-down js-qalist" data-index="answer3">退票失败后我的订单是否还有效？</view>
+                    <view class="new-answer" hidden="{{!answer3}}">
+                        <view class="new-reply">退票失败的订单仍可正常乘车，您可至发车站进行取票并按计划出行。</view>
+                    </view>
+                </block>
+            </view>
+        </view>
+        <view class="cross-pro" wx:if="{{!!isShowCrossPlan}}">
+            <view class="cross-title">
+                <text class="star-icon"></text>
+                <text>同程为您推荐</text>
+            </view>
+            <view class="cross-content">
+                <view class="cross-item new-fbox" wx:for="{{crossPlan}}" wx:for-index="crIndex" wx:for-item="crItem" wx:key="crItem.category">
+                    <view class="item-img {{crItem.category==7?'img-a':''}} {{crItem.category==8?'img-d':''}} {{crItem.category==15?'img-b':''}}"></view>
+                    <view class="item-msg">
+                        <view class="i-t-title">{{crItem.category==7?'车站接送':''}} {{crItem.category==8?'国内租车':''}} {{crItem.category==15?'酒店':''}}</view>
+                        <view class="i-b-title">{{crItem.category==8?'首租减100':''}}{{crItem.category==7?'司机免费等待':''}}</view>
+                    </view>
+                    <view bindtap="crossTap" class="item-book" data-category="{{crIndex}}">预订</view>
+                </view>
+                <view class="cross-item new-fbox" wx:if="!!hotelLink">
+                    <view class="item-img img-b"></view>
+                    <view class="item-msg">
+                        <view class="i-t-title">酒店</view>
+                        <view class="i-b-title">提前订，保障有房</view>
+                    </view>
+                    <view bindtap="crossTaphot" class="item-book">预订</view>
+                </view>
+            </view>
+        </view>
+        <view class="take-ticket" wx:if="{{isScenicOrder}}">
+            <view class="take-ticket-warn" wx:if="{{scenicInfo}}">{{scenicInfo}}</view>
+            <view class="take-ticket-warn" wx:else>
+                <view class="take-ticket-title">使用方法：</view>
+                <view class="take-ticket-text">1、预订成功后，您会收到同程确认短信，出行当天，请凭出票短信和身份证验证上车</view>
+                <view class="take-ticket-text">2、旅游线路拼车业务不支持纸质车票。如有疑问，请提前与我司联系，客服电话：4007-777-777</view>
+            </view>
+        </view>
+    </view>
+    <view class="new-button" id="bottomButton" wx:if="{{(orderDetail.orderStateName=='待支付'||orderDetail.orderStateName=='待付款')&&!payHidden&&orderDetail.vipSubscribe!=1}}">
+        <view bindtap="payNow" class="new-pay new-pay2">立即支付</view>
+    </view>
+    <view class="phoneBox" hidden="{{hideConnect}}">
+        <view class="phoneCall">
+            <view href="http://livechat.ly.com/out/robotservice/robottouch?p=18&sourcetype=16" style="display:none">
+                <view class="phone_box1">
+                    <view class="icon_service"></view>
+                    <view class="icon_service1">
+                        <view>在线客服<text>推荐</text>
+                        </view>
+                        <view class="phone_text1">及时高效 快速解决您的问题</view>
+                    </view>
+                </view>
+            </view>
+            <view bindtap="makePhoneCall2">
+                <view class="phone_box2">
+                    <view class="icon_phone"></view>
+                    <view class="icon_phone1">
+                        <view>客服电话</view>
+                        <view class="phone_text1">拨打400-777-7777，不收取长途费</view>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view bindtap="closeConnect" class="modal-overlay" hidden="{{hideConnect}}"></view>
+</view>
+<view class="popXCXEntry3" hidden="{{!openerweima}}" wx:if="{{orderDetail.qrcode||qrCodeList.length||isHasBarCode}}">
+    <view class="erweima-box">
+        <view bindtap="openEwm" class="new-close"></view>
+        <swiper autoplay="" class="swiper-code {{!orderDetail.qrcode&&!qrCodeList.length&&isHasBarCode?'isBarCode':''}}" duration="500" indicatorDots="{{indicatorDots}}" interval="2000">
+            <swiper-item wx:for="{{qrCodeList.length?qrCodeList:orderDetail.passengersInfo}}" wx:key="{{item}}">
+                <view class="pass-name" wx:if="{{item.name}}">乘客：{{item.name}}</view>
+                <view class="titles">请凭下方{{!orderDetail.qrcode&&!qrCodeList.length&&isHasBarCode?'条形码':'二维码'}}至出发站扫描乘车</view>
+                <image src="data:image/png;base64,{{item.code}}"></image>
+            </swiper-item>
+        </swiper>
+    </view>
+</view>
+<view class="popXCXEntry3" hidden="{{!isOpenRefund}}">
+    <view class="new-refund">
+        <view class="new-title">
+            <view class="new-schedule">退款进度</view>
+            <view bindtap="showRefundBox" class="new-close"></view>
+        </view>
+        <view class="new-price new-hide" wx:if="{{refundData.refundAmount>0&&refundData.subscribeRefund<=0}}">金额：<text class="new-span">¥</text>
+            <text class="new-em">{{refundData.refundAmount}}</text>
+        </view>
+        <view class="new-lbox">
+            <view class="subscribeRefund-price" wx:if="{{refundData.subscribeRefund>0&&refundData.totalRefund>0}}">
+                <view>金额：<text>
+                        <text>¥</text>{{refundData.totalRefund}}</text>
+                </view>
+            </view>
+            <view>
+                <view class="new-list new-carry {{refundData.show==1?'new-now':''}}">
+                    <view class="new-ltitle">退款提交成功</view>
+                    <view class="new-info">退款提交成功, 系统将为您发起退款</view>
+                    <view class="new-info" wx:if="{{!!refundData.one}}">{{refundData.one}}</view>
+                    <view class="new-info" wx:if="{{!refundData.one}}"></view>
+                </view>
+                <view class="new-list new-carry {{refundData.show==2?'new-now':''}}">
+                    <view class="new-ltitle" style="border-top:0" wx:if="{{refundData.subscribeRefund>=0}}">退款申请已受理</view>
+                    <view class="new-ltitle" wx:if="{{refundData.subscribeRefund<0}}">退款申请已受理</view>
+                    <view class="new-info">您的退款同程已受理，快马加鞭办理中</view>
+                    <view class="new-info" wx:if="{{!!refundData.two}}">{{refundData.two}}</view>
+                    <view class="new-info" wx:if="{{!refundData.two}}"></view>
+                </view>
+                <view class="new-list new-carry {{refundData.show==3?'new-now':''}}">
+                    <view class="new-ltitle">微信受理退款申请</view>
+                    <view class="new-info">同程已退款，微信退款中，请耐心等待</view>
+                    <view class="new-info" wx:if="{{!!refundData.three}}">{{refundData.three}}</view>
+                    <view class="new-info" wx:if="{{!refundData.three}}"></view>
+                </view>
+                <view class="new-list {{refundData.show==4?'new-carry new-now':''}}">
+                    <view class="new-ltitle">退款成功</view>
+                    <view class="new-info">预计在1-15个工作日内退款至您的支付账户，请坐等收钱</view>
+                    <view class="new-info" wx:if="{{!!refundData.four}}">{{refundData.four}}</view>
+                    <view class="new-info" wx:if="{{!refundData.four}}"></view>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
+<view class="map-container" wx:if="{{!isHiddenMap}}">
+    <view class="map-big">
+        <map showLocation controls="{{controls}}" id="map" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" scale="14" style="width:100%;height:100%"></map>
+    </view>
+    <view class="address-box">
+        <view class="address-text">
+            <view class="first-line">{{orderDetail.stationInfo.dptStation}}</view>
+            <view class="sec-line add-line" wx:if="{{orderDetail.stationInfo.dptStationAddress}}">
+                <text>地址：</text>
+                <text>{{orderDetail.stationInfo.dptStationAddress}}</text>
+            </view>
+            <view class="sec-line" wx:if="{{orderDetail.stationInfo.dptContactNo}}">
+                <text>电话：</text>{{orderDetail.stationInfo.dptContactNo}}</view>
+            <view class="sec-line" wx:if="{{orderDetail.stationInfo.takeTicketStartTime&&orderDetail.stationInfo.takeTicketEndTime}}">
+                <text>营业时间：</text>{{orderDetail.stationInfo.takeTicketStartTime}}-{{orderDetail.stationInfo.takeTicketEndTime}}</view>
+        </view>
+        <view class="address-btn">
+            <view bindtap="closeMap" class="btn-single mapGoBack">返回</view>
+        </view>
+    </view>
+</view>
+<view class="couponPop" wx:if="{{couponPop}}">
+    <view class="centerC-img">
+        <view bindtap="couponShare" class="main-bg" data-url="{{shareUrl}}"></view>
+        <view catchtap="closeCouponPop" class="coupon-closeBtn"></view>
+    </view>
+</view>
+<view class="coupon" wx:if="{{couponSmall}}">
+    <view bindtap="couponShare" class="coupon-img shake" data-url="{{shareUrl}}"></view>
+</view>
+<view class="chooseCtrl {{showCtrl}}">
+    <view bindtap="refundCheak">退票</view>
+</view>
+<view bindtap="closeLayer" class="layer" hidden="{{layerShown}}"></view>
+<view bindtap="hideCancelModal" class="cancel-mask {{showCancelModal?'show':''}}"></view>
+<view class="cancel-reason {{showCancelModal?'show':''}}">
+    <view class="cancel-tool">
+        <button bindtap="hideCancelModal" class="btn-cancel" plain="true" size="mini" type="default">取消</button>
+        <view class="empty"></view>
+        <button bindtap="cancleOrder" class="btn-ok" disabled="{{!checkReasonId}}" plain="true" size="mini" type="default">确定</button>
+    </view>
+    <view class="cancel-tip">到车站发售期后我们会马上为您购票，第一时间通知您出票结果，建议您耐心等待</view>
+    <view class="cancel-title">
+        <view class="cancel-title-1">您为什么取消？</view>
+        <view class="cancel-title-2">请告知我们，我们可以改善</view>
+    </view>
+    <view class="cancel-list">
+        <block wx:for="{{cancelReasonList}}" wx:key="{{item}}">
+            <view bindtap="selectReasonFun" class="{{checkReasonId===item.code?'active':''}}" id="{{item.code}}" index="{{index}}" wx:if="{{item.code!=='Other'}}">{{item.name}}</view>
+            <view bindtap="selectReasonFun" class="{{checkReasonId===item.code?'active':''}}" id="{{item.code}}" index="{{index}}" wx:else>{{item.name}}<input bindinput="writeSeason" class="input" focus="true" placeholder="请输入订单取消原因" value="{{otherReson}}" wx:if="{{checkReasonId==='Other'}}"></input>
+            </view>
+        </block>
+    </view>
+</view>
+<view bindtap="closeLayer" class="refund-pop {{showRefundPop?'active':''}}">
+    <view class="refund-box">
+        <view class="refund-title">该发车站不支持网上退票，如需退票请至车站窗口办理</view>
+        <view class="refund-content">
+            <view class="direct-text">
+                <text>无需到车站，退票我帮您！</text>
+                <text catchtap="refundTipsShow" class="text-button"></text>
+                <text class="text-icon">独家推荐</text>
+            </view>
+            <view class="direct-des">网上发起退票后，同程工作人员帮您到车站退票，收取<text>{{orderDetail.assistServiceFee?orderDetail.assistServiceFee:'0'}}</text>元/单服务费（退款时自动扣除）。</view>
+            <view class="rd-bt-button new-fbox">
+                <view bindtap="closeLayer" class="rd-btn-left new-flex1">不了，去车站退</view>
+                <view catchtap="assistRefundCtrl" class="rd-btn-right new-flex1">好的，帮我退票</view>
+            </view>
+        </view>
+    </view>
+</view>
+<view bindtap="closeLayer" class="notice-top" hidden="{{noticeShow}}">
+    <view class="nmain">
+        <view style="text-align:center">同程网上退票服务说明</view>
+        <view>1、发车站是否可以网上退票？</view>
+        <view>发车站官方不支持网上退票，您可以直接至发车站窗口进行退票或改签操作。<text class="red">也可以使用同程退票服务，由同程工作人员帮您到车站退票。</text>
+        </view>
+        <view></view>
+        <view>2、什么是同程退票服务？</view>
+        <view>为了节约您到车站退票的时间，同程推出温馨退票服务。您可以在网上发起退票（点击“好的，帮我退票”），同程工作人员将会代您到车站进行退票，无需再到车站，省时省力。</view>
+        <view></view>
+        <view>3、什么时候能拿到我的退款？</view>
+        <view>发车后系统自动将退款原路退回到您的支付账户，到账时间1-15个工作日，请注意查收。如在发车前已取票系统不再发起退款。</view>
+        <view>4、退款金额是怎样计算的？</view>
+        <view>根据各省市区交通部门、物价局规定，退票一般按照发车前2小时外发起退票收取10%退票费，2小时内收取20%退票费计算。具体以各车站公布规则为准。退款时会自动扣除退票服务费。</view>
+        <view>5、为什么会退票失败？</view>
+        <view>可能原因为您已取票，取票后需凭纸质票至发车站窗口办理退票手续。若为用户主动取票后导致退票失败，退票服务费恕不退还。</view>
+    </view>
+    <view class="close"></view>
+</view>
+<view bindtap="closeMonthCardBox" class="monthCard layer" data-type="monthCard" wx:if="{{showMonthCard&&showMonthCardBox}}">
+    <view class="cardBox">
+        <image catchtap="buyMonthCard" class="actimg" data-cardid="{{monthCardInfo.id}}" src="{{monthCardInfo.image1}}"></image>
+        <image class="closeimg" src="https://file.40017.cn/groundtraffic/Activity/yiyuanDouble/close.png"></image>
+    </view>
+</view>
+<view bindtap="showCardBox" class="monthCardIcon" data-cardid="{{monthCardInfo.id}}" wx:if="{{showMonthOption&&isShowMonth}}">
+    <text class="cardimage shake" style="background:url({{monthCardInfo.image2}}) no-repeat;background-size:100% auto"></text>
+</view>
+<view bindtap="closeKanjia" class="monthCard layer" data-type="Kanjia" hidden="{{!popKan}}">
+    <view class="cardBox kanBox">
+        <view catchtap="KanPop" class="kanjia-bg"></view>
+        <image bindtap="closeKanjia" class="closeimg" src="https://file.40017.cn/groundtraffic/Activity/yiyuanDouble/close.png"></image>
+    </view>
+</view>
+<view bindtap="showKanBox" class="monthCardIcon" wx:if="{{isShowKan}}">
+    <text class="Kanimage shake"></text>
+</view>
+<view bindtap="closePopPrice" class="popXCXEntry3" wx:if="{{showPopPrice}}">
+    <view class="new-refund newPriceList">
+        <view class="new-title">
+            <view class="new-schedule">订单金额<text class="org">¥{{orderDetail.payAmount}}</text>
+            </view>
+            <view class="new-close"></view>
+        </view>
+        <view class="normal-line new-fbox pricePop" wx:for="{{pricesList}}" wx:for-index="id" wx:key="item">
+            <view class="new-flex1 priceTitle">
+                <text>{{item.name}}</text>
+                <text catchtap="getRefundRule" class="green" data-id="{{item.itemCode}}" wx:if="{{item.itemCode==9}}">退改规则</text>
+                <text catchtap="getRefundRule" class="green" data-id="{{item.itemCode}}" wx:elif="{{item.itemCode==27||item.itemCode==29}}">退票规则</text>
+                <text catchtap="getFastState" class="green" wx:elif="{{(item.itemCode==10||item.itemCode==21)&&orderDetail.orderStateName=='出票成功'&&!orderDetail.changeChildOrder}}">状态查询</text>
+                <text class="user-level" wx:elif="{{item.itemCode==11&&orderDetail.homeDeliveryRightInfo&&orderDetail.homeDeliveryRightInfo.extInfo}}">V{{orderDetail.homeDeliveryRightInfo.currVipId}}会员免费</text>
+            </view>
+            <view catchtap="getFastState" class="new-flex1">{{item.sym}}¥{{item.amount}}{{item.count}}</view>
+        </view>
+    </view>
+</view>
+<view bindtap="closeLayer" class="notice-top" hidden="{{hideRefundRule}}">
+    <view class="nmain">
+        <view style="text-align:center">{{RefundRule.title}}</view>
+        <view>{{RefundRule.detail}}</view>
+    </view>
+    <view bindtap="closeLayer" class="close"></view>
+</view>
+<view bindtap="closeLayer" class="notice-top" hidden="{{hideFastLine}}">
+    <view class="nmain">
+        <view class="fastTitle">极速出票</view>
+        <view>
+            <view class="new-fbox">
+                <text class="new-flex1">支付成功</text>
+                <text class="new-flex1 gray" style="text-align:right">{{fastState.payTime}}</text>
+            </view>
+            <view class="gray">您已支付成功，正在为您优先出票</view>
+        </view>
+        <view>
+            <view class="new-fbox">
+                <text class="new-flex1">出票成功</text>
+                <text class="new-flex1 gray" style="text-align:right">{{fastState.outTime}}</text>
+            </view>
+            <view class="gray">
+                <text>出票耗时：{{fastState.spendTime}}。</text>
+                <text wx:if="{{fastState.payAmount}}">抱歉未能在约定时间内极速出票，极速出票及超时赔付费共{{fastState.payAmount}}元将退还至您的支付账户。</text>
+                <text wx:if="{{!fastState.payAmount}}">感谢您使用极速出票服务</text>
+            </view>
+        </view>
+    </view>
+    <view bindtap="closeLayer" class="close"></view>
+</view>
+<view class="ADFailPop" wx:if="{{isShowAdFailPop}}">
+    <view class="wrap">
+        <view class="inner">
+            <view class="title">微信自动扣款失败</view>
+            <view class="content">系统已为您抢到车票啦，可能由于账户余额不足需要手动支付，支付后即可正常出行~</view>
+            <view bindtap="toOrderDetailPay" class="manualPay">手动支付</view>
+        </view>
+    </view>
+</view>
+<view class="ADOrderPop {{isShowSubscribeInfo?'showinfo':''}}">
+    <view class="title">高级预约服务说明</view>
+    <view class="new-bmain">
+        <view class="subtitle">1、 什么是高级预约</view>
+        <view class="p">若您预订的班次暂未到达预售期，系统为您提供预约购票。当车站开放售票时会自动为您进行出票。针对预约期内班次，我们为您提供高级预约与基础预约服务。其中使用高级预约服务可额外享受先出票后付款、专属通道购票、系统优先出票服务，并免费赠送10元国内用车代金券。</view>
+        <view class="subtitle">2、 先出票后付款怎么操作</view>
+        <view class="p">先出票后付款是同程汽车票基于微信代扣支付推出的快捷购票功能，提交订单后无需付款，当出票成功后系统会自动从您绑定的支付账户中扣除实际票款。<view>提交订单后您需要授权开通微信自动代扣才可享用先出票后付款服务，单笔限额500元，每天限5次支付。</view>
+            <view>请确认您的支付账户里余额充足，否则扣款失败将导致您购票失败。</view>
+        </view>
+        <view class="subtitle">3、 使用高级预约服务一定能出票成功吗？</view>
+        <view class="p">使用高级预约服务会使用专属通道为您优先出票，但系统无法保证100%出票成功，若出票失败该服务不会扣除您任何费用。</view>
+        <view class="subtitle">4、 出票后提示我代扣失败了</view>
+        <view class="p">出票成功后若系统代扣失败，请检查您的账户余额是否充足，并进入订单详情页中手动支付，支付成功后系统将会发送出票成功短信，凭短信中取票方式正常到车站取票乘车。</view>
+        <view class="subtitle">5、 扣款金额和提交订单金额不一致</view>
+        <view class="p">预约订单车站尚未开始售票，票价未定，预约班次以基础价格上浮10%展示，出票成功后系统会根据实际车票金额进行扣款。</view>
+    </view>
+    <view bindtap="showSubscribeInfo" class="new-close1"></view>
+</view>
+<view class="notice-top" hidden="{{showMonthCard}}">
+    <view class="nmain">
+        <view class="nmain-tit"></view>
+        <view wx:for="{{discountRuleContent}}" wx:key="*this">{{item}}</view>
+    </view>
+    <view bindtap="closeMonthCard" class="close"></view>
+</view>

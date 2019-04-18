@@ -1,0 +1,6 @@
+{
+    "navigationBarTitleText": "选择城市&车站",
+    "usingComponents": {
+        "city": "../../components/city/city"
+    }
+}

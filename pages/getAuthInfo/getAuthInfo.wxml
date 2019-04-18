@@ -1,0 +1,7 @@
+<view class="page">
+    <image class="logo" src="/images/buslogo.png"></image>
+    <view class="appname">汽车票</view>
+    <view class="desc">您暂未获取微信授权，将无法正常使用小程序的功能~如需要正常使用，请点击“授权登录”按钮，打开头像、昵称等信息的授权。</view>
+    <button bindgetuserinfo="getUserInfo" bindtap="clickBtn" hoverClass="btn-hover" openType="getUserInfo">授权登录</button>
+</view>
+

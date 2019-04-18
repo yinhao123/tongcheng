@@ -1,0 +1,7 @@
+'use strict';
+var getInt = function getInt(str, key) {
+    return (str.replace(getRegExp('' + key, 'g'), '%%' + key + '%%').split('%%'))
+};
+module.exports = ({
+    getInt: getInt,
+});

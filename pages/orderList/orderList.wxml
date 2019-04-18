@@ -1,0 +1,41 @@
+<form bindsubmit="formBookingBtn" reportSubmit="{{true}}">
+    <label>
+        <button formType="submit" hidden="{{true}}" type="primary"></button>
+        <view class="container">
+            <view class="topinfo">
+                <view class="header flex_box flex_align_center">
+                    <image src="{{userInfo.avatarUrl||'https://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/mina-bus-app/icon_face_default-3.png'}}"></image>
+                    <view class="flex_1 nickname text-ellipsis">{{userInfo.nickName}}</view>
+                    <view bindtap="fnShowAgreement" class="about">关于我们<text class="arrow"></text>
+                    </view>
+                </view>
+                <view class="tab-list flex_box c">
+                    <view bindtap="selectedTab" class="flex_1 tab {{activeIndex==index?'active':''}}" data-index="{{index}}" wx:for="{{orderStatus}}">{{item}}</view>
+                </view>
+            </view>
+            <scroll-view class="body" scrollY="{{true}}">
+                <view class="order-box" wx:if="{{orderList.length}}">
+                    <view bindtap="goOrderDetail" class="order-list" data-index="{{index}}" wx:for="{{orderList}}" wx:key="index">
+                        <view class="order-title flex_box">
+                            <view class="order-title-left flex_1">
+                                <text class="icon-bus"></text>汽车票</view>
+                            <view class="order-title-right flex_1 r {{util.highLight(item)}}">{{item.orderStateShowName}}</view>
+                        </view>
+                        <view class="bus-info-box flex_box">
+                            <view class="bus-info flex_2">{{item.departure}} - {{item.destination}}</view>
+                            <view class="bus-price flex_1 r">￥{{item.allAmount}}</view>
+                        </view>
+                        <view class="bus-date">出行时间：{{item.dptDateTime}}</view>
+                    </view>
+                    <view class="no-more-data c" wx:if="{{noData}}">没有更多数据了</view>
+                </view>
+                <view class="no-data c" wx:elif="{{!isFirstLoad}}">
+                    <image modal="widthFix" src="https://wx.40017.cn/touch/weixin/public/img/order/null.png?v=02"></image>
+                    <view>您还没有任何订单哦</view>
+                    <view bindtap="goHome" class="gotohomebtn">去首页看看</view>
+                </view>
+            </scroll-view>
+        </view>
+    </label>
+</form>
+<wxs module="util" src="orderList.wxs" />

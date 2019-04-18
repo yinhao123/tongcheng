@@ -1,0 +1,225 @@
+.search-box {
+    width: 700rpx;
+    height: 70rpx;
+    line-height: 70rpx;
+    padding: 0 20rpx;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+
+.search-box .search-content {
+    position: relative;
+    border-radius: 50rpx;
+    background: #eaedf1;
+    padding-left: 60rpx;
+}
+
+.search-box .search {
+    height: 100%;
+    font-size: 30rpx;
+    width: 90%;
+    color: #666;
+}
+
+.search-box .search-icon {
+    position: absolute;
+    top: 50%;
+    margin-top: -16rpx;
+    left: 20rpx;
+    z-index: 10;
+}
+
+.search-box .clear-icon {
+    position: absolute;
+    top: 50%;
+    margin-top: -16rpx;
+    right: 20rpx;
+    z-index: 10;
+}
+
+.search-box .btn-cancel {
+    color: #09bb07;
+    width: 65px;
+    border: none;
+    text-align: center;
+    font-size: 28rpx;
+}
+
+.search-box .placeholder {
+    font-size: 14px;
+    color: #666;
+}
+
+.city-content {
+    background: #fff;
+    padding-top: 80rpx;
+    height: 93vh;
+}
+
+.city-content .title {
+    display: block;
+    color: #999;
+    font-size: 24rpx;
+    padding: 12px 0 10px 0;
+}
+
+.city-content .history-box,.city-content .hotcity-box {
+    padding: 0 5px 0 15px;
+}
+
+.city-content .history-box .city-item,.city-content .hotcity-box .city-item {
+    width: 30%;
+    height: 56rpx;
+    line-height: 56rpx;
+    box-sizing: border-box;
+    border: 1px solid #eaedf1;
+    color: #666;
+    font-size: 28rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 20rpx;
+    margin-bottom: 20rpx;
+}
+
+.city-content .history-box .city-item:nth-of-type(3n),.city-content .hotcity-box .city-item:nth-of-type(3n) {
+    margin-right: 0;
+}
+
+.city-content .history-box .city-item.selected,.city-content .hotcity-box .city-item.selected {
+    border: 1px solid #09bb07;
+    color: #09bb07;
+    background: #f2fcea;
+}
+
+.city-content .letter-box {
+    padding: 0 5px 0 15px;
+}
+
+.city-content .letter-box .letter {
+    width: 14%;
+    height: 56rpx;
+    line-height: 56rpx;
+    box-sizing: border-box;
+    border: 1px solid #eaedf1;
+    color: #666;
+    font-size: 28rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 20rpx;
+    margin-bottom: 20rpx;
+}
+
+.city-content .letter-box .letter:nth-of-type(6n) {
+    margin-right: 0;
+}
+
+.city-content .letter-box .letter.selected {
+    border: 1px solid #09bb07;
+    color: #09bb07;
+    background: #f2fcea;
+}
+
+.city-content .letter-box .letter-city-item {
+    height: 88rpx;
+    line-height: 88rpx;
+    border-bottom: 1rpx solid #ccc;
+    font-size: 32rpx;
+    color: #333;
+}
+
+.city-content .letter-box .letter-city-item:last-of-type {
+    border-bottom: 0;
+}
+
+.city-content .letter-box .pname {
+    font-size: 24rpx;
+    color: #999;
+}
+
+.city-content .letter-box .no-letter-data {
+    height: 88rpx;
+    line-height: 88rpx;
+    font-size: 28rpx;
+    color: #333;
+}
+
+.city-content .auto-complete {
+    padding: 10rpx 20rpx;
+    overflow: auto;
+    width: auto;
+}
+
+.city-content .auto-complete .city-list {
+    font-size: 28rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    border-bottom: 1rpx solid #eaedf1;
+}
+
+.city-content .auto-complete .city-tip {
+    color: #999;
+    font-size: 24rpx;
+    min-width: 50rpx;
+}
+
+.city-content .red {
+    color: red;
+}
+
+.flex_box {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.flex_box.flex_column {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+}
+
+.flex_box.flex_wrap {
+    flex-wrap: wrap;
+}
+
+.flex_align_center {
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.flex_justify_center {
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+.flex_1 {
+    box-flex: 1;
+    flex: 1;
+}
+
+.flex_2 {
+    box-flex: 2;
+    flex: 2;
+}
+
+.flex_3 {
+    box-flex: 3;
+    flex: 3;
+}
+
+.l {
+    text-align: left;
+}
+
+.c {
+    text-align: center;
+}
+
+.r {
+    text-align: right;
+}

@@ -1,0 +1,268 @@
+@charset "UTF-8";
+
+.container,page {
+    height: 100%;
+}
+
+.container .notice-box {
+    height: 30px;
+    position: relative;
+    overflow: hidden;
+    background: #fff7dc;
+}
+
+.container .notice-box1 {
+    position: absolute;
+    top: 0;
+    height: 30px;
+    left: 0;
+    line-height: 30px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 40px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.container .notice-box1 .text-notice {
+    display: block;
+    height: 30px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 12px;
+    color: #9e8052;
+    box-sizing: border-box;
+    line-height: 30px;
+}
+
+.container .noticepic {
+    width: 30px;
+    background: url(https://img1.40017.cn/touch/bus/wx_bus/labaPro.png) no-repeat 15px center;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 30px;
+    background-size: 15px auto;
+}
+
+.container .banner {
+    height: 180rpx;
+}
+
+.container .banner swiper {
+    height: 180rpx;
+}
+
+.container .banner image {
+    width: 100%;
+    height: 180rpx;
+    max-width: 100%;
+    display: block;
+}
+
+.container .bus-content {
+    width: 728rpx;
+    margin: 40rpx auto 0;
+    background: #fff;
+    border-radius: 20rpx;
+    box-shadow: 0 8px 10px -5px rgba(49,69,89,.2);
+}
+
+.container .bus-content .bus-station {
+    padding: 27rpx 30rpx;
+    height: 110rpx;
+}
+
+.container .bus-content .bus-title {
+    color: #bec5cd;
+    font-size: 26rpx;
+    margin-bottom: 15rpx;
+}
+
+.container .bus-content .bus-name {
+    color: #333;
+    font-size: 40rpx;
+}
+
+.container .bus-content .change-city {
+    width: 62rpx;
+    height: 62rpx;
+    background: url(//file.40017.cn/img140017cnproduct/touch/bus/wx_bus/mina-bus-app/icon.png);
+    background-size: cover;
+    margin-top: 50rpx;
+}
+
+.container .bus-content .bus-datetime {
+    padding: 0 30rpx;
+    height: 100rpx;
+    color: #333;
+    font-size: 40rpx;
+}
+
+.container .bus-content .bus-date,.container .bus-content .recentday {
+    margin-right: 20rpx;
+}
+
+.container .bus-content .week {
+    color: #999;
+    font-size: 30rpx;
+    padding-top: 15rpx;
+}
+
+.container .bus-content .btn-box {
+    margin: 20rpx auto;
+}
+
+.container .bus-content .btn-box .btn {
+    width: 673rpx;
+    height: 90rpx;
+    line-height: 90rpx;
+    background: #1fc756;
+    color: #fff;
+    font-size: 36rpx;
+    font-weight: 700;
+    margin: 0 auto;
+    border-radius: 50rpx;
+}
+
+.container .bus-content .history-search {
+    color: #999;
+    font-size: 26rpx;
+    padding: 0 30rpx;
+    margin-top: 30rpx;
+}
+
+.container .bus-content .history-search .history-title {
+    margin-bottom: 27rpx;
+    position: relative;
+}
+
+.container .bus-content .history-search .history-title:after,.container .bus-content .history-search .history-title:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 93rpx;
+    height: 2rpx;
+    background: #e4e4e4;
+    transform: translate3d(0,-50%,0);
+}
+
+.container .bus-content .history-search .history-title:before {
+    left: 170rpx;
+}
+
+.container .bus-content .history-search .history-title:after {
+    right: 170rpx;
+}
+
+.container .bus-content .history-search .history {
+    width: 230rpx;
+}
+
+.container .bus-content .history-search .history:last-of-type {
+    margin-right: 0;
+}
+
+.container .bus-content .history-search .sline {
+    width: 45rpx;
+    height: 1px;
+    background: #e4e4e4;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 12rpx;
+}
+
+.agreement {
+    font-size: 30rpx;
+}
+
+.agreement .aTitle {
+    font-size: 34rpx;
+    font-weight: 700;
+    padding: 30rpx 0 10rpx 0;
+}
+
+.agreement .aWrap {
+    background-color: #fff;
+    width: 500rpx;
+    margin: 0 auto;
+    border-radius: 20rpx;
+}
+
+.agreement .aContent {
+    border-bottom: 1rpx solid #999;
+    padding: 0 40rpx 10rpx 40rpx;
+}
+
+.agreement .aContent text {
+    color: #00f;
+}
+
+.agreement .aBtns {
+    font-size: 32rpx;
+    font-weight: 400;
+}
+
+.agreement .aNo,.agreement .aYes {
+    line-height: 100rpx;
+}
+
+.agreement .aNo {
+    border-right: 1rpx solid #999;
+}
+
+.line {
+    width: 680rpx;
+    height: 1rpx;
+    background: #e4e4e4;
+    margin: 0 auto;
+    position: relative;
+}
+
+.line:after,.line:before {
+    content: '';
+    position: absolute;
+    top: -8rpx;
+    width: 20rpx;
+    height: 20rpx;
+    border-radius: 50%;
+    background: #e2e4eb;
+}
+
+.line:before {
+    left: -31rpx;
+}
+
+.line:after {
+    right: -31rpx;
+}
+
+.arrow {
+    width: 20rpx;
+    height: 20rpx;
+    border: 5rpx solid #bbb;
+    transform: rotate(-45deg);
+    border-width: 0 5rpx 5rpx 0;
+    margin-right: 30rpx;
+}
+
+.shipEntry {
+    font-size: 26rpx;
+    font-weight: 700;
+    color: #999;
+    padding: 22rpx 0;
+    border-top: 1rpx solid #e4e4e4;
+    width: 92%;
+    margin: 30rpx auto 0 auto;
+}
+
+.shipEntry .arrow {
+    width: 16rpx;
+    height: 16rpx;
+    color: #bebebe;
+}
+
+.shipEntry image {
+    width: 40rpx;
+    margin-right: 20rpx;
+}

@@ -1,0 +1,8 @@
+page {
+    background: #fff;
+}
+
+.container image {
+    width: 750rpx;
+    height: 1125rpx;
+}

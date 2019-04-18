@@ -1,0 +1,123 @@
+<view class="notice-wrap" wx:if="{{pagename=='notices'}}">
+    <view class="notice-wrap new-bmain" wx:if="{{isBus==1}}">
+        <view class="{{item.length<8?'sec-title':''}}" wx:for="{{notice}}">{{item}}</view>
+    </view>
+    <view class="new-bmain" wx:else>
+        <view class="sec-title">购票须知：</view>
+        <view>本产品为旅游线路拼车，该产品由同程招徕的旅游集散中心供应商提供，具体的旅行服务和操作由委托公司提供。</view>
+        <view class="sec-title">产品说明：</view>
+        <view>1、旅游线路拼车业务不支持纸质车票。如有疑问，请提前与我司联系，客服电话：4007-777-777。</view>
+        <view>2、不支持儿童票、免票等特殊票种。如需占座，请购买全价车票。如需发票，请致电客服，统一顺丰到付。</view>
+        <view>3、该产品可能会包含去程交通费、返程交通费或往返交通费，部分线路可能包含景区大门票费用，请注意识别。</view>
+        <view>4、此线路为旅游拼车，途中经过景点会出现上下客情况。</view>
+        <view>5、产品描述中涉及的交通时间 ，停留时间仅供参考，以当天实际时间为准。</view>
+        <view class="sec-title">使用方法：</view>
+        <view>预订成功后，您会收到同程确认短信，出行当天，请凭出票短信和身份证验证上车。</view>
+        <view class="sec-title">退改签规则：</view>
+        <view>1、旅游线路拼车业务特殊性，暂不支持线上退票、改签等功能。如有需要，请联系我司客服处理</view>
+        <view>2、因乘客个人原因造成无法出行的，离发车1周(7*24小时)前取消不收手续费；</view>
+        <view>3、因乘客个人原因造成无法出行的，发车前1天(24小时)到1周(7*24小时)内取消的扣10%手续费；</view>
+        <view>4、因乘客个人原因造成无法出行的，发车前24小时内不接受退改签处理。</view>
+        <view>5、若产生退款，您的款项会在1-15个工作日内退回到您的原支付帐户，请注意查看帐户明细。</view>
+    </view>
+</view>
+<view class="map-container" wx:elif="{{pagename=='map'&&!isHiddenMap}}">
+    <view class="map-box">
+        <map showLocation bindcontroltap="controltap" bindmarkertap="markertap" bindregionchange="regionchange" controls="{{controls}}" id="map" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" scale="13" style="width:100%;height:100%"></map>
+    </view>
+    <view class="address-box">
+        <view class="address-text">
+            <view class="first-line bold-style">{{station}}<text class="closest" wx:if="{{isClosest==1}}">离我最近</text>
+            </view>
+            <view class="sec-line add-line" wx:if="{{stationaddress}}">
+                <text>详细地址：</text>
+                <text class="cl-333">{{stationaddress}}</text>
+            </view>
+            <view class="sec-line" wx:if="{{contactphoneno.length>0}}">
+                <text>咨询电话：</text>
+                <block wx:for="{{contactphoneno}}">
+                    <text bindtap="makePhoneCall" class="cl-333" data-tel="{{item}}">{{item}}</text>
+                    <text bindtap="makePhoneCall" class="icon-phone" data-tel="{{item}}"></text>
+                </block>
+            </view>
+            <view class="sec-line" wx:if="{{starttime&&endtime}}">
+                <text>营业时间：</text>
+                <text class="cl-333">{{starttime}}-{{endtime}}</text>
+            </view>
+        </view>
+        <view class="address-btn">
+            <view bindtap="openLocation" class="btn-single mapGoBack router" data-latitude="{{latitude}}" data-longitude="{{longitude}}" data-station="{{station}}">导航</view>
+            <view bindtap="NowCarList" class="btn-single checkStation checkSch" data-station="{{station}}">查看班次</view>
+        </view>
+    </view>
+</view>
+<view class="refund-page" wx:elif="{{pagename=='refundPage'}}">
+    <view class="refund-free">
+        <view class="free-first new-fbox">
+            <view class="free-left">预计退款金额</view>
+            <view class="free-center new-flex1"></view>
+            <view class="free-right">￥{{guessToRefund}}</view>
+        </view>
+        <view class="free-normal new-fbox">
+            <view class="free-left new-flex1">订单实付金额</view>
+            <view class="free-right new-flex1">￥{{orderdetail.totalAmount}}</view>
+        </view>
+        <view class="free-normal new-fbox" wx:if="{{coefficientFee>=0}}">
+            <view class="free-left new-flex1">退票手续费</view>
+            <view class="free-right new-flex1">-￥{{coefficientFee}}</view>
+        </view>
+        <view class="free-normal new-fbox" wx:if="{{serviceCharges>0}}">
+            <view class="free-left new-flex1">服务费</view>
+            <view class="free-right new-flex1">-￥{{serviceCharges}}</view>
+        </view>
+        <view class="free-normal new-fbox" wx:if="{{FastTicketOut>0}}">
+            <view class="free-left new-flex1">极速出票</view>
+            <view class="free-right new-flex1">-￥{{FastTicketOut}}</view>
+        </view>
+        <view class="free-normal new-fbox" wx:if="{{refundFee>0}}">
+            <view class="free-left new-flex1">{{refundName}}</view>
+            <view class="free-right new-flex1">-￥{{refundFee}}</view>
+        </view>
+        <view class="free-normal new-fbox" wx:if="{{lijianCard>0}}">
+            <view class="free-left new-flex1">立减卡</view>
+            <view class="free-right new-flex1">-￥{{lijianCard}}</view>
+        </view>
+        <view class="free-normal new-fbox" wx:if="{{BusYiyuanFree>0}}">
+            <view class="free-left new-flex1">{{BusYiyuanFreename}}</view>
+            <view class="free-right new-flex1">-￥{{BusYiyuanFree}}</view>
+        </view>
+        <view class="warning">此处为预计退款金额仅为参考，实际退款请根据车站实际退款到账为准!</view>
+    </view>
+    <view class="refund-rule">
+        <view class="rule-title">退票退款说明</view>
+        <view class="rule-normal">1. 退票手续费为车站收取，平台仅为代收；</view>
+        <view class="rule-normal">2. 服务费包含技术接入费、短信费等费用；出票成功后在线退票或者去车站窗口退票均不予退还；</view>
+        <view class="rule-normal">3. 已经在车站取票的订单，请在车站窗口办理退票，线上将不予重复退票；</view>
+        <view class="rule-normal">4. 退款将于1-15个工作日原路退还至支付账户，请耐心等待；</view>
+        <view class="normal-lines space-box" wx:if="{{!busInfo.isClickRfd&&busInfo.ExtraSchFlag||!refundTxt}}">
+            <view class="new-fbox tp-line">
+                <block wx:if="{{shortrefundTicketStr.length>0}}" wx:for="{{shortrefundTicketStr}}" wx:for-index="itemI" wx:key="itemI">
+                    <view class="space-one space-first" wx:if="{{itemI==0&&!!item.validTo}}">
+                        <view class="new-flex1 space-bt-text {{shortrefundTicketStr.length==2?'space-le-bt-text':''}}">{{item.validTo}}</view>
+                    </view>
+                    <view class="new-flex1 space-one" wx:if="{{!!item.validFrom&&item.refundFeeRate}}">
+                        <view class="space-tp-txt">收取票价<text>{{item.refundFeeRate}}%</text>
+                        </view>
+                        <view class="new-flex1 space-bt-text">前{{item.validFrom}}</view>
+                    </view>
+                    <view class="space-one {{!!item.refundFeeRate?' ':'short-width'}}{{shortrefundTicketStr.length==1&&!item.validFrom||!!item.refundFeeRate&&shortrefundTicketStr[0].validFrom?'new-flex1':''}}" wx:if="{{shortrefundTicketStr.length==1&&!!shortrefundTicketStr[0].validFrom||itemI+1==shortrefundTicketStr.length||itemI+1==refundTicketStr.length&&!item.validFrom}}">
+                        <view class="space-tp-txt" wx:if="{{!!item.refundFeeRate&&!shortrefundTicketStr[0].validFrom&&shortrefundTicketStr.length==1}}">收取票价<text>{{item.refundFeeRate}}%</text>
+                        </view>
+                        <view class="space-tp-txt" wx:elif="{{!!item.refundFeeRate&&!shortrefundTicketStr[1].validFrom&&shortrefundTicketStr.length==2}}">收取票价<text>{{item.refundFeeRate}}%</text>
+                        </view>
+                        <view class="new-flex1 space-bt-text">发车时间</view>
+                    </view>
+                    <view class="space-one space-dot-one short-width2" wx:if="{{itemI+1==shortrefundTicketStr.length}}">
+                        <view class="space-tp-txt">发车后不予退票</view>
+                    </view>
+                </block>
+            </view>
+        </view>
+    </view>
+    <view bindtap="checkrefundToast" class="refund-btn">提交退票</view>
+</view>

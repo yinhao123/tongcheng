@@ -1,0 +1,141 @@
+.sendpage {
+    font-size: 32rpx;
+    color: #333;
+}
+
+input {
+    height: 88rpx;
+    line-height: 88rpx;
+}
+
+.new-fbox {
+    display: -webkit-box;
+    display: -webkit-flex;
+}
+
+.new-flex {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+}
+
+.sendpage {
+    padding: 0 30rpx;
+}
+
+.sendpage .slist {
+    height: 88rpx;
+    border-bottom: 1px solid #ccc;
+}
+
+.sendpage .label {
+    width: 180rpx;
+    height: 88rpx;
+    line-height: 88rpx;
+}
+
+.sendpage .text {
+    border: none;
+    background: 0 0;
+}
+
+.region-text {
+    height: 88rpx;
+    line-height: 88rpx;
+}
+
+.empty-text {
+    color: #838282;
+}
+
+.region-box {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.sendpage .arrow {
+    position: relative;
+    padding-right: 60rpx;
+}
+
+.sendpage .arrow:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 10rpx;
+    width: 10px;
+    height: 10px;
+    margin-top: -10rpx;
+    border: 1px solid #bbb;
+    transform: rotate(45deg);
+    border-width: 1px 1px 0 0;
+}
+
+.sendpage .submit {
+    display: block;
+    background-color: #09bb07;
+    width: 90%;
+    height: 88rpx;
+    line-height: 88rpx;
+    border: none;
+    border-radius: 10rpx;
+    margin: 60rpx auto 10px;
+    font-size: 36rpx;
+    color: #fff;
+}
+
+@font-face {
+    font-family:iconfont;src:url(//css.40017.cn/cn/train/mobileqq/20160421/iconfont/iconfont.eot);src:url(//css.40017.cn/cn/train/mobileqq/20160421/iconfont/iconfont.eot?) format("embedded-opentype"),url(//css.40017.cn/cn/train/mobileqq/20160421/iconfont/iconfont.ttf) format("truetype"),url(//css.40017.cn/cn/train/mobileqq/20160421/iconfont/iconfont.svg) format("svg");
+}
+
+.sendpage .sendtips {
+    padding: 0 10rpx;
+    font-family: iconfont!important;
+    font-size: 24rpx;
+    color: #666;
+}
+
+.sendpage .sendtips:before {
+    content: "\e61a";
+    margin-right: 10rpx;
+    font-size: 24rpx;
+    color: #666;
+}
+
+.select-city {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f2f4f7;
+    padding: 0 20rpx;
+    display: none;
+}
+
+.select-city .city-box {
+    -webkit-overflow-scrolling: touch;
+}
+
+.select-city .city-list {
+    height: 70rpx!important;
+    line-height: 70rpx!important;
+    border-bottom: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.select-city .js-selected-prov {
+    background-color: #eee;
+}
+
+.select-city .js-selected-city {
+    background-color: #f4f4f4;
+}
+
+.select-city .js-city,.select-city .js-selected-city {
+    padding-left: 40rpx;
+}
+
+.select-city .js-area {
+    padding-left: 80rpx;
+}

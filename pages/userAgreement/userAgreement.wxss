@@ -1,0 +1,16 @@
+page {
+    background: #fff;
+}
+
+.container {
+    padding: 20rpx 40rpx;
+    text-align: justify;
+    font-size: 26rpx;
+    line-height: 1.4;
+    text-indent: 30rpx;
+    color: #333;
+}
+
+.container .p {
+    padding: 5rpx 0;
+}

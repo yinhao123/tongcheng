@@ -1,0 +1,89 @@
+<view class="busDetail">
+    <view class="bus-info">
+        <view class="start-time">
+            <block wx:if="{{busInfo.runningSchFlag==1}}">
+                <block wx:if="{{busInfo.runningStartTime&&busInfo.runningEndTime}}">
+                    <text>{{stationInfo.date}} {{busInfo.runningStartTime}}-{{busInfo.runningEndTime}}</text>发车</block>
+                <block wx:elif="{{busInfo.runningStartTime&&!busInfo.runningEndTime}}">
+                    <text>{{stationInfo.date}} {{busInfo.runningStartTime}}</text>后发车</block>
+                <block wx:elif="{{!busInfo.runningStartTime&&busInfo.runningEndTime}}">
+                    <text>{{stationInfo.date}} {{busInfo.runningEndTime}}</text>前发车</block>
+                <block wx:else>
+                    <text>{{stationInfo.time}}</text>出发</block>
+            </block>
+            <block wx:else>
+                <text>{{stationInfo.time}}</text>出发</block>
+        </view>
+        <view class="station-name">{{stationInfo.line}}</view>
+    </view>
+    <view class="address fbox" wx:if="{{!!stationInfo.address}}">
+        <view class="adr-info flex1">
+            <view class="adr-tit">取票、乘车地址</view>
+            <view class="adr-detail">{{stationInfo.address}}</view>
+        </view>
+        <text bindtap="mapCtrl" class="openMap"></text>
+    </view>
+    <view class="packageBox">
+        <view class="item-list fbox fbox-center" hidden="{{item.packageType==4&&(stationInfo.station!='无锡汽车客运站'||item.hidden)||item.packageType==2&&stationInfo.booktype==2}}" wx:for="{{itemList}}" wx:for-index="id">
+            <view class="left">
+                <view class="price">
+                    <text>￥</text>{{item.price}}</view>
+            </view>
+            <view class="center flex1 aglin-left" wx:if="{{id==0}}">{{item.packageDesc}}</view>
+            <view class="center flex1" wx:else>
+                <view class="service fbox fbox-center">
+                    <text class="ser-price">+<text class="litTxt">￥</text>{{item.servicePrice}}</text>
+                    <text class="ser-tips">{{item.discountPriceDes}}</text>
+                    <view bindtap="tipCtrl" class="text" data-id="{{id}}">{{item.packageDesc}}</view>
+                </view>
+            </view>
+            <view bindtap="booking" class="right booking" data-id="{{id}}">
+                <view>预订</view>
+            </view>
+        </view>
+    </view>
+</view>
+<view bindtap="speedCheckCtrl" class="notice-top" hidden="{{speedCheck}}">
+    <view class="nmain" id="speedNoticeMain">
+        <view style="text-align:center">极速出票明细</view>
+        <view>1、购买极速出票服务后一定会抢到票吗？</view>
+        <view>购买极速出票服务后，我们将优先为您出票，出票结果受余票变动及购票人数等因素影响，无法保证100%出票成功。</view>
+        <view></view>
+        <view>2、5分钟内未成功出票，会赔付吗？</view>
+        <view>如在5分钟内未成功为您出票，我们将立即退还极速出票服务费，并赔付极速出票售价10%的等额无门槛汽车票优惠券，退款将于1-15个工作日内原路返回到您的支付账户中，赔付成功后，您可至微信钱包-火车票机票-我的微信卡券中查看优惠券。</view>
+        <view></view>
+        <view>温馨提示：</view>
+        <view>1、出票成功时间以系统实际出票成功时间为准，而非收到出票成功短信时间，具体出票时间参见订单详情页。</view>
+        <view>2、购买极速出票服务并且系统在约定时间内已为您出票成功，表示您已享受了极速出票服务，不再接受退款申请。</view>
+    </view>
+    <view class="close"></view>
+</view>
+<view bindtap="hotRuleCtrl" class="notice-top" hidden="{{hotRuleShow}}">
+    <view class="nmain">
+        <text>{{hotRule}}</text>
+    </view>
+    <view class="close"></view>
+</view>
+<view class="map-container" wx:if="{{!showMap}}">
+    <map showLocation controls="{{mapInfo.controls}}" id="map" latitude="{{mapInfo.Latitude}}" longitude="{{mapInfo.Longitude}}" markers="{{mapInfo.markers}}" scale="11" style="width:100%;height:480px"></map>
+    <view class="address-box">
+        <view class="address-text">
+            <view class="first-line">{{mapInfo.stationName}}</view>
+            <view class="sec-line add-line" wx:if="{{mapInfo.StationAddress}}">
+                <text>详细地址：</text>
+                <text>{{mapInfo.StationAddress}}</text>
+            </view>
+            <view class="sec-line" wx:if="{{mapInfo.ContactPhoneNo}}">
+                <text>咨询电话：</text>
+                <text>{{mapInfo.ContactPhoneNo}}</text>
+                <text bindtap="makePhoneCall" class="icon-phone" data-tel="{{contactphoneno}}"></text>
+            </view>
+            <view class="sec-line" wx:if="{{mapInfo.takeTicketStartTime&&mapInfo.takeTicketEndTime}}">
+                <text>营业时间：</text>{{mapInfo.takeTicketStartTime}} - {{mapInfo.takeTicketEndTime}}</view>
+        </view>
+        <view class="address-btn">
+            <view bindtap="linkList" class="btn-single mapGoBack">查看该车站班次</view>
+            <view bindtap="mapCtrl" class="btn-single mapGoBack">返回</view>
+        </view>
+    </view>
+</view>
