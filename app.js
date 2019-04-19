@@ -5,7 +5,9 @@
         var o = t(28);
         App({
             onLaunch: function(n) {
-                console.log("OnLaunch", n), this.getUserInfo(), n.scene && (this.globalData.scene = n.scene), 
+                console.log("OnLaunch", n), 
+                this.getUserInfo(), 
+                n.scene && (this.globalData.scene = n.scene), 
                 wx.removeStorageSync("refid"), n.wxrefid ? wx.setStorageSync("refid", n.wxrefid) : wx.setStorageSync("refid", 319527329), 
                 wx.onNetworkStatusChange(function(n) {
                     var e = -1 < [ "2g", "3g" ].indexOf(n.networkType);
@@ -25,10 +27,14 @@
 
             getUserInfo: function() {
                 var n = this;
+                // 获取openid然后
                 (0, o.getOpenid)().then(function(e) {
-                    e.unionId || (n.globalData.isAuth = !0, wx.navigateTo({
-                        url: "/pages/getAuthInfo/getAuthInfo"
-                    }));
+                  console.log("GetUserInfo跳转到认证页面");
+                    e.unionId || (n.globalData.isAuth = !0
+                    // wx.navigateTo({
+                    //     url: "/pages/getAuthInfo/getAuthInfo"
+                    // })
+                    );
                 }).catch(function() {});
             },
 

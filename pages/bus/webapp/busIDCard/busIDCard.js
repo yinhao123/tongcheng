@@ -133,27 +133,44 @@
                     hasShowDemo: !1
                 });
             },
+            // 保存乘客信息 
             submitData: function() {
-                var e = this, a = +this.data.index, t = {
+             
+                var e = this,
+                 a = +this.data.index, 
+                 t = {
                     certNo: e.data.addIDCard,
                     certType: 1,
                     linkerName: e.data.addName,
                     mobile: "",
                     child: a
-                }, d = e.funValidateData(t);
-                return d ? (r.alert(d), !1) : (r.loading(), void wx.request({
-                    url: s.addLinkerNew,
-                    method: "POST",
-                    header: r.setHeader(),
-                    data: JSON.stringify([ t ]),
-                    success: function(t) {
-                        wx.hideToast(), t.data.header.isSuccess ? (wx.setStorageSync("bus_newAddPassenger", {
-                            linkerName: e.data.addName,
-                            IDCard: e.data.addIDCard,
-                            isChild: a
-                        }), wx.navigateBack()) : r.alert(t.data.header.errMsg);
-                    }
-                }));
+                },
+                 d = e.funValidateData(t);
+
+                 console.log(e)
+              var  passengerInfo = {
+                full_name: e.data.addName,
+                telephone: e.data.addIDCard,
+              }
+                 // 将用户信息存到storage中
+              wx.setStorageSync("passengerInfo", passengerInfo);
+              // 保存成功之后，返回到前一页
+              wx.navigateBack({
+                
+              })
+                // return d ? (r.alert(d), !1) : (r.loading(), void wx.request({
+                //     url: s.addLinkerNew,
+                //     method: "POST",
+                //     header: r.setHeader(),
+                //     data: JSON.stringify([ t ]),
+                //     success: function(t) {
+                //         wx.hideToast(), t.data.header.isSuccess ? (wx.setStorageSync("bus_newAddPassenger", {
+                //             linkerName: e.data.addName,
+                //             IDCard: e.data.addIDCard,
+                //             isChild: a
+                //         }), wx.navigateBack()) : r.alert(t.data.header.errMsg);
+                //     }
+                // }));
             },
             onShareAppMessage: function() {
                 return {

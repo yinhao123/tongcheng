@@ -1,3 +1,6 @@
+
+
+
 var e = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
     return typeof e;
 } : function(e) {
@@ -88,7 +91,7 @@ var e = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? func
 
 
     // 网路请求函数 
-    function u(url, data, methods, header, o) {
+    function requestUrl(url, data, methods, header, o) {
       console.log("执行这个请求函数");
         var i = null, a = null;
         return header = Object.assign({
@@ -106,7 +109,6 @@ var e = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? func
                 success: function(e) {
                    console.log("成功获取到数据");
                    console.log(e);
-
                     var t = e.data;
                     !c(t) && c(t.header) ? u(t) : !c(t.header) && t.header.isSuccess ? u(t.body) : s(t.header);
                 },
@@ -160,7 +162,8 @@ var e = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? func
                 day: o(i, n)
             };
         },
-        $http: u,
+        $http: requestUrl,
+
         wxhttp: function(url, t, methods, header) {
             return header = Object.assign({
                 "content-type": "application/json",
@@ -168,7 +171,8 @@ var e = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? func
                 unionId: wx.getStorageSync("tongcheng.unionid"),
                 memberId: wx.getStorageSync("tongcheng.memberid"),
                 Refid: wx.getStorageSync("refid")
-            }, r), new Promise(function(o, i) {
+            }, r),
+             new Promise(function(o, i) {
                 wx.request({
                     url: url,
                     data: JSON.stringify(t),
@@ -185,6 +189,8 @@ var e = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? func
                 });
             });
         },
+
+        
         isEmpty: c,
         debounce: function(e, t) {
             var n;
@@ -980,24 +986,23 @@ function(e, t, n) {
         }
       })
     }
-    // 微信登录方法，获取code（原来）
+    // 微信登录方法，获取code（原来）     
     function o() {
       console.log("方法中的o方法");
         return new Promise(function(e, t) {
             var n = wx.getStorageSync("tongcheng.openid"), r = wx.getStorageSync("tongcheng.unionid"), o = wx.getStorageSync("tongcheng.loginInfo");
             return n && r ? void e(o) : void wx.login({
                 success: function(n) {
-                    console.log("login", n), (0, c.$http)(u.default.wxOpenId, {
+                    console.log("login", n), (0, c.$http)(u.default.wxOpenId,                    {
                         code: n.code
                     }).then(function(t) {
-                    
                         console.log(t), 
-                        wx.setStorageSync("tongcheng.openid", t.openId), 
-                        wx.setStorageSync("tongcheng.unionid", t.unionId), 
+                        wx.setStorageSync("tongcheng.openid", "t.openId"), 
+                        wx.setStorageSync("tongcheng.unionid", "1"), 
                         wx.setStorageSync("tongcheng.encryopenid", t.encryOpenId), 
-                        wx.setStorageSync("tongcheng.aesOpenId", t.aesOpenId), 
-                        wx.setStorageSync("tongcheng.memberid", t.memberId),
-                        wx.setStorageSync("tongcheng.loginInfo", t), 
+                        wx.setStorageSync("tongcheng.aesOpenId", "t.aesOpenId"), 
+                        wx.setStorageSync("tongcheng.memberid", "t.memberId"),
+                        wx.setStorageSync("tongcheng.loginInfo", "t"), 
                         e(t);
                     }).catch(function(e) {
                         t(e);

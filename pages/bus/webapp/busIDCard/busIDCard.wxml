@@ -1,5 +1,5 @@
 <view class="idcard-content">
-    <view class="photo-box">
+    <!-- <view class="photo-box">
         <view bindtap="uploadIDCard" class="img-box">
             <text class="icon icon-camera"></text>
         </view>
@@ -7,7 +7,7 @@
             <text class="txt-tip">拍照识别身份证</text>
             <text bindtap="showDemo" class="txt-demo">点击查看示例</text>
         </view>
-    </view>
+    </view> -->
     <view class="input-box">
         <view class="flex-box input-item">
             <text class="left-name">乘客类型</text>
@@ -22,16 +22,19 @@
             </view>
         </view>
         <view class="flex-box input-item">
-            <text class="left-name">身份证号</text>
+            <text class="left-name">手机号码</text>
             <view class="flex1">
-                <input bindinput="inputIDCard" maxlength="20" placeholder="请输入正确的身份证号" placeholderClass="placeholder" type="idcard" value="{{IDSpace}}"></input>
+                <input bindinput="inputIDCard" maxlength="20" placeholder="请输入正确的手机号码" placeholderClass="placeholder"  value="{{IDSpace}}"></input>
             </view>
         </view>
     </view>
-    <view class="tip">请仔细填写证件信息，以免耽误您的行程</view>
+    <view class="tip">请仔细填写手机号码，以免耽误您的行程</view>
     <view class="btn-box">
         <button bindtap="submitData" size="default" type="primary">确定</button>
     </view>
+
+
+
     <view class="tip-box" wx:if="{{type==1}}">
         <view class="tip-title">儿童票说明</view>
         <view class="tip-p">1. 身高在<text class="tip-color">1.2米-1.5米</text>的儿童需购买儿童票(提供座位)，身高超过1.5米的儿童需购买全票。身高1.2米以下儿童若无需座位可至车站申请免票儿童票。</view>
@@ -39,7 +42,7 @@
         <view class="tip-p">3. 请根据儿童实际身高购票，以免造成儿童身高与所购车票不符而无法乘车，耽误行程。</view>
     </view>
 </view>
-<view class="dialog-box" wx:if="{{hasShowDemo}}">
+<!-- <view class="dialog-box" wx:if="{{hasShowDemo}}">
     <div class="dialog-content">
         <view class="demo-title">请按照推荐方式拍照</view>
         <image class="img-demo" mode="aspectFit" src="https://file.40017.cn/groundtraffic/bus/weixin/busidcard/idcard-demo.png"></image>
@@ -48,4 +51,4 @@
             <button bindtap="closeDemo" size="default" type="primary">确定</button>
         </view>
     </div>
-</view>
+</view> -->

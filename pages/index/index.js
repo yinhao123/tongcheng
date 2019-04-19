@@ -187,18 +187,14 @@
             goList: function(t) {
                 var e = this.data;
                 t.detail;
-                if (wx.getStorageSync("tongcheng.unionid")) {
+               
                     var a = "/pages/bus/webapp/list/list?fromcity=" + e.depCity.name + "&tocity=" + e.desCity.name + "&date=" + e.datetime + "&saledays=" + e.saleDayObj.saleDay + "&wxrefid=" + e.refid;
                     a = "/pages/bus/webapp/list/list?fromcity=" + e.depCity.name + "&tocity=" + e.desCity.name + "&date=" + e.datetime + "&fromstation=" + (e.depCity.searchName || "") + "&tostation=" + (e.desCity.searchName || "") + "&pid=&bfCityId=" + e.depCity.id + "&btCityId=" + e.desCity.id, 
                     this.setLocCityData(e), r.default.setEvent(y.index, "DLSY05", "^出发城市:" + e.depCity.name + "^到达城市:" + e.desCity.name + "^渠道Refid:[" + e.refid + "]^"), 
                     wx.navigateTo({
                         url: a
                     });
-                }
-                 else 
-                wx.navigateTo({
-                    url: "/pages/getAuthInfo/getAuthInfo"
-                });
+               
             },
             setRecentCity: function(t) {
                 var e = t.currentTarget.dataset.index, a = this.data.busRecentData[e];

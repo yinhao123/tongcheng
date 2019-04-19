@@ -1,1088 +1,1153 @@
 <template name="quickcancel">
-    <view class="detail-content" wx:if="{{show}}">
-        <view class="det-content">{{content}}</view>
-        <view class="flex-box">
-            <view bindtap="buyIt" class="flex2 det-btn-buy" data-type="{{type}}">选择购买</view>
-            <view class="flex1"></view>
-            <view bindtap="buyMao" class="flex2 det-btn-nobuy" data-index="{{index||0}}" data-type="{{type}}">坚决不买</view>
-        </view>
+  <view class="detail-content" wx:if="{{show}}">
+    <view class="det-content">{{content}}</view>
+    <view class="flex-box">
+      <view bindtap="buyIt" class="flex2 det-btn-buy" data-type="{{type}}">选择购买</view>
+      <view class="flex1"></view>
+      <view bindtap="buyMao" class="flex2 det-btn-nobuy" data-index="{{index||0}}" data-type="{{type}}">坚决不买</view>
     </view>
+  </view>
 </template>
 <template name="valueAddService">
-    <view bindtap="btnOpenOpt" class="ser-ins flex-box optimization" style="order:{};" wx:if="{{!pkg.isValue&&plists.length&&(isHasOptSvc||isHasExtSvc)}}">
-        <block wx:if="{{isAdult&&isHasOptSvc}}">
-            <text class="ser-instext">优选服务</text>
-            <text class="ser-arrow flex1" wx:if="{{defaultOpt.sellPrice==0}}">不购买服务</text>
-            <text class="ser-arrow flex1" wx:else>{{defaultOpt.subTitle}}</text>
-        </block>
-        <block wx:if="{{!isAdult&&isHasExtSvc}}">
-            <text class="ser-instext">至尊服务</text>
-            <text class="ser-arrow flex1" wx:if="{{defaultExt.sellPrice==0}}">不购买服务</text>
-            <text class="ser-arrow flex1" wx:else>{{defaultExt.subTitle}}</text>
-        </block>
-    </view>
+  <view bindtap="btnOpenOpt" class="ser-ins flex-box optimization" style="order:{};" wx:if="{{!pkg.isValue&&plists.length&&(isHasOptSvc||isHasExtSvc)}}">
+    <block wx:if="{{isAdult&&isHasOptSvc}}">
+      <text class="ser-instext">优选服务</text>
+      <text class="ser-arrow flex1" wx:if="{{defaultOpt.sellPrice==0}}">不购买服务</text>
+      <text class="ser-arrow flex1" wx:else>{{defaultOpt.subTitle}}</text>
+    </block>
+    <block wx:if="{{!isAdult&&isHasExtSvc}}">
+      <text class="ser-instext">至尊服务</text>
+      <text class="ser-arrow flex1" wx:if="{{defaultExt.sellPrice==0}}">不购买服务</text>
+      <text class="ser-arrow flex1" wx:else>{{defaultExt.subTitle}}</text>
+    </block>
+  </view>
 </template>
 <form bindsubmit="formBookingBtn" reportSubmit="{{true}}">
-    <label>
-        <button formType="submit" hidden="{{true}}" type="primary"></button>
-        <view class="main" style="">
-            <view class="top">
-                <view class="topInfo">
-                    <view class="top-box" wx:if="{{isSecStyHeader=='B'}}">
-                        <view class="top-date">{{busInfo.formatDate}}({{busInfo.week}})<block wx:if="{{busInfo.runningSchFlag==1&&busInfo.bookingType==1}}">
-                                <block wx:if="{{busInfo.runningStartTime&&busInfo.runningEndTime}}">
-                                    <strong>{{busInfo.runningStartTime}}-{{busInfo.runningEndTime}}</strong>发车</block>
-                                <block wx:elif="{{busInfo.runningStartTime&&!busInfo.runningEndTime}}">
-                                    <strong>{{busInfo.runningStartTime}}</strong>后发车</block>
-                                <block wx:elif="{{!busInfo.runningStartTime&&busInfo.runningEndTime}}">
-                                    <strong>{{busInfo.runningEndTime}}</strong>前发车</block>
-                            </block>
-                            <block wx:else>
-                                <strong>{{busInfo.dptTime}}</strong>发车</block>
-                        </view>
-                        <view class="top-detail">
-                            <view class="top-line top-start flex-box flex-box-center">
-                                <view class="flex1">{{busInfo.dptStation}}</view>
-                            </view>
-                            <view class="top-line top-end flex-box flex-box-center">
-                                <view class="flex1">{{busInfo.arrStation}}</view>
-                                <view class="top-state ticketType">{{busInfo.coachType?busInfo.coachType:''}}{{busInfo.coachType&&busInfo.scheduleTicketType?'|':''}}<text bindtap="btnToggleTicketTypePop" data-toggle="1">{{busInfo.scheduleTicketType?busInfo.scheduleTicketType:''}}</text>
-                                    <text bindtap="btnToggleTicketTypePop" class="pp" data-toggle="0" wx:if="{{isShowTicketTypeTips}}">{{busInfo.STTDesc}}</text>
-                                </view>
-                            </view>
-                        </view>
-                    </view>
-                    <view class="top-boxs" wx:elif="{{isSecStyHeader=='A'}}">
-                        <view class="bussche-msg flex-box">
-                            <view class="flex1 port-msg left-port-msg">
-                                <view class="station-msg">{{busInfo.dptStation}}</view>
-                                <view class="city-msg">{{busInfo.departure}}</view>
-                            </view>
-                            <view class="bussche-time">
-                                <view class="bussche-clock">{{busInfo.dptTime}}</view>
-                                <view class="bussche-decoration"></view>
-                                <view class="bussche-date">{{busInfo.formatDate}}<text></text>{{busInfo.week}}</view>
-                            </view>
-                            <view class="flex1 port-msg right-port-msg">
-                                <view class="station-msg">{{busInfo.arrStation}}</view>
-                                <view class="city-msg">{{busInfo.destination}}</view>
-                            </view>
-                        </view>
-                        <view class="sche-btline flex-box">
-                            <view class="flex1">
-                                <text class="sche-coach">{{busInfo.coachType?busInfo.coachType:''}}</text>
-                                <text catchtap="showService" class="sche-coach" data-type="Ttype" wx:if="{{busInfo.scheduleTicketType}}">{{busInfo.scheduleTicketType}}</text>
-                            </view>
-                            <view class="flex1 sche-right">
-                                <view class="tick-price flex-box">
-                                    <view>票价￥{{busInfo.ticketPrice}}</view>
-                                    <view bindtap="showService" data-type="service" wx:if="{{ChargeFee>0}}">
-                                        <text>服务费￥{{ChargeFee}}</text>
-                                        <text class="ticket-service-icon">i</text>
-                                    </view>
-                                </view>
-                            </view>
-                        </view>
-                    </view>
-                    <view bindtap="btnOpenNotice" class="{{isSecStyHeader=='A'?'top-points':isSecStyHeader=='B'?'top-point':'top-point'}} top-point flex-box flex-box-center">
-                        <view class="flex1" style="color:#11c9a1;font-size:30rpx" wx:if="{{isTodaySch&&busInfo.isRefund}}">今天{{refundTime1}}前可网上退票</view>
-                        <view class="flex1" style="color:#11c9a1;font-size:30rpx" wx:elif="{{busInfo.isRefund&&!isTodaySch}}">发车前{{refundTime1}}可在线退票</view>
-                        <view class="flex1" style="font-size:30rpx" wx:else>发车前至发车站窗口退票</view>
-                        <view class="ser-arrow">取票、退票详情</view>
-                    </view>
-                </view>
-                <view bindtap="btnToggleAlter" class="ser-ins flex-box bor-top" wx:if="{{childPriceCount<=0&&isSimpleBeixuan=='B'}}">
-                    <text class="ser-instext">备选车次</text>
-                    <text class="ser-arrow flex1">{{alterTxt}}</text>
-                </view>
-                <view bindtap="btnToggleSimAlter" class="ser-ins flex-box bor-top" wx:if="{{childPriceCount<=0&&isSimpleBeixuan=='A'}}">
-                    <text class="ser-instext small-beixuan">无票时更换为{{Simhour}}的班次</text>
-                    <view class="flex1">
-                        <view class="ricon small-radio {{isSelSimpleBeixuan?'ricon-check':''}}"></view>
-                    </view>
-                </view>
-                <view bindtap="btnToggleSubscribe" class="ser-ins flex-box bor-top" wx:if="{{vipSubscribe&&vipSubscribePrice&&!ASisExceedLimit}}">
-                    <text class="ser-instext">{{subscribeInfoObj.title}}</text>
-                    <text class="ser-arrow flex1">{{subscribeInfoObj.subTitle}}</text>
-                </view>
+  <label>
+    <button formType="submit" hidden="{{true}}" type="primary"></button>
+    <view class="main" style="">
+      <view class="top">
+        <view class="topInfo">
+          <view class="top-box" wx:if="{{isSecStyHeader=='B'}}">
+            <view class="top-date">{{busInfo.formatDate}}({{busInfo.week}})
+              <block wx:if="{{busInfo.runningSchFlag==1&&busInfo.bookingType==1}}">
+                <block wx:if="{{busInfo.runningStartTime&&busInfo.runningEndTime}}">
+                  <strong>{{busInfo.runningStartTime}}-{{busInfo.runningEndTime}}</strong>发车</block>
+                <block wx:elif="{{busInfo.runningStartTime&&!busInfo.runningEndTime}}">
+                  <strong>{{busInfo.runningStartTime}}</strong>后发车</block>
+                <block wx:elif="{{!busInfo.runningStartTime&&busInfo.runningEndTime}}">
+                  <strong>{{busInfo.runningEndTime}}</strong>前发车</block>
+              </block>
+              <block wx:else>
+                <strong>{{busInfo.dptTime}}</strong>发车</block>
             </view>
-            <view class="pass">
-                <view class="pass-cap flex-box flex-box-center bor-bottom" wx:if="{{plists.length||fillPassList.length}}">
-                    <view class="pass-title">乘客</view>
-                    <view>最多添加{{maxNum}}人</view>
+            <view class="top-detail">
+              <view class="top-line top-start flex-box flex-box-center">
+                <view class="flex1">{{busInfo.dptStation}}</view>
+              </view>
+              <view class="top-line top-end flex-box flex-box-center">
+                <view class="flex1">{{busInfo.arrStation}}</view>
+                <view class="top-state ticketType">{{busInfo.coachType?busInfo.coachType:''}}{{busInfo.coachType&&busInfo.scheduleTicketType?'|':''}}
+                  <text bindtap="btnToggleTicketTypePop" data-toggle="1">{{busInfo.scheduleTicketType?busInfo.scheduleTicketType:''}}</text>
+                  <text bindtap="btnToggleTicketTypePop" class="pp" data-toggle="0" wx:if="{{isShowTicketTypeTips}}">{{busInfo.STTDesc}}</text>
                 </view>
-                <view>
-                    <view wx:for="{{plists}}" wx:key="id">
-                        <view class="pass-box flex-box bor-bottom selected-item">
-                            <view bindtap="fnShowDeleteBtn" class="pass-delete {{item.showDeleteBtn?'show-delete':''}}" data-deltype="selected" data-pid="{{item.IDSpace}}" data-pname="{{item.linkerName}}" data-serial="{{index}}"></view>
-                            <view class="flex1">
-                                <view class="pass-name">{{item.linkerName}}<text class="child-icon" wx:if="{{isSupportChild&&item.type==1}}">儿童</text>
-                                </view>
-                                <view class="pass-card">{{item.IDSpace}}</view>
-                            </view>
-                            <view bindtap="btnEditPass" class="edit-icon" data-from="notpop" data-pid="{{item.IDCard}}" data-pidspace="{{item.IDSpace}}" data-pname="{{item.linkerName}}" data-type="{{item.type}}" wx:if="{{item.source!=1}}"></view>
-                            <button bindtap="btnDeletePass" class="{{item.showDeleteBtn?'show':''}}" data-pid="{{item.IDCard}}" data-pidspace="{{item.IDSpace}}" data-pname="{{item.linkerName}}" data-serial="{{index}}">删除</button>
-                        </view>
-                        <block wx:if="{{supportFreeChild}}">
-                            <view class="freeChildItem pass-box flex-box bor-bottom selected-item" wx:for="{{item.carryChildren}}" wx:for-index="idx" wx:for-item="one">
-                                <view bindtap="fnShowFCDeleteBtn" class="pass-delete {{one.showDeleteBtn?'show-delete':''}}" data-idx="{{idx}}" data-pid="{{item.IDCard}}" data-pname="{{item.linkerName}}"></view>
-                                <view class="flex1">
-                                    <view class="pass-name">{{one.name}}<text class="child-icon">携童</text>
-                                    </view>
-                                    <view class="pass-card">{{one.idSpace}}</view>
-                                </view>
-                                <view bindtap="btnEditFreeChild" class="edit-icon" data-idx="{{idx}}" data-pid="{{item.IDCard}}" data-pname="{{item.linkerName}}"></view>
-                                <button bindtap="btnDeleteFreeChild" class="{{one.showDeleteBtn?'show':''}}" data-idx="{{idx}}" data-pid="{{item.IDCard}}" data-pname="{{item.linkerName}}">删除</button>
-                            </view>
-                        </block>
-                    </view>
-                </view>
-                <view class="addbtn-wrap flex-box flex-box-center flex-box-justify">
-                    <view bindtap="btnOpenPass" class="pass-addbtn flex1" wx:if="{{fillPassList.length||passengers.length}}">
-                        <text class="pass-addtxt">添加乘客</text>
-                    </view>
-                    <view bindtap="btnShowAddPage" class="pass-addbtn flex1" wx:else>
-                        <text class="pass-addtxt">添加乘客</text>
-                    </view>
-                </view>
+              </view>
             </view>
-            <view bindtap="btnAddFreeChild" class="t-radius b-radius ser-arrow ser-ins freeChild" wx:if="{{supportFreeChild&&(localInfo.freeChildCntLeft-adultCount>=0?adultCount:localInfo.freeChildCntLeft)-freeChildCount>0&&localInfo.freeChildCntLeft>0}}">免费申请携童票<text>1.2米以下儿童/无座位</text>
+          </view>
+          <view class="top-boxs" wx:elif="{{isSecStyHeader=='A'}}">
+            <view class="bussche-msg flex-box">
+              <view class="flex1 port-msg left-port-msg">
+                <view class="station-msg">{{busInfo.dptStation}}</view>
+                <view class="city-msg">{{busInfo.departure}}</view>
+              </view>
+              <view class="bussche-time">
+                <view class="bussche-clock">{{busInfo.dptTime}}</view>
+                <view class="bussche-decoration"></view>
+                <view class="bussche-date">{{busInfo.formatDate}}
+                  <text></text>{{busInfo.week}}</view>
+              </view>
+              <view class="flex1 port-msg right-port-msg">
+                <view class="station-msg">{{busInfo.arrStation}}</view>
+                <view class="city-msg">{{busInfo.destination}}</view>
+              </view>
             </view>
-            <view class="take" wx:if="{{adultPriceCount}}">
-                <view class="take-box">
-                    <view class="take-cap flex-box bor-bottom">
-                        <view class="take-title flex1">取票人<text class="take-name">{{contactInfo.linkerName}}</text>
-                        </view>
-                        <view bindtap="btnShowContact" class="take-arrow">
-                            <text wx:if="{{isHiddenContact}}">修改</text>
-                            <text wx:else>收起</text>
-                        </view>
-                    </view>
-                    <view hidden="{{isHiddenContact}}">
-                        <view class="take-main flex-box bor-bottom">
-                            <view bindtap="btnSelectContact" class="take-list{{item.IDCard==contactInfo.IDCard?' take-selected':''}}" data-cid="{{item.IDCard}}" data-cname="{{item.linkerName}}" wx:if="{{isSupportChild&&item.type!=1||!isSupportChild}}" wx:for="{{plists}}" wx:key="id">{{item.linkerName}}</view>
-                        </view>
-                        <view class="other"></view>
-                    </view>
+            <view class="sche-btline flex-box">
+              <view class="flex1">
+                <text class="sche-coach">{{busInfo.coachType?busInfo.coachType:''}}</text>
+                <text catchtap="showService" class="sche-coach" data-type="Ttype" wx:if="{{busInfo.scheduleTicketType}}">{{busInfo.scheduleTicketType}}</text>
+              </view>
+              <view class="flex1 sche-right">
+                <view class="tick-price flex-box">
+                  <view>票价￥{{busInfo.ticketPrice}}</view>
+                  <view bindtap="showService" data-type="service" wx:if="{{ChargeFee>0}}">
+                    <text>服务费￥{{ChargeFee}}</text>
+                    <text class="ticket-service-icon">i</text>
+                  </view>
                 </view>
-                <view class="phone flex-box">
-                    <view class="phone-title">手机号</view>
-                    <input bindblur="blurPhone" bindinput="inputPhoneNum" class="phone-input flex1" focus="{{phoneFocus}}" maxlength="13" placeholder="用于接收取票信息" placeholderClass="placeholder" type="number" value="{{phoneSpace}}"></input>
-                    <view class="phone-close"></view>
-                </view>
+              </view>
             </view>
-            <view bindtap="btnOpenCars" class="ser-ins flex-box hasCoupons" wx:if="{{plists.length>0&&!!isGetCard&&cardMsg.canUseNumber>0&&highPriceCoupon>0}}">
-                <view class="ser-instext flex_1">优惠券</view>
-                <view class="ser-arrow flex_2 colorful">
-                    <block wx:if="{{selectCode.showPrice>0}}">已优惠<text class="red-word">¥{{selectCode.showPrice}}</text>
-                    </block>
-                    <block wx:else>
-                        <text class="card-bg">{{cardMsg.canUseNumber}}张</text>最高可减<text class="red-word">¥{{highPriceCoupon}}</text>
-                    </block>
-                </view>
-            </view>
-            <view style="display:flex;flex-direction:column">
-                <view class="revenue" style="order:{};" wx:if="{{stList.length}}">
-                    <block wx:for="{{stList}}" wx:for-index="idx" wx:key="code">
-                        <view bindtap="selectService" class="rbox flex-box flex-box-center" data-key="{{item.statusKey}}" data-rmb="{{item.price||0}}" hidden="{{item.code=='refundCarefree'&&!isShowSuixin||item.code=='homeDelivery'&&localInfo.revenueType==2}}" wx:if="{{item.code&&plists.length&&item.code!='FastTicketOut'&&item.code!='refundCarefree'||item.code=='homeDelivery'&&plists.length||item.code=='FastTicketOut'&&plists.length&&isShowSpeed||item.code=='refundCarefree'&&plists.length&&isShowrefund}}">
-                            <view class="icon-yymd">
-                                <image src="{{item.img}}"></image>
-                            </view>
-                            <view class="flex1">
-                                <view class="rtitle" wx:if="{{item.code=='FastTicketOut'}}">{{item.name}}<text catchtap="btnOpenPop" class="rdetail hottips"></text>
-                                    <text class="rdetailTop" wx:if="{{item.tag}}">{{item.tag}}</text>
-                                </view>
-                                <view class="rtitle" wx:if="{{item.code=='refundCarefree'}}">{{item.name}}<text catchtap="btnRefundPop" class="rdetail"></text>
-                                    <text class="rdetailTop" wx:if="{{item.tag}}">{{item.tag}}</text>
-                                </view>
-                                <view class="rtitle" wx:if="{{item.code=='homeDelivery'}}">{{item.name}}<text class="rdetailTop" wx:if="{{item.tag}}">{{item.tag}}</text>
-                                </view>
-                                <view class="rtips">{{item.description}}</view>
-                            </view>
-                            <view class="new-reprice new-fbox" wx:if="{{item.code!='homeDelivery'}}">¥{{item.price}}/份</view>
-                            <view class="ricon {{YyStatus?'ricon-check':''}}" wx:if="{{item.code=='BusYiyuanFree'}}"></view>
-                            <view class="ricon {{IssueStatus?'ricon-check':''}}" wx:if="{{item.code=='FastTicketOut'}}"></view>
-                            <view class="ricon {{refundStatus?'ricon-check':''}}" wx:if="{{item.code=='refundCarefree'}}"></view>
-                            <view class="ricon {{homeDeliveryStatus?'ricon-check':''}}" wx:if="{{item.code=='homeDelivery'}}"></view>
-                        </view>
-                        <view class="sendbox" hidden="{{!homeDeliveryStatus}}" wx:if="{{item.code=='homeDelivery'&&plists.length}}">
-                            <view bindtap="sendDoorAdd" class="sbox mail arrow new-fbox bor-bottom">
-                                <view class="bymail">邮寄地址</view>
-                                <view class="new-fbox mian-addBox" style="width:70%">
-                                    <text class="addadd" wx:if="{{!hasAddress}}">请添加邮寄地址</text>
-                                    <view class="address-box" wx:elif="{{hasAddress}}">
-                                        <view class="name-wrap">
-                                            <text class="name-box">{{addressInfo.addName}}</text>
-                                            <text class="phone-box">{{addressInfo.contactPhone}}</text>
-                                        </view>
-                                        <view class="region-box">{{addressInfo.region}}{{addressInfo.addressDetail}}</view>
-                                    </view>
-                                </view>
-                            </view>
-                            <view bindtap="sfText" class="sfbox flex-box flex-box-center bor-bottom">
-                                <view class="flex1">
-                                    <view class="rtitle">顺丰保价<text bindtap="sfDetail" class="rdetail" data-ids="sfbj"></text>
-                                    </view>
-                                    <view class="rtips">快递车票丢失、延误，全额赔付</view>
-                                </view>
-                                <view class="new-reprice font-red">免费赠送</view>
-                                <view class="ricon {{sfText?'ricon-check':''}}"></view>
-                            </view>
-                            <view bindtap="sendNoticeShow" class="sbox notice arrow">送票上门须知</view>
-                        </view>
-                    </block>
-                    <view bindtap="busVoucherSel" class="rbox flex-box flex-box-center" wx:if="{{plists.length&&busVoucher.vouShowPrice>0}}">
-                        <view class="icon-yymd">
-                            <image src="http://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/xgift.png"></image>
-                        </view>
-                        <view class="flex1">
-                            <view class="rtitle">{{busVoucher.vouSellPrice}}元汽车票礼包<text catchtap="busVoucherPop" class="rdetail"></text>
-                                <text class="rdetailTop">促销</text>
-                            </view>
-                            <view class="rtips">购汽车票享立减，最高{{busVoucher.vouShowPrice}}元</view>
-                        </view>
-                        <view class="ricon {{busVoucherIsSel?'ricon-check':''}}"></view>
-                    </view>
-                </view>
-                <view bindtap="selectPrefer" class="ser-ins flex-box bor-top reducePrefer" wx:if="{{havePerferInfo}}">
-                    <text class="ser-instext">立减优惠</text>
-                    <view class="RMBswitch">
-                        <view class="price">
-                            <text>-¥{{preferInfo.preferentialType}}</text>/{{!!preferInfo.preferentialDimension?'人':'单'}}</view>
-                        <view class="ricon {{selectedPrefer?'ricon-check':''}}"></view>
-                    </view>
-                </view>
-                <view class="flex-box bor-top item-div jiudianbox" style="order:{};" wx:if="{{hasHotelCoupon&&plists.length}}">
-                    <view class="service-title">订酒店立减<text class="amount-price">{{hotelCoupon.vouShowPrice}}元</text>
-                        <text bindtap="showhotelDetail" class="se-circle">?</text>
-                    </view>
-                    <view class="flex-box hotel-count">¥<text>{{hotelCoupon.vouSellPrice}}</text>/份<text bindtap="hotelLessBtn" class="hotel-less">-</text>
-                        <text class="hotel-num">
-                            <text>{{hotelCouNum}}</text>份</text>
-                        <text bindtap="hotelPlusBtn" class="hotel-plus">+</text>
-                    </view>
-                </view>
-                <view class="Insurance" style="order:{};" wx:if="{{!isPeaceTravel&&isAdult&&plists.length&&isHasInsurance}}">
-                    <view class="weatherFactor weatherFactor2 new-fbox flex-box-center" wx:if="{{weather.weatherCode}}">
-                        <view class="new-fbox flex-box-center wLeft" style="color:#ff6815">
-                            <image mode="widthFix" src="{{weather.pic}}"></image>
-                            <view class="city">{{weather.departure||weather.destination}}</view>
-                            <view class="date">{{weather.dptDate}}</view>
-                            <view class="i" wx:if="{{!weather.desc&&!wdocument}}">{{weather.weatherValue}}</view>
-                        </view>
-                        <view class="wRight" wx:if="{{weather.desc&&!wdocument}}">
-                            <view class="i">{{weather.weatherValue}}</view>
-                            <text>{{weather.desc}}</text>
-                            <view class="tip">建议您为自己和家人添一份安心</view>
-                        </view>
-                        <view class="wRight" wx:elif="{{wdocument}}">
-                            <view class="i">{{weather.weatherValue}}</view>
-                            <text>{{wdocument}}</text>
-                            <view class="tip">建议您为自己和家人添一份安心</view>
-                        </view>
-                    </view>
-                    <view bindtap="btnSelectIns" class="innItem" data-code="{{item.insCode}}" data-index="{{index}}" wx:for="{{defInsMulti}}">
-                        <view class="inn_txt flex_box flex_align_center">
-                            <view class="inn_title flex_1">
-                                <text>{{item.insName}}</text>
-                                <text catchtap="btnShowInsDetail" class="icon-detail" data-code="{{item.insCode}}" data-index="{{index}}"></text>
-                            </view>
-                            <view class="inn_radio ricon {{item.insCusPayTc>0&&item.pubID>0?'ricon-check bg-color border-color':''}}"></view>
-                        </view>
-                        <view class="inn_spend flex_box flex_align_center">
-                            <view class="inn_tips flex_1 inn_tips2">{{item.shortDescribe}}</view>
-                            <view class="inn_rmb r {{!item.insCusPayTc?'fn-hide':''}}">¥<text>{{item.insCusPayTc}}</text>
-                            </view>
-                        </view>
-                    </view>
-                </view>
-                <view class="isPeaceTravel {{isDownArr?'':'b-radius1'}}" wx:if="{{!!isPeaceTravel&&plists.length&&isAdult}}">
-                    <view bindtap="btnOpneAnxin" class="anxin flex-box bor-top">
-                        <text class="ser-instext">安心出行</text>
-                        <text class="flex1 {{isDownArr?'down-arrow':'up-arrow'}}"></text>
-                    </view>
-                    <view class="anxinWrap {{isDownArr?'':'fn-hide'}}">
-                        <view class="flex-box bor-top item-div" wx:if="{{isAdult&&plists.length&&defIns.pubID!=0}}">
-                            <view class="service-title flex2">
-                                <text class="amount-price">{{defIns.insQuota}}万</text>高额保障，出行首选<text bindtap="openInsurance" class="se-circle js-insurdetail">?</text>
-                            </view>
-                            <view class="right-box flex1">¥<text>{{defIns.insCusPayTc}}</text>/份<view bindtap="selectDefaultInsure" class="icon-radio {{defInsDb?'icon-radio-on':'icon-radio-off'}}"></view>
-                            </view>
-                        </view>
-                    </view>
-                </view>
-                <view class="x-yuan-free flex_box flex_align_center" style="order:{};" wx:if="{{plists.length&&YyData.description}}">
-                    <view class="img"></view>
-                    <view class="flex_1">
-                        <view class="xy_title">{{YyData.description}}</view>
-                        <view class="xy_subtitle">{{YyData.name}}<text bindtap="btnToXYPage" class="icon-detail" data-xylink="{{YyData.instruction}}"></text>￥{{YyData.price}}</view>
-                    </view>
-                    <view class="btn-box">
-                        <view bindtap="btnSwitchXYuan" class="btn">{{YyStatus?'已参与':'立即参与'}}</view>
-                    </view>
-                </view>
-                <view class="flex-box bor-top item-div jiudianbox" style="order:{};" wx:if="{{plists.length&&hasCarCoupon}}">
-                    <view class="service-title">预约用车立减<text class="amount-price">{{carCoupon.vouShowPrice}}元</text>
-                        <text bindtap="showCarDetail" class="se-circle">?</text>
-                    </view>
-                    <view class="flex-box hotel-count">¥<text>{{carCoupon.vouSellPrice}}</text>/份<text bindtap="carLessBtn" class="hotel-less">-</text>
-                        <text class="hotel-num">
-                            <text>{{carCouNum}}</text>份</text>
-                        <text bindtap="carPlusBtn" class="hotel-plus">+</text>
-                    </view>
-                </view>
-                <block wx:if="{{sortList.vipService.cssStyle!=2}}">
-                    <template is="valueAddService" data="{{plists:plists,pkg:pkg,isAdult:isAdult,isHasOptSvc:isHasOptSvc,isHasExtSvc:isHasExtSvc,isAdult:isAdult,defaultOpt:defaultOpt,defaultExt:defaultExt,sortList:sortList}}" wx:if="{{isPeaceTravel&&isAdult&&!defInsDb}}"></template>
-                    <template is="valueAddService" data="{{plists:plists,pkg:pkg,isAdult:isAdult,isHasOptSvc:isHasOptSvc,isHasExtSvc:isHasExtSvc,isAdult:isAdult,defaultOpt:defaultOpt,defaultExt:defaultExt,sortList:sortList}}" wx:if="{{isPeaceTravel&&!isAdult}}"></template>
-                    <template is="valueAddService" data="{{plists:plists,pkg:pkg,isAdult:isAdult,isHasOptSvc:isHasOptSvc,isHasExtSvc:isHasExtSvc,isAdult:isAdult,defaultOpt:defaultOpt,defaultExt:defaultExt,sortList:sortList}}" wx:if="{{!isPeaceTravel}}"></template>
-                </block>
-                <view class="style2-serins" style="order:{};" wx:if="{{sortList.vipService.cssStyle==2&&!isPeaceTravel||sortList.vipService.cssStyle==2&&isPeaceTravel&&!defInsDb&&isAdult||sortList.vipService.cssStyle==2&&isPeaceTravel&&!isAdult}}">
-                    <view bindtap="showVipFn" class="style2-serins-title" wx:if="{{isAdult&&isHasOptSvc}}">优选服务</view>
-                    <view bindtap="showVipFn" class="style2-serins-title" wx:if="{{!isAdult&&isHasExtSvc}}">至尊服务</view>
-                    <view class="style2-serins-list" style="height:{};">
-                        <view bindtap="selectVips" class="style2-serins-item flex-box" data-pid="{{item.serviceId}}" wx:for="{{slectedVAList}}">
-                            <view class="style2-serins-item-title flex-box">
-                                <text class="big-title">{{item.serviceName}}</text>
-                                <text catchtap="vipCss2Btn" class="rdetail hottips" data-pid="{{item.serviceId}}" wx:if="{{item.sellPrice!=0}}"></text>
-                            </view>
-                            <view class="style2-serins-item-subtitle flex3 {{item.sellPrice==0?'bigPL':''}}">{{item.subTitle||''}}</view>
-                            <view class="style2-serins-item-money" wx:if="{{item.sellPrice!=0}}">￥{{item.sellPrice}}</view>
-                            <view class="icon-radio {{defaultOpt.serviceId==item.serviceId?'icon-radio-on':'icon-radio-off'}}" wx:if="{{isAdult&&isHasOptSvc}}"></view>
-                            <view class="icon-radio {{defaultExt.serviceId==item.serviceId?'icon-radio-on':'icon-radio-off'}}" wx:if="{{!isAdult&&isHasExtSvc}}"></view>
-                        </view>
-                    </view>
-                </view>
-            </view>
-            <view class="reduceCardWrap" wx:if="{{plists.length}}">
-                <view bindtap="btnOpenCars" class="ser-ins flex-box" wx:if="{{cardMsg.canUseNumber<=0}}">
-                    <text class="ser-instext">优惠券</text>
-                    <text class="ser-arrow flex1">暂无可用优惠券</text>
-                </view>
-                <view bindtap="btnToggleRCpop" class="reduceCard ser-ins flex-box bor-top" wx:if="{{isHasRedCardUse}}">
-                    <text class="ser-instext">立减卡</text>
-                    <text class="ser-arrow flex1 {{isSelectedRedCard?'sub-color':''}}">{{isSelectedRedCard?'-￥'+reduceCard_use.discountMoney:ticketPriceLimitUse?'未使用':'总票价金额未满足使用条件'}}</text>
-                </view>
-            </view>
-            <view class="warn">
-                <view class="warn-title">
-                    <text class="warn-red">*</text>温馨提示</view>
-                <view class="warn-text" wx:if="{{busInfo.bookingType==2&&busInfo.regularTime}}">目前尚未到该班次的发售时间，预约车票后，<text class="warn-red">预计{{busInfo.regularTime}}起为您抢票;</text>
-                </view>
-                <block wx:if="{{busInfo.dptStationInfo}}">
-                    <view class="warn-text" wx:if="{{busInfo.dptStationInfo.ticketDelivery=='身份证'}}">成功支付后凭<text class="warn-red">{{busInfo.dptStationInfo.ticketDelivery}}</text>至{{busInfo.dptStation}}取票乘车;</view>
-                    <view class="warn-text" wx:else>成功支付后凭系统发送短信中<text class="warn-red">取票号、取票密码及身份证</text>等信息至{{busInfo.dptStation}}取票;</view>
-                </block>
-                <view class="warntext" wx:else>成功支付后凭系统发送短信中 <span>取票号、取票密码及身份证</span>等信息至{{busInfo.dptStation}}取票;</view>
-                <view class="warn-text">若发车前<text class="warn-red">30分钟</text>仍未收到取票短信，请及时咨询在线客服进行核实;</view>
-                <view class="warn-text" wx:if="{{busInfo.supplierId==105}}">暂不支持携童票购买，若需携带免票儿童，请提前至汽车站办理以免耽误行程。本车票由北京中交提供。</view>
-                <view class="warn-text" wx:if="{{isSecStyHeader=='A'&&!!ChargeFee}}">服务费全网售票平台均收，含技术接入费、短信费等；出票成功后退票服务费不予退还，出票失败将全额退还。</view>
-                <view>请您仔细阅读<text catchtap="fnShowAgreement" data-id="5" style="color:#00f">《汽车票预订服务协议》</text>
-                </view>
-            </view>
+          </view>
+          <view bindtap="btnOpenNotice" class="{{isSecStyHeader=='A'?'top-points':isSecStyHeader=='B'?'top-point':'top-point'}} top-point flex-box flex-box-center">
+            <view class="flex1" style="color:#11c9a1;font-size:30rpx" wx:if="{{isTodaySch&&busInfo.isRefund}}">今天{{refundTime1}}前可网上退票</view>
+            <view class="flex1" style="color:#11c9a1;font-size:30rpx" wx:elif="{{busInfo.isRefund&&!isTodaySch}}">发车前{{refundTime1}}可在线退票</view>
+            <view class="flex1" style="font-size:30rpx" wx:else>发车前至发车站窗口退票</view>
+            <view class="ser-arrow">取票、退票详情</view>
+          </view>
         </view>
-        <view class="reduceCardPop" wx:if="{{isHasRedCardBuy&&isShowRedCardPop}}">
-            <view class="lijian-pop">
-                <text class="lijian-jian-icon"></text>
-                <view class="circle bg-color-t"></view>
-                <view class="lijian-top bg-color">立减<text>{{reduceCard_buy.discountMoney||''}}</text>元</view>
-                <view class="lijian-con">
-                    <view class="fir">您可获得一份立减会员权益卡</view>
-                    <view class="sec">可享<text class="sub-color">{{reduceCard_buy.discountCount}}次</text>购票，单单<text class="sub-color">立减</text>
-                    </view>
-                    <view class="thir">立减会员权益卡<text bindtap="btnToggleLijianDesc" class="icon"></text>
-                        <text class="money">¥ {{reduceCard_buy.sellPrice}}</text>
-                    </view>
-                    <view class="btn-in">
-                        <view bindtap="btnNoNeed" class="btn color btn-l">不需要</view>
-                        <view bindtap="btnBuyLiJian" class="btn btn-r btn-color">我要立减</view>
-                    </view>
-                </view>
-            </view>
-            <view class="mask"></view>
+        <view bindtap="btnToggleAlter" class="ser-ins flex-box bor-top" wx:if="{{childPriceCount<=0&&isSimpleBeixuan=='B'}}">
+          <text class="ser-instext">备选车次</text>
+          <text class="ser-arrow flex1">{{alterTxt}}</text>
         </view>
-        <view class="pubPop layer" wx:if="{{isShowRCUsePop}}">
-            <view class="pContainer">
-                <view class="pTitle">
-                    <view class="c bor-bottom">立减卡<text bindtap="btnToggleRCpop" class="pClose iconf" id="pClose"></text>
-                    </view>
-                </view>
-                <view class="pContentWrap">
-                    <view class="pContent">
-                        <view class="useContent">
-                            <view class="useCount">
-                                <view class="lj_info">
-                                    <view class="lj_rmb">您已购买立减卡 每单立减<text class="sub-color">￥{{reduceCard_use.discountMoney}}</text>
-                                    </view>
-                                    <view class="lj_count">已使用<text class="sub-color">{{reduceCard_use.index-1}}</text>次 还可以使用<text class="sub-color">{{reduceCard_use.discountCount-reduceCard_use.index+1}}</text>次</view>
-                                </view>
-                                <image mode="widthFix" src="https://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/fiveinone/lijian.png"></image>
-                            </view>
-                            <view class="ljc_explain">
-                                <view wx:for="{{redCardExplain}}">{{item}}</view>
-                            </view>
-                        </view>
-                    </view>
-                </view>
-                <view class="pBtns bor-top">
-                    <text bindtap="btnSwitchRC" class="c color border-color">{{ticketPriceLimitUse?isSelectedRedCard?'暂不使用':'立即使用':'总票价金额未满足使用条件'}}</text>
-                </view>
-            </view>
+        <view bindtap="btnToggleSimAlter" class="ser-ins flex-box bor-top" wx:if="{{childPriceCount<=0&&isSimpleBeixuan=='A'}}">
+          <text class="ser-instext small-beixuan">无票时更换为{{Simhour}}的班次</text>
+          <view class="flex1">
+            <view class="ricon small-radio {{isSelSimpleBeixuan?'ricon-check':''}}"></view>
+          </view>
         </view>
-        <view class="bottom flex-box">
-            <view bindtap="btnShowDetail" class="flex1 flex-box flex-box-center bor-top">
-                <view class="bot-total {{isShortcutCancel?'bot-total-arrow':''}}">
-                    <view>总额<text class="bot-rmb">¥</text>
-                        <text class="bot-price">{{totalPrice?totalPrice:0}}</text>
-                        <text class="bot-arr {{isShowDetail?'bot-arr-up':''}}"></text>
-                    </view>
-                    <view class="bot-offer" wx:if="{{allDiscounts}}">已优惠¥{{allDiscounts}}</view>
-                </view>
-            </view>
-            <view class="less-text" wx:if="{{adjustPrice<0}}">{{adjustPriceContent?adjustPriceContent:adjustPriceTxt}}</view>
-            <view bindtap="btnBeforePay" class="bot-pay {{isCanclePay?'gray-pay':''}}">下一步</view>
+        <view bindtap="btnToggleSubscribe" class="ser-ins flex-box bor-top" wx:if="{{vipSubscribe&&vipSubscribePrice&&!ASisExceedLimit}}">
+          <text class="ser-instext">{{subscribeInfoObj.title}}</text>
+          <text class="ser-arrow flex1">{{subscribeInfoObj.subTitle}}</text>
         </view>
-        <view class="less-text" wx:if="{{selectedPrefer&&preferInfo.preferentialType&&plists.length}}">{{preferInfo.showInformation}}</view>
-        <view class="detail{{isShowDetail?' detail-in':''}}" wx:if="{{!isShortcutCancel}}">
-            <view class="det-box">
-                <view class="detail-title">金额明细</view>
-                <view class="detail-box">
-                    <block wx:if="{{localInfo.revenueType==2}}">
-                        <view class="det-list flex-box" wx:if="{{adultPriceCount}}">
-                            <view class="flex1">极速订票<text class="per-type">成人</text>
-                            </view>
-                            <view class="det-price flex1">¥{{busInfo.ticketPrice+speedPrice}}×{{adultPriceCount}}</view>
-                        </view>
-                        <view class="det-list flex-box" wx:if="{{childPriceCount}}">
-                            <view class="flex1">极速订票<text class="per-type">儿童</text>
-                            </view>
-                            <view class="det-price flex1">¥{{childPrice+speedPrice}}×{{childPriceCount}}</view>
-                        </view>
-                    </block>
-                    <block wx:elif="{{localInfo.revenueType==3}}">
-                        <view class="det-list flex-box" wx:if="{{adultPriceCount}}">
-                            <view class="flex1">超值套票<text class="per-type">成人</text>
-                            </view>
-                            <view class="det-price flex1">¥{{busInfo.ticketPrice+localInfo.revenuePrice}}×{{adultPriceCount}}</view>
-                        </view>
-                        <view class="det-list flex-box" wx:if="{{childPriceCount}}">
-                            <view class="flex1">超值套票<text class="per-type">儿童</text>
-                            </view>
-                            <view class="det-price flex1">¥{{childPrice+localInfo.revenuePrice}}×{{childPriceCount}}</view>
-                        </view>
-                    </block>
-                    <block wx:elif="{{localInfo.revenueType==4}}">
-                        <view class="det-list flex-box" wx:if="{{adultPriceCount}}">
-                            <view class="flex1">贵宾厅套票<text class="per-type">成人</text>
-                            </view>
-                            <view class="det-price flex1">¥{{busInfo.ticketPrice+localInfo.revenuePrice}}×{{adultPriceCount}}</view>
-                        </view>
-                        <view class="det-list flex-box" wx:if="{{childPriceCount}}">
-                            <view class="flex1">贵宾厅套票<text class="per-type">儿童</text>
-                            </view>
-                            <view class="det-price flex1">¥{{childPrice+localInfo.revenuePrice}}×{{childPriceCount}}</view>
-                        </view>
-                    </block>
-                    <block wx:else>
-                        <view class="det-list flex-box" wx:if="{{adultPriceCount}}">
-                            <view class="flex1">
-                                <text class="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0?'double-line':''}}">{{isSupportChild?'成人票':'汽车票'}}</text>
-                                <text class="double-lines" wx:if="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0}}">(含车站收取{{addressInfo.agentFee}}元代购费)</text>
-                            </view>
-                            <view class="det-price flex1" wx:if="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0}}">¥{{(busInfo.ticketPrice*1000+addressInfo.agentFee*1000)/1000}}×{{isSupportChild?adultPriceCount:plists.length}}</view>
-                            <view class="det-price flex1" wx:else>¥{{busInfo.ticketPrice}}×{{isSupportChild?adultPriceCount:plists.length}}</view>
-                            <view class="count-guangzhou" wx:if="{{busInfo.discount>0}}">票价已优惠¥ {{busInfo.discount}}×{{adultPriceCount}}</view>
-                        </view>
-                        <view class="det-list flex-box" wx:if="{{isSupportChild&&childPriceCount}}">
-                            <view class="flex1">
-                                <text class="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0?'double-line':''}}">儿童票</text>
-                                <text class="double-lines" wx:if="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0}}">(含车站收取{{addressInfo.agentFee}}元代购费)</text>
-                            </view>
-                            <view class="det-price flex1" wx:if="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0}}">¥{{(childPrice*1000+addressInfo.agentFee*1000)/1000}}×{{childPriceCount}}</view>
-                            <view class="det-price flex1" wx:else>¥{{childPrice}}×{{childPriceCount}}</view>
-                            <view class="count-guangzhou" wx:if="{{busInfo.childDiscount>0}}">票价已优惠¥ {{busInfo.childDiscount}}×{{childPriceCount}}</view>
-                        </view>
-                    </block>
-                    <block wx:if="{{!!isPeaceTravel}}">
-                        <view class="det-list flex-box" wx:if="{{defIns.insCusPayTc&&plists.length&&isAdult&&defInsDb}}">
-                            <view class="flex1">出行保障</view>
-                            <view class="det-price flex1">¥{{defIns.insCusPayTc}}×{{plists.length}}</view>
-                        </view>
-                        <view class="det-list flex-box" wx:if="{{!pkg.isValue&&plists.length&&!defInsDb&&isAdult&&defaultOpt.sellPrice>0}}">
-                            <view class="flex1">优选服务</view>
-                            <view class="det-price flex1">¥{{defaultOpt.sellPrice}}×{{plists.length}}</view>
-                        </view>
-                        <view class="det-list flex-box" wx:if="{{!pkg.isValue&&plists.length&&!isAdult&&defaultExt.sellPrice>0}}">
-                            <view class="flex1">至尊服务</view>
-                            <view class="det-price flex1">¥{{defaultExt.sellPrice}}×{{plists.length}}</view>
-                        </view>
-                    </block>
-                    <block wx:else>
-                        <view class="det-list flex-box" wx:if="{{item.insCusPayTc&&plists.length&&isAdult}}" wx:for="{{defInsMulti}}" wx:key="insCode">
-                            <view class="flex1">{{item.insName}}</view>
-                            <view class="det-price flex1">¥{{item.insCusPayTc}}×{{plists.length}}</view>
-                        </view>
-                        <view class="det-list flex-box" wx:if="{{!pkg.isValue&&plists.length&&isAdult&&defaultOpt.sellPrice>0}}">
-                            <view class="flex1">优选服务</view>
-                            <view class="det-price flex1">¥{{defaultOpt.sellPrice}}×{{plists.length}}</view>
-                        </view>
-                        <view class="det-list flex-box" wx:if="{{!pkg.isValue&&plists.length&&!isAdult&&defaultExt.sellPrice>0}}">
-                            <view class="flex1">至尊服务</view>
-                            <view class="det-price flex1">¥{{defaultExt.sellPrice}}×{{plists.length}}</view>
-                        </view>
-                    </block>
-                    <view class="det-list flex-box" wx:if="{{refundStatus&&plists.length}}">
-                        <view class="flex1">{{isRefundChange?'退改无忧':isRefundOrder?'退票无忧':'随心退'}}</view>
-                        <view class="det-price flex1">¥{{refundPice}}×{{plists.length}}</view>
-                    </view>
-                    <view class="det-list flex-box" wx:if="{{IssueStatus&&plists.length&&!pkg.isSpeed}}">
-                        <view class="flex1">极速出票</view>
-                        <view class="det-price flex1">¥{{speedPrice}}×{{plists.length}}</view>
-                    </view>
-                    <view class="det-list flex-box" wx:if="{{YyStatus&&plists.length}}">
-                        <view class="flex1">{{YyData.name}}</view>
-                        <view class="det-price flex1">¥{{YyData.price}}×{{plists.length}}</view>
-                    </view>
-                    <view class="det-list flex-box" wx:if="{{homeDeliveryStatus&&plists.length&&addressInfo.expressFee>0}}">
-                        <view class="flex1">快递费<text class="user-level" wx:if="{{featureValue>=3&&homeDelivery.show}}">V{{featureValue}}会员免费</text>
-                        </view>
-                        <view class="det-price flex1" wx:if="{{featureValue>=3&&homeDelivery.show}}">
-                            <text class="free-price">¥0×1</text>
-                            <text class="line-through">¥{{addressInfo.expressFee}}×1</text>
-                        </view>
-                        <view class="det-price flex1" wx:else>¥{{addressInfo.expressFee}}×1</view>
-                    </view>
-                    <view class="det-list flex-box" wx:if="{{selectedPrefer&&preferInfo.preferentialType&&plists.length}}">
-                        <view class="flex1">立减优惠</view>
-                        <view class="det-price txt-ml flex1">-¥{{preferInfo.preferentialType}}×{{!!preferInfo.preferentialDimension?plists.length:1}}</view>
-                    </view>
-                    <view class="det-list flex-box" wx:if="{{carCoupon.vouSellPrice&&carCouNum>0}}">
-                        <view class="flex1">用车代金券</view>
-                        <view class="det-price flex1">¥{{carCoupon.vouSellPrice}}×{{carCouNum}}</view>
-                    </view>
-                    <view class="det-list flex-box" wx:if="{{hotelCoupon.vouSellPrice&&hotelCouNum>0}}">
-                        <view class="flex1">酒店代金券</view>
-                        <view class="det-price flex1">¥{{hotelCoupon.vouSellPrice}}×{{hotelCouNum}}</view>
-                    </view>
-                    <view class="det-list flex-box" wx:if="{{busVoucherIsSel&&plists.length}}">
-                        <view class="flex1">{{busVoucher.vouSellPrice}}元汽车票礼包</view>
-                        <view class="det-price flex1">¥{{busVoucher.vouSellPrice}}×1</view>
-                    </view>
-                    <view class="det-list flex-box" wx:if="{{!!selectCode.showPrice&&selectCode.showPrice>0&&plists.length}}">
-                        <view class="flex1">优惠券</view>
-                        <view class="det-price txt-ml flex1">-¥{{selectCode.showPrice}}</view>
-                    </view>
-                    <view class="det-list flex-box" wx:if="{{vipSubscribe&&vipSubscribePrice&&!ASisExceedLimit&&subscribeInfoObj.isSubscribe}}">
-                        <view class="flex1">高级预约</view>
-                        <view class="det-price flex1">¥{{vipSubscribePrice}}×{{plists.length+childPassengers.length}}</view>
-                    </view>
-                    <view class="det-list flex-box" wx:if="{{isSelectedRedCard&&isHasRedCardBuy&&plists.length}}">
-                        <view class="flex1">立减卡</view>
-                        <view class="det-price flex1">¥{{reduceCard_buy.sellPrice||0}}</view>
-                    </view>
-                    <view class="det-list flex-box" wx:if="{{isSelectedRedCard&&plists.length}}">
-                        <view class="flex1">立减卡优惠</view>
-                        <view class="det-price txt-ml flex1">-¥{{(isHasRedCardUse?reduceCard_use.discountMoney:reduceCard_buy.discountMoney)||0}}</view>
-                    </view>
-                    <view class="det-list flex-box" wx:if="{{isHasService&&plists.length}}">
-                        <view class="flex1">服务费</view>
-                        <view class="det-price flex1">¥{{busInfo.serviceChargePrice}}×{{plists.length}}</view>
-                    </view>
-                    <view class="det-list flex-box" wx:if="{{adjustPrice}}">
-                        <block wx:if="{{adjustPrice<0}}">
-                            <view class="flex1">立减</view>
-                            <view class="det-price flex1 txt-ml">-¥{{adjustPriceAbs}}×{{plists.length}}</view>
-                        </block>
-                        <block wx:else>
-                            <view class="flex1">服务费</view>
-                            <view class="det-price flex1">¥{{adjustPriceAbs}}×{{plists.length}}</view>
-                        </block>
-                    </view>
+      </view>
+      <view class="pass">
+        <view class="pass-cap flex-box flex-box-center bor-bottom" wx:if="{{plists.length||fillPassList.length}}">
+          <view class="pass-title">乘客</view>
+          <view>最多添加{{maxNum}}人</view>
+        </view>
+        <view>
+          <view wx:for="{{plists}}" wx:key="id">
+            <view class="pass-box flex-box bor-bottom selected-item">
+              <view bindtap="fnShowDeleteBtn" class="pass-delete {{item.showDeleteBtn?'show-delete':''}}" data-deltype="selected" data-pid="{{item.IDSpace}}" data-pname="{{item.linkerName}}" data-serial="{{index}}"></view>
+              <view class="flex1">
+                <view class="pass-name">{{item.linkerName}}
+                  <text class="child-icon" wx:if="{{isSupportChild&&item.type==1}}">儿童</text>
                 </view>
+                <view class="pass-card">{{item.IDSpace}}</view>
+              </view>
+              <view bindtap="btnEditPass" class="edit-icon" data-from="notpop" data-pid="{{item.IDCard}}" data-pidspace="{{item.IDSpace}}" data-pname="{{item.linkerName}}" data-type="{{item.type}}" wx:if="{{item.source!=1}}"></view>
+              <button bindtap="btnDeletePass" class="{{item.showDeleteBtn?'show':''}}" data-pid="{{item.IDCard}}" data-pidspace="{{item.IDSpace}}" data-pname="{{item.linkerName}}" data-serial="{{index}}">删除</button>
             </view>
-            <block wx:if="{{isHasService&&plists.length}}">
-                <view class="det-service" wx:if="{{busInfo.serviceChargeType==2}}">该车站征收线上购票服务费，服务费发票可在车站窗口获取，如需退票服务费车站不予退还。</view>
-                <view class="det-service" wx:else>服务费全网售票平台均收，含技术接入费、短信费等；出票成功后退票服务费不予退还，出票失败将全额退还。</view>
+            <block wx:if="{{supportFreeChild}}">
+              <view class="freeChildItem pass-box flex-box bor-bottom selected-item" wx:for="{{item.carryChildren}}" wx:for-index="idx" wx:for-item="one">
+                <view bindtap="fnShowFCDeleteBtn" class="pass-delete {{one.showDeleteBtn?'show-delete':''}}" data-idx="{{idx}}" data-pid="{{item.IDCard}}" data-pname="{{item.linkerName}}"></view>
+                <view class="flex1">
+                  <view class="pass-name">{{one.name}}
+                    <text class="child-icon">携童</text>
+                  </view>
+                  <view class="pass-card">{{one.idSpace}}</view>
+                </view>
+                <view bindtap="btnEditFreeChild" class="edit-icon" data-idx="{{idx}}" data-pid="{{item.IDCard}}" data-pname="{{item.linkerName}}"></view>
+                <button bindtap="btnDeleteFreeChild" class="{{one.showDeleteBtn?'show':''}}" data-idx="{{idx}}" data-pid="{{item.IDCard}}" data-pname="{{item.linkerName}}">删除</button>
+              </view>
             </block>
+          </view>
         </view>
-        <view class="detail{{isShowDetail?' detail-in':''}}" wx:else>
-            <view class="det-box">
-                <view class="detail-title">金额明细</view>
-                <scroll-view class="detail-box" id="det-box" scrollTop="{{scrollTop}}" scrollY="true">
-                    <block wx:if="{{localInfo.revenueType==2}}">
-                        <view class="det-list flex-box" wx:if="{{adultPriceCount}}">
-                            <view class="flex2">极速订票<text class="per-type">成人</text>
-                            </view>
-                            <view class="txt-center">¥{{busInfo.ticketPrice+speedPrice}}×{{adultPriceCount}}</view>
-                            <view class="det-price flex1 detail-stxt">不可取消</view>
-                        </view>
-                        <view class="det-list flex-box" wx:if="{{childPriceCount}}">
-                            <view class="flex2">极速订票<text class="per-type">儿童</text>
-                            </view>
-                            <view class="txt-center">¥{{childPrice+speedPrice}}×{{childPriceCount}}</view>
-                            <view class="det-price flex1 detail-stxt">不可取消</view>
-                        </view>
-                    </block>
-                    <block wx:elif="{{localInfo.revenueType==3}}">
-                        <view class="det-list flex-box" wx:if="{{adultPriceCount}}">
-                            <view class="flex2">超值套票<text class="per-type">成人</text>
-                            </view>
-                            <view class="txt-center">¥{{busInfo.ticketPrice+localInfo.revenuePrice}}×{{adultPriceCount}}</view>
-                            <view class="det-price flex1 detail-stxt">不可取消</view>
-                        </view>
-                        <view class="det-list flex-box" wx:if="{{childPriceCount}}">
-                            <view class="flex2">超值套票<text class="per-type">儿童</text>
-                            </view>
-                            <view class="txt-center">¥{{childPrice+localInfo.revenuePrice}}×{{childPriceCount}}</view>
-                            <view class="det-price flex1 detail-stxt">不可取消</view>
-                        </view>
-                    </block>
-                    <block wx:elif="{{localInfo.revenueType==4}}">
-                        <view class="det-list flex-box" wx:if="{{adultPriceCount}}">
-                            <view class="flex2">贵宾厅套票<text class="per-type">成人</text>
-                            </view>
-                            <view class="txt-center">¥{{busInfo.ticketPrice+localInfo.revenuePrice}}×{{adultPriceCount}}</view>
-                            <view class="det-price flex1 detail-stxt">不可取消</view>
-                        </view>
-                        <view class="det-list flex-box" wx:if="{{childPriceCount}}">
-                            <view class="flex2">贵宾厅套票<text class="per-type">儿童</text>
-                            </view>
-                            <view class="txt-center">¥{{childPrice+localInfo.revenuePrice}}×{{childPriceCount}}</view>
-                            <view class="det-price flex1 detail-stxt">不可取消</view>
-                        </view>
-                    </block>
-                    <block wx:else>
-                        <view class="det-list flex-box" wx:if="{{adultPriceCount}}">
-                            <view class="flex2">
-                                <text class="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0?'double-line':''}}">{{isSupportChild?'成人票':'汽车票'}}</text>
-                                <text class="double-lines" wx:if="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0}}">(含车站收取{{addressInfo.agentFee}}元代购费)</text>
-                            </view>
-                            <view class="txt-center" wx:if="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0}}">¥{{(busInfo.ticketPrice*1000+addressInfo.agentFee*1000)/1000}}×{{isSupportChild?adultPriceCount:plists.length}}</view>
-                            <view class="txt-center" wx:else>¥{{busInfo.ticketPrice}}×{{isSupportChild?adultPriceCount:plists.length}}</view>
-                            <view class="det-price flex1 detail-stxt">不可取消</view>
-                        </view>
-                        <view class="det-list flex-box" wx:if="{{isSupportChild&&childPriceCount}}">
-                            <view class="flex2">
-                                <text class="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0?'double-line':''}}">儿童票</text>
-                                <text class="double-lines" wx:if="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0}}">(含车站收取{{addressInfo.agentFee}}元代购费)</text>
-                            </view>
-                            <view class="txt-center" wx:if="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0}}">¥{{(childPrice*1000+addressInfo.agentFee*1000)/1000}}×{{childPriceCount}}</view>
-                            <view class="txt-center" wx:else>¥{{childPrice}}×{{childPriceCount}}</view>
-                            <view class="det-price flex1 detail-stxt">不可取消</view>
-                        </view>
-                    </block>
-                    <block wx:if="{{!!isPeaceTravel}}">
-                        <view class="det-list flex-box" wx:if="{{defIns.insCusPayTc&&plists.length&&isAdult&&defInsDb}}">
-                            <view class="flex2">出行保障</view>
-                            <view class="txt-center">¥{{defIns.insCusPayTc}}×{{plists.length}}</view>
-                            <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.chuxingbaozhang?'hide-det-btn':''}}" data-type="chuxingbaozhang">取消购买</view>
-                        </view>
-                        <template is="quickcancel" data="{{show:!!showDetTipObj.chuxingbaozhang,content:'买一份保险，买一份安心，建议您购买',type:'chuxingbaozhang',buyIt:buyIt,buyMao:buyMao}}"></template>
-                        <view class="det-list flex-box" wx:if="{{!pkg.isValue&&plists.length&&!defInsDb&&isAdult&&defaultOpt.sellPrice>0}}">
-                            <view class="flex2">优选服务</view>
-                            <view class="txt-center">¥{{defaultOpt.sellPrice}}×{{plists.length}}</view>
-                            <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.youxuan?'hide-det-btn':''}}" data-type="youxuan">取消购买</view>
-                        </view>
-                        <template is="quickcancel" data="{{show:!!showDetTipObj.youxuan,content:defaultOpt.subTitle,type:'youxuan',buyIt:buyIt,buyMao:buyMao}}"></template>
-                        <view class="det-list flex-box" wx:if="{{!pkg.isValue&&plists.length&&!isAdult&&defaultExt.sellPrice>0}}">
-                            <view class="flex1">至尊服务</view>
-                            <view class="txt-center">¥{{defaultExt.sellPrice}}×{{plists.length}}</view>
-                            <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.zhizun?'hide-det-btn':''}}" data-type="zhizun">取消购买</view>
-                        </view>
-                        <template is="quickcancel" data="{{show:!!showDetTipObj.zhizun,content:defaultOpt.subTitle,type:'zhizun',buyIt:buyIt,buyMao:buyMao}}"></template>
-                    </block>
-                    <block wx:else>
-                        <block wx:for="{{defInsMulti}}" wx:key="insCode">
-                            <view class="det-list flex-box" wx:if="{{item.insCusPayTc&&plists.length&&isAdult}}">
-                                <view class="flex2">{{item.insName}}</view>
-                                <view class="txt-center">¥{{item.insCusPayTc}}×{{plists.length}}</view>
-                                <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj['insurance'+item.insCode]?'hide-det-btn':''}}" data-type="{{'insurance'+item.insCode}}">取消购买</view>
-                            </view>
-                            <template is="quickcancel" data="{{show:!!showDetTipObj['insurance'+item.insCode],content:item.shortDescribe+'，买一份保险，买一份安心，建议您购买',type:'insurance'+item.insCode,index:index,buyIt:buyIt,buyMao:buyMao}}"></template>
-                        </block>
-                        <view class="det-list flex-box" wx:if="{{!pkg.isValue&&plists.length&&isAdult&&defaultOpt.sellPrice>0}}">
-                            <view class="flex2">优选服务</view>
-                            <view class="txt-center">¥{{defaultOpt.sellPrice}}×{{plists.length}}</view>
-                            <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.youxuan?'hide-det-btn':''}}" data-type="youxuan">取消购买</view>
-                        </view>
-                        <template is="quickcancel" data="{{show:!!showDetTipObj.youxuan,content:defaultOpt.subTitle,type:'youxuan',buyIt:buyIt,buyMao:buyMao}}"></template>
-                        <view class="det-list flex-box" wx:if="{{!pkg.isValue&&plists.length&&!isAdult&&defaultExt.sellPrice>0}}">
-                            <view class="flex2">至尊服务</view>
-                            <view class="txt-center">¥{{defaultExt.sellPrice}}×{{plists.length}}</view>
-                            <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.zhizun?'hide-det-btn':''}}" data-type="zhizun">取消购买</view>
-                        </view>
-                        <template is="quickcancel" data="{{show:!!showDetTipObj.zhizun,content:defaultOpt.subTitle,type:'zhizun',buyIt:buyIt,buyMao:buyMao}}"></template>
-                    </block>
-                    <view class="det-list flex-box" wx:if="{{refundStatus&&plists.length}}">
-                        <view class="flex2">{{isRefundChange?'退改无忧':isRefundOrder?'退票无忧':'随心退'}}</view>
-                        <view class="txt-center">¥{{refundPice}}×{{plists.length}}</view>
-                        <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.tgwuyou?'hide-det-btn':''}}" data-type="tgwuyou">取消购买</view>
-                    </view>
-                    <template is="quickcancel" data="{{show:!!showDetTipObj.tgwuyou,content:saveSTDes.refundCarefree,type:'tgwuyou',buyIt:buyIt,buyMao:buyMao}}"></template>
-                    <view class="det-list flex-box" wx:if="{{IssueStatus&&plists.length&&!pkg.isSpeed}}">
-                        <view class="flex2">极速出票</view>
-                        <view class="txt-center">¥{{speedPrice}}×{{plists.length}}</view>
-                        <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.fastTicketOut?'hide-det-btn':''}}" data-type="fastTicketOut">取消购买</view>
-                    </view>
-                    <template is="quickcancel" data="{{show:!!showDetTipObj.fastTicketOut,content:saveSTDes.FastTicketOut,type:'fastTicketOut',buyIt:buyIt,buyMao:buyMao}}"></template>
-                    <view class="det-list flex-box" wx:if="{{YyStatus&&plists.length}}">
-                        <view class="flex2">{{YyData.name}}</view>
-                        <view class="txt-center">¥{{YyData.price}}×{{plists.length}}</view>
-                        <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.busYiyuanFree?'hide-det-btn':''}}" data-type="busYiyuanFree">取消购买</view>
-                    </view>
-                    <template is="quickcancel" data="{{show:!!showDetTipObj.busYiyuanFree,content:saveSTDes.BusYiyuanFree,type:'busYiyuanFree',buyIt:buyIt,buyMao:buyMao}}"></template>
-                    <view class="det-list flex-box" wx:if="{{homeDeliveryStatus&&plists.length&&addressInfo.expressFee>0}}">
-                        <view class="flex2">快递费<text class="user-level" wx:if="{{featureValue>=3&&homeDelivery.show}}">V{{featureValue}}会员免费</text>
-                        </view>
-                        <view class="txt-center" wx:if="{{featureValue>=3&&homeDelivery.show}}">
-                            <text class="free-price">¥0×1</text>
-                            <text class="line-through">¥{{addressInfo.expressFee}}×1</text>
-                        </view>
-                        <view class="txt-center" wx:else>¥{{addressInfo.expressFee}}×1</view>
-                        <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.homeDelivery?'hide-det-btn':''}}" data-type="homeDelivery">取消购买</view>
-                    </view>
-                    <template is="quickcancel" data="{{show:!!showDetTipObj.homeDelivery,content:saveSTDes.homeDelivery,type:'homeDelivery',buyIt:buyIt,buyMao:buyMao}}"></template>
-                    <view class="det-list flex-box" wx:if="{{selectedPrefer&&preferInfo.preferentialType&&plists.length}}">
-                        <view class="flex2">立减优惠</view>
-                        <view class="txt-center txt-ml">-¥{{preferInfo.preferentialType}}×{{!!preferInfo.preferentialDimension?plists.length:1}}</view>
-                        <view class="det-price detail-stxt flex1">不可取消</view>
-                    </view>
-                    <view class="det-list flex-box" wx:if="{{carCoupon.vouSellPrice&&carCouNum>0}}">
-                        <view class="flex2">用车代金券</view>
-                        <view class="txt-center">¥{{carCoupon.vouSellPrice}}×{{carCouNum}}</view>
-                        <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.carCoupon?'hide-det-btn':''}}" data-type="carCoupon">取消购买</view>
-                    </view>
-                    <template is="quickcancel" data="{{show:!!showDetTipObj.carCoupon,content:carCoupon.vouProductionName,type:'carCoupon',buyIt:buyIt,buyMao:buyMao}}"></template>
-                    <view class="det-list flex-box" wx:if="{{hotelCoupon.vouSellPrice&&hotelCouNum>0}}">
-                        <view class="flex2">酒店代金券</view>
-                        <view class="txt-center">¥{{hotelCoupon.vouSellPrice}}×{{hotelCouNum}}</view>
-                        <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.hotelCoupon?'hide-det-btn':''}}" data-type="hotelCoupon">取消购买</view>
-                    </view>
-                    <template is="quickcancel" data="{{show:!!showDetTipObj.hotelCoupon,content:hotelCoupon.vouProductionName,type:'hotelCoupon',buyIt:buyIt,buyMao:buyMao}}"></template>
-                    <view class="det-list flex-box" wx:if="{{busVoucherIsSel&&plists.length}}">
-                        <view class="flex2">{{busVoucher.vouSellPrice}}元汽车票礼包</view>
-                        <view class="txt-center">¥{{busVoucher.vouSellPrice}}×1</view>
-                        <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.busVoucher?'hide-det-btn':''}}" data-type="busVoucher">取消购买</view>
-                    </view>
-                    <template is="quickcancel" data="{{show:!!showDetTipObj.busVoucher,content:busVoucher.vouProductionName,type:'busVoucher',buyIt:buyIt,buyMao:buyMao}}"></template>
-                    <view class="det-list flex-box" wx:if="{{!!selectCode.showPrice&&selectCode.showPrice>0&&plists.length}}">
-                        <view class="flex2">优惠券</view>
-                        <view class="txt-center txt-ml">-¥{{selectCode.showPrice}}</view>
-                        <view class="det-price detail-stxt flex1">不可取消</view>
-                    </view>
-                    <view class="det-list flex-box" wx:if="{{vipSubscribe&&vipSubscribePrice&&!ASisExceedLimit&&subscribeInfoObj.isSubscribe}}">
-                        <view class="flex2">高级预约</view>
-                        <view class="txt-center">¥{{vipSubscribePrice}}×{{plists.length+childPassengers.length}}</view>
-                        <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.vipSubscribe?'hide-det-btn':''}}" data-type="vipSubscribe">取消购买</view>
-                    </view>
-                    <template is="quickcancel" data="{{show:!!showDetTipObj.vipSubscribe,content:subscribeInfoObj.title+'，享优先出票服务，出票成功率更高',type:'vipSubscribe',buyIt:buyIt,buyMao:buyMao}}"></template>
-                    <view class="det-list flex-box" wx:if="{{isHasService&&plists.length}}">
-                        <view class="flex2">服务费</view>
-                        <view class="txt-center">¥{{busInfo.serviceChargePrice}}×{{plists.length}}</view>
-                        <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.serviceChargePrice?'hide-det-btn':''}}" data-type="serviceChargePrice">相关说明</view>
-                    </view>
-                    <view class="detail-content" wx:if="{{isHasService&&showDetTipObj.serviceChargePrice}}">
-                        <view class="det-content">
-                            <view wx:if="{{busInfo.serviceChargeType==2}}">该车站征收线上购票服务费，服务费发票可在车站窗口获取，如需退票服务费车站不予退还。</view>
-                            <view wx:else>服务费全网售票平台均收，含技术接入费、短信费等；出票成功后退票服务费不予退还，出票失败将全额退还。</view>
-                        </view>
-                        <view class="flex-box">
-                            <view bindtap="buyIt" class="flex2 t-center det-btn-buy" data-type="serviceChargePrice">我知道了</view>
-                        </view>
-                    </view>
-                    <view class="det-list flex-box" wx:if="{{adjustPrice}}">
-                        <block wx:if="{{adjustPrice<0}}">
-                            <view class="flex2">立减</view>
-                            <view class="txt-center txt-ml">-¥{{adjustPriceAbs}}×{{plists.length}}</view>
-                            <view class="det-price detail-stxt flex1">不可取消</view>
-                        </block>
-                        <block wx:else>
-                            <view class="flex2">服务费</view>
-                            <view class="txt-center">¥{{adjustPriceAbs}}×{{plists.length}}</view>
-                            <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.serviceChargePrice?'hide-det-btn':''}}" data-type="serviceChargePrice">相关说明</view>
-                        </block>
-                    </view>
-                    <view class="detail-content" wx:if="{{adjustPrice>0&&showDetTipObj.serviceChargePrice}}">
-                        <view class="det-content">
-                            <view wx:if="{{busInfo.serviceChargeType==2}}">该车站征收线上购票服务费，服务费发票可在车站窗口获取，如需退票服务费车站不予退还。</view>
-                            <view wx:else>服务费全网售票平台均收，含技术接入费、短信费等；出票成功后退票服务费不予退还，出票失败将全额退还。</view>
-                        </view>
-                        <view class="flex-box">
-                            <view bindtap="buyIt" class="flex2 t-center det-btn-buy" data-type="serviceChargePrice">我知道了</view>
-                        </view>
-                    </view>
-                </scroll-view>
-            </view>
-            <view class="detail-empty"></view>
+        <view class="addbtn-wrap flex-box flex-box-center flex-box-justify">
+          <view bindtap="btnOpenPass" class="pass-addbtn flex1" wx:if="{{fillPassList.length||passengers.length}}">
+            <text class="pass-addtxt">添加乘客</text>
+          </view>
+          <view bindtap="btnShowAddPage" class="pass-addbtn flex1" wx:else>
+            <text class="pass-addtxt">添加乘客</text>
+          </view>
         </view>
-        <view bindtap="btnShowDetail" class="cover" wx:if="{{isShowDetail}}"></view>
-        <view class="passengers {{showPassengers?'detail-in':''}}">
-            <view class="prompt flex-box">
-                <view bindtap="btnCancel" class="cancel flex1">取消</view>
-                <view bindtap="refreshPlists" class="confirm flex1" data-callback="btnShowPassengers">确定</view>
+      </view>
+      <view bindtap="btnAddFreeChild" class="t-radius b-radius ser-arrow ser-ins freeChild" wx:if="{{supportFreeChild&&(localInfo.freeChildCntLeft-adultCount>=0?adultCount:localInfo.freeChildCntLeft)-freeChildCount>0&&localInfo.freeChildCntLeft>0}}">免费申请携童票
+        <text>1.2米以下儿童/无座位</text>
+      </view>
+      <view class="take" wx:if="{{adultPriceCount}}">
+        <view class="take-box">
+          <view class="take-cap flex-box bor-bottom">
+            <view class="take-title flex1">取票人
+              <text class="take-name">{{contactInfo.linkerName}}</text>
             </view>
-            <view bindtap="btnShowAddPage" class="add bor-bottom">
-                <text class="addicon"></text>添加乘客</view>
-            <scroll-view scrollY class="box" wx:if="{{passengers.length}}">
-                <view class="list flex-box flex-box-center bor-bottom {{item.selected?'selected':''}}" wx:if="{{item.source==0||item.source==1&&isCheck12306}}" wx:for="{{passengers}}" wx:key="id">
-                    <view bindtap="btnEditPass" class="edit-icon" data-from="pop" data-pid="{{item.IDCard}}" data-pname="{{item.linkerName}}" data-type="{{item.type}}" wx:if="{{item.source==0}}"></view>
-                    <view class="edit-icon opacity" wx:else></view>
-                    <view bindtap="btnSelectPass" class="info flex-box flex1 flex-box-center" data-pid="{{item.IDCard}}" data-pname="{{item.linkerName}}" data-state="{{item.selected?1:0}}" data-type="{{item.type}}">
-                        <view class="flex1">
-                            <view class="name">{{item.linkerName}}<text class="is12306" wx:if="{{item.source==1}}">12306</text>
-                                <text class="child-icon" wx:if="{{isSupportChild&&item.type==1}}">儿童</text>
-                            </view>
-                            <view class="idcard">{{item.IDSpace}}</view>
-                        </view>
-                    </view>
+            <view bindtap="btnShowContact" class="take-arrow">
+              <text wx:if="{{isHiddenContact}}">修改</text>
+              <text wx:else>收起</text>
+            </view>
+          </view>
+          <view hidden="{{isHiddenContact}}">
+            <view class="take-main flex-box bor-bottom">
+              <view bindtap="btnSelectContact" class="take-list{{item.IDCard==contactInfo.IDCard?' take-selected':''}}" data-cid="{{item.IDCard}}" data-cname="{{item.linkerName}}" wx:if="{{isSupportChild&&item.type!=1||!isSupportChild}}" wx:for="{{plists}}" wx:key="id">{{item.linkerName}}</view>
+            </view>
+            <view class="other"></view>
+          </view>
+        </view>
+        <view class="phone flex-box">
+          <view class="phone-title">手机号</view>
+          <input bindblur="blurPhone" bindinput="inputPhoneNum" class="phone-input flex1" focus="{{phoneFocus}}" maxlength="13" placeholder="用于接收取票信息" placeholderClass="placeholder" type="number" value="{{phoneSpace}}"></input>
+          <view class="phone-close"></view>
+        </view>
+      </view>
+      <view bindtap="btnOpenCars" class="ser-ins flex-box hasCoupons" wx:if="{{plists.length>0&&!!isGetCard&&cardMsg.canUseNumber>0&&highPriceCoupon>0}}">
+        <view class="ser-instext flex_1">优惠券</view>
+        <view class="ser-arrow flex_2 colorful">
+          <block wx:if="{{selectCode.showPrice>0}}">已优惠
+            <text class="red-word">¥{{selectCode.showPrice}}</text>
+          </block>
+          <block wx:else>
+            <text class="card-bg">{{cardMsg.canUseNumber}}张</text>最高可减
+            <text class="red-word">¥{{highPriceCoupon}}</text>
+          </block>
+        </view>
+      </view>
+      <view style="display:flex;flex-direction:column">
+        <view class="revenue" style="order:{};" wx:if="{{stList.length}}">
+          <block wx:for="{{stList}}" wx:for-index="idx" wx:key="code">
+            <view bindtap="selectService" class="rbox flex-box flex-box-center" data-key="{{item.statusKey}}" data-rmb="{{item.price||0}}" hidden="{{item.code=='refundCarefree'&&!isShowSuixin||item.code=='homeDelivery'&&localInfo.revenueType==2}}" wx:if="{{item.code&&plists.length&&item.code!='FastTicketOut'&&item.code!='refundCarefree'||item.code=='homeDelivery'&&plists.length||item.code=='FastTicketOut'&&plists.length&&isShowSpeed||item.code=='refundCarefree'&&plists.length&&isShowrefund}}">
+              <view class="icon-yymd">
+                <image src="{{item.img}}"></image>
+              </view>
+              <view class="flex1">
+                <view class="rtitle" wx:if="{{item.code=='FastTicketOut'}}">{{item.name}}
+                  <text catchtap="btnOpenPop" class="rdetail hottips"></text>
+                  <text class="rdetailTop" wx:if="{{item.tag}}">{{item.tag}}</text>
                 </view>
-                <block wx:if="{{isHas12306}}">
-                    <view class="new-fbox tips12306" wx:if="{{isCheck12306}}">
-                        <view class="p">您曾在本平台预订过火车票出行服务，平台已为您补充12306乘客信息，作为汽车票常用旅客查询依据。</view>
-                        <view bindtap="btnToggle12306" class="radio12306 chosed"></view>
-                    </view>
-                    <view class="new-fbox tips12306" wx:elif="{{isHasTcPass}}">
-                        <view class="p">想选择的人不在列表内？从火车票12306乘客中补充吧</view>
-                        <view bindtap="btnToggle12306" class="radio12306"></view>
-                    </view>
-                    <view class="new-fbox tips12306 no-pass" wx:else>
-                        <view class="p">
-                            <text>还未添加常用旅客？选择一名12306旅客作为乘车人吧</text>
-                        </view>
-                        <view bindtap="btnToggle12306" class="radio12306"></view>
-                    </view>
-                </block>
-            </scroll-view>
-            <view class="box" wx:else></view>
-        </view>
-        <view bindtap="btnShowPassengers" class="cover" wx:if="{{showPassengers}}"></view>
-        <div class="notice-top {{isOpendetail?'notice-top-in':''}}">
-            <div class="nmain ins-pop">
-                <view class="item" wx:for="{{defIns.insContent}}" wx:key="*this">{{item}}</view>
-            </div>
-            <div bindtap="closeInsurance" class="close"></div>
-        </div>
-        <view class="notice-top {{isShowBaoXianDetail?'notice-top-in':''}}">
-            <view class="nmain ins-pop">
-                <view class="item" wx:for="{{insContentObj.insContent}}" wx:key="*this">{{item}}</view>
-            </view>
-            <view class="close-box flex-box">
-                <view bindtap="goDetailLink" class="close-link flex1" data-link="{{insLink}}" wx:if="{{!!insLink}}">条款详情</view>
-                <view bindtap="closeInsurance" class="close close1 flex1"></view>
-            </view>
-        </view>
-        <div class="notice-top {{isOpenCardetail?'notice-top-in':''}}">
-            <div class="nmain">
-                <view wx:if="{{carCoupon.vouInstruction.split}}">{{carCoupon.vouInstruction}}</view>
-                <block wx:else>
-                    <view wx:for="{{carCoupon.vouInstruction}}" wx:key="*this">{{item}}</view>
-                </block>
-            </div>
-            <div bindtap="carCouponClose" class="close"></div>
-        </div>
-        <div class="notice-top {{isOpenhoteldetail?'notice-top-in':''}}">
-            <div class="nmain">
-                <view wx:if="{{hotelCoupon.vouInstruction.split}}">{{hotelCoupon.vouInstruction}}</view>
-                <block wx:else>
-                    <view wx:for="{{hotelCoupon.vouInstruction}}" wx:key="*this">{{item}}</view>
-                </block>
-            </div>
-            <div bindtap="hotelCouponClose" class="close"></div>
-        </div>
-        <view class="notice-top {{isOpenTicketInfo?'notice-top-in':''}}">
-            <view class="nmain">
-                <view class="nmain-tit">极速出票明细说明</view>
-                <view wx:for="{{speedInfo}}" wx:key="*this">{{item}}</view>
-            </view>
-            <view bindtap="closeTicketInfo" class="close"></view>
-        </view>
-        <view class="notice-top {{isSendDoorInfo?'notice-top-in':''}}">
-            <view class="nmain">
-                <view class="nmain-tit">送票上门服务须知</view>
-                <view>预订须知：</view>
-                <view wx:for="{{svcNotice}}" wx:key="*this">{{item}}</view>
-            </view>
-            <view bindtap="closeTicketInfos" class="close"></view>
-        </view>
-        <view class="notice-top {{isOpenSf?'notice-top-in':''}}">
-            <view class="nmain">
-                <view class="nmain-tit">同程汽车票顺丰保价方案说明</view>
-                <view>【服务介绍】</view>
-                <view>针对购买顺丰保价服务的用户在车票邮寄过程中，因为快递原因导致发车前仍未接收快递而登车延误、快递丢失、快递损坏的情况下，将有快递公司全额赔偿用户订单。</view>
-                <view>【服务提供商】</view>
-                <view>保价服务由顺丰速运提供。</view>
-                <view>【保价说明】</view>
-                <view>如订单使用了顺丰保价服务，且满足理赔条件，我们将退还用户全额票价。</view>
-                <view>【保价范围】</view>
-                <view>1、本方案仅适用于同程汽车票顺丰送票上门产品，网购电子票不在本保价范围内。</view>
-                <view>2、配送范围适用于顺丰配送中国大陆区域及符合顺丰规定的其他港澳台等区域。</view>
-            </view>
-            <view bindtap="closeSfInfo" class="close"></view>
-        </view>
-        <view class="notice-top {{refundPop?'notice-top-in':''}}">
-            <view class="nmain">
-                <view class="nmain-tit"></view>
-                <view wx:for="{{refundInfo}}" wx:key="*this">{{item}}</view>
-            </view>
-            <view bindtap="btnRefundPop" class="close"></view>
-        </view>
-        <view class="notice-top {{vipMsgPop?'notice-top-in':''}}">
-            <view class="nmain">
-                <view class="nmain-tit">{{vipMsgTitle}}</view>
-                <view wx:for="{{vipMsgInfo}}" wx:key="*this">{{item}}</view>
-            </view>
-            <view bindtap="btnvipMsgPop" class="close"></view>
-        </view>
-        <view class="notice-top {{isOpenVoucherInfo?'notice-top-in':''}}">
-            <view class="nmain">
-                <view class="nmain-tit">{{busVoucher.vouSellPrice}}元汽车票礼包</view>
-                <view wx:for="{{busVoucher.vouInstruction}}" wx:key="*this">{{item}}</view>
-            </view>
-            <view bindtap="closeVoucherInfo" class="close"></view>
-        </view>
-        <view class="notice-top {{isShowRCDesc?'notice-top-in':''}}">
-            <view class="nmain">
-                <view class="nmain-tit"></view>
-                <view wx:for="{{redCardExplain}}" wx:key="*this">{{item}}</view>
-            </view>
-            <view bindtap="btnToggleLijianDesc" class="close"></view>
-        </view>
-        <view class="forceServiceFee" wx:if="{{showFSFee}}">系统检测到当前账户存在异常，已加收服务费。</view>
-        <view class="forceServiceFee" wx:if="{{showNoAdult}}">为保障出行安全，儿童需要有成人陪同</view>
-        <view class="addBackupBus {{isShowAlter?'detail-in':''}}" id="addBackupBus">
-            <view class="backup-title">{{alterTitle}}</view>
-            <view class="backup-content">
-                <view class="backup-trains row">
-                    <view class="tit">备选日期</view>
-                    <view class="new-fbox ul">
-                        <view bindtap="btnChoseDate" class="li spare-date {{item.desc?'multi-row':'single-row'}} {{item.selected?'selected':''}}" data-idx="{{index}}" wx:for="{{alterDay}}" wx:key="day">
-                            <text>{{item.day}}</text>
-                            <text>{{item.desc||''}}</text>
-                        </view>
-                    </view>
+                <view class="rtitle" wx:if="{{item.code=='refundCarefree'}}">{{item.name}}
+                  <text catchtap="btnRefundPop" class="rdetail"></text>
+                  <text class="rdetailTop" wx:if="{{item.tag}}">{{item.tag}}</text>
                 </view>
-                <view class="backup-date row">
-                    <view class="tit">备选时段</view>
-                    <view class="new-fbox ul">
-                        <view bindtap="btnChoseSpan" class="li multi-row spare-time {{item.desc!='自定义'?'multi-row':'single-row'}} {{item.selected?'selected':''}}" data-idx="{{index}}" wx:for="{{alterHour}}" wx:key="desc">
-                            <text>{{item.desc}}</text>
-                            <text>{{item.desc=='自定义'?'':item.hour}}</text>
-                        </view>
-                    </view>
+                <view class="rtitle" wx:if="{{item.code=='homeDelivery'}}">{{item.name}}
+                  <text class="rdetailTop" wx:if="{{item.tag}}">{{item.tag}}</text>
                 </view>
-                <view class="new-fbox customArea" wx:if="{{isShowCustom}}">
-                    <view style="text-align:left">当前选择：</view>
-                    <picker bindchange="startTimeChange" end="23:59" mode="time" start="00:00" value="{{alterStartTime}}">
-                        <view class="picker">{{alterStartTime}}</view>
-                    </picker>
-                    <view>至</view>
-                    <picker bindchange="endTimeChange" end="23:59" mode="time" start="{{alterStartTime}}" value="{{alterEndTime}}">
-                        <view class="picker">{{alterEndTime}}</view>
-                    </picker>
-                </view>
-                <view class="backup-btn new-fbox new-fbox-center">
-                    <text bindtap="btnNotChoseAlter" class="notCheckBtn">不需要备选</text>
-                    <text bindtap="btnChoseAlter" class="checkBtn">确定</text>
-                </view>
+                <view class="rtips">{{item.description}}</view>
+              </view>
+              <view class="new-reprice new-fbox" wx:if="{{item.code!='homeDelivery'}}">¥{{item.price}}/份</view>
+              <view class="ricon {{YyStatus?'ricon-check':''}}" wx:if="{{item.code=='BusYiyuanFree'}}"></view>
+              <view class="ricon {{IssueStatus?'ricon-check':''}}" wx:if="{{item.code=='FastTicketOut'}}"></view>
+              <view class="ricon {{refundStatus?'ricon-check':''}}" wx:if="{{item.code=='refundCarefree'}}"></view>
+              <view class="ricon {{homeDeliveryStatus?'ricon-check':''}}" wx:if="{{item.code=='homeDelivery'}}"></view>
             </view>
-        </view>
-        <view bindtap="btnToggleAlter" class="cover" wx:if="{{isShowAlter}}"></view>
-        <view class="loading-car" hidden="{{isHiddenCar}}"></view>
-        <view class="loading-box" hidden="{{isHiddenCar}}">
-            <view class="pop-title">正在为您生成订单</view>
-            <view class="sch-box">
-                <view class="top-schMsg flex-box">
-                    <view class="left-dotted">
-                        <view class="single-line"></view>
+            <view class="sendbox" hidden="{{!homeDeliveryStatus}}" wx:if="{{item.code=='homeDelivery'&&plists.length}}">
+              <view bindtap="sendDoorAdd" class="sbox mail arrow new-fbox bor-bottom">
+                <view class="bymail">邮寄地址</view>
+                <view class="new-fbox mian-addBox" style="width:70%">
+                  <text class="addadd" wx:if="{{!hasAddress}}">请添加邮寄地址</text>
+                  <view class="address-box" wx:elif="{{hasAddress}}">
+                    <view class="name-wrap">
+                      <text class="name-box">{{addressInfo.addName}}</text>
+                      <text class="phone-box">{{addressInfo.contactPhone}}</text>
                     </view>
-                    <view class="flex1">
-                        <view class="station-msg">{{busInfo.dptStation}}</view>
-                        <view class="station-msg">{{busInfo.arrStation}}</view>
-                    </view>
+                    <view class="region-box">{{addressInfo.region}}{{addressInfo.addressDetail}}</view>
+                  </view>
                 </view>
-                <view class="bot-schMsg flex-box">
-                    <view class="left-clock"></view>
-                    <view class="flex1 rlt-box">
-                        <text>{{busInfo.formatDate}}</text>
-                        <block wx:if="{{busInfo.runningSchFlag==1}}">
-                            <text wx:if="{{busInfo.runningStartTime}}">{{busInfo.runningStartTime}}后发车</text>
-                            <text wx:elif="{{!busInfo.runningStartTime&&busInfo.runningEndTime}}">{{busInfo.runningEndTime}}前发车</text>
-                            <text wx:else>{{busInfo.dptTime}}发车</text>
-                        </block>
-                        <text wx:else>{{busInfo.dptTime}}发车</text>
-                        <text class="owner-one">{{contactInfo.linkerName}}</text>
-                    </view>
+              </view>
+              <view bindtap="sfText" class="sfbox flex-box flex-box-center bor-bottom">
+                <view class="flex1">
+                  <view class="rtitle">顺丰保价
+                    <text bindtap="sfDetail" class="rdetail" data-ids="sfbj"></text>
+                  </view>
+                  <view class="rtips">快递车票丢失、延误，全额赔付</view>
                 </view>
+                <view class="new-reprice font-red">免费赠送</view>
+                <view class="ricon {{sfText?'ricon-check':''}}"></view>
+              </view>
+              <view bindtap="sendNoticeShow" class="sbox notice arrow">送票上门须知</view>
             </view>
-            <view class="science-bg">
-                <view class="ani-box">
-                    <view animation="{{animationData}}" class="little-car"></view>
-                    <view class="slider-bar">
-                        <view animation="{{animationData}}" class="slider-blue"></view>
-                    </view>
-                </view>
+          </block>
+          <view bindtap="busVoucherSel" class="rbox flex-box flex-box-center" wx:if="{{plists.length&&busVoucher.vouShowPrice>0}}">
+            <view class="icon-yymd">
+              <image src="http://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/xgift.png"></image>
             </view>
-        </view>
-        <view class="advancePop {{isShowSubscribe?'detail-in':''}}">
-            <view class="tips">该班次暂未到达发售时间，预约后估计 <label>{{busInfo.regularDateTime}}</label>为您出票</view>
-            <view class="wrap">
-                <view class="dl">
-                    <view catchtap="SelectedSubscribe" class="dt new-fbox bor-bottom {{isSelectedSubscribe?'select':''}}">
-                        <view class="new-flex title">高级预约 <label catchtap="showSubscribeInfo" class="ADIntro" id="ADIntro">!</label>
-                        </view>
-                        <view class="new-flex price">
-                            <text id="ADRmb">{{vipSubscribePrice}}</text>元/人</view>
-                        <label class="i chose"></label>
-                    </view>
-                    <view class="dd bor-bottom">
-                        <view>无需提前支付， <label class="i">出票成功后再扣款</label>，超省心;</view>
-                        <view>享受优先出票服务,出票速度提升 <label class="i">30%</label>;</view>
-                        <view>切换 <label class="i">专属通道出票</label>,出票成功率更高;</view>
-                        <view>赠送 <label class="i">10元</label>国内用车代金券</view>
-                    </view>
-                </view>
-                <view class="dl base">
-                    <view catchtap="SelectedDefaultSubscribe" class="dt flex-box bor-bottom {{!isSelectedSubscribe?'select':''}}">
-                        <view class="new-flex title">基础预约 <label class="empty"></label>
-                        </view>
-                        <view class="new-flex price">免费</view>
-                        <label class="i chose"></label>
-                    </view>
-                    <view class="dd">
-                        <view>先付款后出票，若出票失败自动退款</view>
-                    </view>
-                </view>
+            <view class="flex1">
+              <view class="rtitle">{{busVoucher.vouSellPrice}}元汽车票礼包
+                <text catchtap="busVoucherPop" class="rdetail"></text>
+                <text class="rdetailTop">促销</text>
+              </view>
+              <view class="rtips">购汽车票享立减，最高{{busVoucher.vouShowPrice}}元</view>
             </view>
+            <view class="ricon {{busVoucherIsSel?'ricon-check':''}}"></view>
+          </view>
         </view>
-        <view bindtap="btnToggleSubscribe" class="cover" wx:if="{{isShowSubscribe}}"></view>
-        <view class="ADFailPop" wx:if="{{isShowAdFailPop}}">
-            <view class="wrap">
-                <view class="inner">
-                    <view class="title">您有<lable class="i noPayCount">一</lable>笔订单未支付</view>
-                    <view class="content">系统校验到您之前有<lable class="i noPayCount">一</lable>笔订单微信代扣失败，请支付后再预订其他车票！</view>
-                    <view bindtap="toOrderDetailPay" class="manualPay">去支付</view>
-                </view>
+        <view bindtap="selectPrefer" class="ser-ins flex-box bor-top reducePrefer" wx:if="{{havePerferInfo}}">
+          <text class="ser-instext">立减优惠</text>
+          <view class="RMBswitch">
+            <view class="price">
+              <text>-¥{{preferInfo.preferentialType}}</text>/{{!!preferInfo.preferentialDimension?'人':'单'}}</view>
+            <view class="ricon {{selectedPrefer?'ricon-check':''}}"></view>
+          </view>
+        </view>
+        <view class="flex-box bor-top item-div jiudianbox" style="order:{};" wx:if="{{hasHotelCoupon&&plists.length}}">
+          <view class="service-title">订酒店立减
+            <text class="amount-price">{{hotelCoupon.vouShowPrice}}元</text>
+            <text bindtap="showhotelDetail" class="se-circle">?</text>
+          </view>
+          <view class="flex-box hotel-count">¥
+            <text>{{hotelCoupon.vouSellPrice}}</text>/份
+            <text bindtap="hotelLessBtn" class="hotel-less">-</text>
+            <text class="hotel-num">
+                            <text>{{hotelCouNum}}</text>份</text>
+            <text bindtap="hotelPlusBtn" class="hotel-plus">+</text>
+          </view>
+        </view>
+        <view class="Insurance" style="order:{};" wx:if="{{!isPeaceTravel&&isAdult&&plists.length&&isHasInsurance}}">
+          <view class="weatherFactor weatherFactor2 new-fbox flex-box-center" wx:if="{{weather.weatherCode}}">
+            <view class="new-fbox flex-box-center wLeft" style="color:#ff6815">
+              <image mode="widthFix" src="{{weather.pic}}"></image>
+              <view class="city">{{weather.departure||weather.destination}}</view>
+              <view class="date">{{weather.dptDate}}</view>
+              <view class="i" wx:if="{{!weather.desc&&!wdocument}}">{{weather.weatherValue}}</view>
             </view>
-        </view>
-        <view class="ADOrderPop {{isShowSubscribeInfo?'showinfo':''}}">
-            <view class="title">高级预约服务说明</view>
-            <view class="new-bmain">
-                <view class="subtitle">1、 什么是高级预约</view>
-                <view class="p">若您预订的班次暂未到达预售期，系统为您提供预约购票。当车站开放售票时会自动为您进行出票。针对预约期内班次，我们为您提供高级预约与基础预约服务。其中使用高级预约服务可额外享受先出票后付款、专属通道购票、系统优先出票服务，并免费赠送10元国内用车代金券。</view>
-                <view class="subtitle">2、 先出票后付款怎么操作</view>
-                <view class="p">先出票后付款是同程汽车票基于微信代扣支付推出的快捷购票功能，提交订单后无需付款，当出票成功后系统会自动从您绑定的支付账户中扣除实际票款。<view>提交订单后您需要授权开通微信自动代扣才可享用先出票后付款服务，单笔限额500元，每天限5次支付。</view>
-                    <view>请确认您的支付账户里余额充足，否则扣款失败将导致您购票失败。</view>
-                </view>
-                <view class="subtitle">3、 使用高级预约服务一定能出票成功吗？</view>
-                <view class="p">使用高级预约服务会使用专属通道为您优先出票，但系统无法保证100%出票成功，若出票失败该服务不会扣除您任何费用。</view>
-                <view class="subtitle">4、 出票后提示我代扣失败了</view>
-                <view class="p">出票成功后若系统代扣失败，请检查您的账户余额是否充足，并进入订单详情页中手动支付，支付成功后系统将会发送出票成功短信，凭短信中取票方式正常到车站取票乘车。</view>
-                <view class="subtitle">5、 扣款金额和提交订单金额不一致</view>
-                <view class="p">预约订单车站尚未开始售票，票价未定，预约班次以基础价格上浮10%展示，出票成功后系统会根据实际车票金额进行扣款。</view>
+            <view class="wRight" wx:if="{{weather.desc&&!wdocument}}">
+              <view class="i">{{weather.weatherValue}}</view>
+              <text>{{weather.desc}}</text>
+              <view class="tip">建议您为自己和家人添一份安心</view>
             </view>
-            <view bindtap="showSubscribeInfo" class="new-close"></view>
+            <view class="wRight" wx:elif="{{wdocument}}">
+              <view class="i">{{weather.weatherValue}}</view>
+              <text>{{wdocument}}</text>
+              <view class="tip">建议您为自己和家人添一份安心</view>
+            </view>
+          </view>
+          <view bindtap="btnSelectIns" class="innItem" data-code="{{item.insCode}}" data-index="{{index}}" wx:for="{{defInsMulti}}">
+            <view class="inn_txt flex_box flex_align_center">
+              <view class="inn_title flex_1">
+                <text>{{item.insName}}</text>
+                <text catchtap="btnShowInsDetail" class="icon-detail" data-code="{{item.insCode}}" data-index="{{index}}"></text>
+              </view>
+              <view class="inn_radio ricon {{item.insCusPayTc>0&&item.pubID>0?'ricon-check bg-color border-color':''}}"></view>
+            </view>
+            <view class="inn_spend flex_box flex_align_center">
+              <view class="inn_tips flex_1 inn_tips2">{{item.shortDescribe}}</view>
+              <view class="inn_rmb r {{!item.insCusPayTc?'fn-hide':''}}">¥
+                <text>{{item.insCusPayTc}}</text>
+              </view>
+            </view>
+          </view>
         </view>
-        <view bindtap="closeSericeCharge" class="showSericeCharge" hidden="{{!showSericeCharge}}">
-            <view class="charge-inner {{sshowType=='service'?'max-width':''}}">{{serviceMsg}}</view>
+        <view class="isPeaceTravel {{isDownArr?'':'b-radius1'}}" wx:if="{{!!isPeaceTravel&&plists.length&&isAdult}}">
+          <view bindtap="btnOpneAnxin" class="anxin flex-box bor-top">
+            <text class="ser-instext">安心出行</text>
+            <text class="flex1 {{isDownArr?'down-arrow':'up-arrow'}}"></text>
+          </view>
+          <view class="anxinWrap {{isDownArr?'':'fn-hide'}}">
+            <view class="flex-box bor-top item-div" wx:if="{{isAdult&&plists.length&&defIns.pubID!=0}}">
+              <view class="service-title flex2">
+                <text class="amount-price">{{defIns.insQuota}}万</text>高额保障，出行首选
+                <text bindtap="openInsurance" class="se-circle js-insurdetail">?</text>
+              </view>
+              <view class="right-box flex1">¥
+                <text>{{defIns.insCusPayTc}}</text>/份
+                <view bindtap="selectDefaultInsure" class="icon-radio {{defInsDb?'icon-radio-on':'icon-radio-off'}}"></view>
+              </view>
+            </view>
+          </view>
         </view>
-    </label>
+        <view class="x-yuan-free flex_box flex_align_center" style="order:{};" wx:if="{{plists.length&&YyData.description}}">
+          <view class="img"></view>
+          <view class="flex_1">
+            <view class="xy_title">{{YyData.description}}</view>
+            <view class="xy_subtitle">{{YyData.name}}
+              <text bindtap="btnToXYPage" class="icon-detail" data-xylink="{{YyData.instruction}}"></text>￥{{YyData.price}}</view>
+          </view>
+          <view class="btn-box">
+            <view bindtap="btnSwitchXYuan" class="btn">{{YyStatus?'已参与':'立即参与'}}</view>
+          </view>
+        </view>
+        <view class="flex-box bor-top item-div jiudianbox" style="order:{};" wx:if="{{plists.length&&hasCarCoupon}}">
+          <view class="service-title">预约用车立减
+            <text class="amount-price">{{carCoupon.vouShowPrice}}元</text>
+            <text bindtap="showCarDetail" class="se-circle">?</text>
+          </view>
+          <view class="flex-box hotel-count">¥
+            <text>{{carCoupon.vouSellPrice}}</text>/份
+            <text bindtap="carLessBtn" class="hotel-less">-</text>
+            <text class="hotel-num">
+                            <text>{{carCouNum}}</text>份</text>
+            <text bindtap="carPlusBtn" class="hotel-plus">+</text>
+          </view>
+        </view>
+        <block wx:if="{{sortList.vipService.cssStyle!=2}}">
+          <template is="valueAddService" data="{{plists:plists,pkg:pkg,isAdult:isAdult,isHasOptSvc:isHasOptSvc,isHasExtSvc:isHasExtSvc,isAdult:isAdult,defaultOpt:defaultOpt,defaultExt:defaultExt,sortList:sortList}}" wx:if="{{isPeaceTravel&&isAdult&&!defInsDb}}"></template>
+          <template is="valueAddService" data="{{plists:plists,pkg:pkg,isAdult:isAdult,isHasOptSvc:isHasOptSvc,isHasExtSvc:isHasExtSvc,isAdult:isAdult,defaultOpt:defaultOpt,defaultExt:defaultExt,sortList:sortList}}" wx:if="{{isPeaceTravel&&!isAdult}}"></template>
+          <template is="valueAddService" data="{{plists:plists,pkg:pkg,isAdult:isAdult,isHasOptSvc:isHasOptSvc,isHasExtSvc:isHasExtSvc,isAdult:isAdult,defaultOpt:defaultOpt,defaultExt:defaultExt,sortList:sortList}}" wx:if="{{!isPeaceTravel}}"></template>
+        </block>
+        <view class="style2-serins" style="order:{};" wx:if="{{sortList.vipService.cssStyle==2&&!isPeaceTravel||sortList.vipService.cssStyle==2&&isPeaceTravel&&!defInsDb&&isAdult||sortList.vipService.cssStyle==2&&isPeaceTravel&&!isAdult}}">
+          <view bindtap="showVipFn" class="style2-serins-title" wx:if="{{isAdult&&isHasOptSvc}}">优选服务</view>
+          <view bindtap="showVipFn" class="style2-serins-title" wx:if="{{!isAdult&&isHasExtSvc}}">至尊服务</view>
+          <view class="style2-serins-list" style="height:{};">
+            <view bindtap="selectVips" class="style2-serins-item flex-box" data-pid="{{item.serviceId}}" wx:for="{{slectedVAList}}">
+              <view class="style2-serins-item-title flex-box">
+                <text class="big-title">{{item.serviceName}}</text>
+                <text catchtap="vipCss2Btn" class="rdetail hottips" data-pid="{{item.serviceId}}" wx:if="{{item.sellPrice!=0}}"></text>
+              </view>
+              <view class="style2-serins-item-subtitle flex3 {{item.sellPrice==0?'bigPL':''}}">{{item.subTitle||''}}</view>
+              <view class="style2-serins-item-money" wx:if="{{item.sellPrice!=0}}">￥{{item.sellPrice}}</view>
+              <view class="icon-radio {{defaultOpt.serviceId==item.serviceId?'icon-radio-on':'icon-radio-off'}}" wx:if="{{isAdult&&isHasOptSvc}}"></view>
+              <view class="icon-radio {{defaultExt.serviceId==item.serviceId?'icon-radio-on':'icon-radio-off'}}" wx:if="{{!isAdult&&isHasExtSvc}}"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="reduceCardWrap" wx:if="{{plists.length}}">
+        <view bindtap="btnOpenCars" class="ser-ins flex-box" wx:if="{{cardMsg.canUseNumber<=0}}">
+          <text class="ser-instext">优惠券</text>
+          <text class="ser-arrow flex1">暂无可用优惠券</text>
+        </view>
+        <view bindtap="btnToggleRCpop" class="reduceCard ser-ins flex-box bor-top" wx:if="{{isHasRedCardUse}}">
+          <text class="ser-instext">立减卡</text>
+          <text class="ser-arrow flex1 {{isSelectedRedCard?'sub-color':''}}">{{isSelectedRedCard?'-￥'+reduceCard_use.discountMoney:ticketPriceLimitUse?'未使用':'总票价金额未满足使用条件'}}</text>
+        </view>
+      </view>
+      <view class="warn">
+        <view class="warn-title">
+          <text class="warn-red">*</text>温馨提示</view>
+        <view class="warn-text" wx:if="{{busInfo.bookingType==2&&busInfo.regularTime}}">目前尚未到该班次的发售时间，预约车票后，
+          <text class="warn-red">预计{{busInfo.regularTime}}起为您抢票;</text>
+        </view>
+        <block wx:if="{{busInfo.dptStationInfo}}">
+          <view class="warn-text" wx:if="{{busInfo.dptStationInfo.ticketDelivery=='身份证'}}">成功支付后凭
+            <text class="warn-red">{{busInfo.dptStationInfo.ticketDelivery}}</text>至{{busInfo.dptStation}}取票乘车;</view>
+          <view class="warn-text" wx:else>成功支付后凭系统发送短信中
+            <text class="warn-red">取票号、取票密码及身份证</text>等信息至{{busInfo.dptStation}}取票;</view>
+        </block>
+        <view class="warntext" wx:else>成功支付后凭系统发送短信中
+          <span>取票号、取票密码及身份证</span>等信息至{{busInfo.dptStation}}取票;</view>
+        <view class="warn-text">若发车前
+          <text class="warn-red">30分钟</text>仍未收到取票短信，请及时咨询在线客服进行核实;</view>
+        <view class="warn-text" wx:if="{{busInfo.supplierId==105}}">暂不支持携童票购买，若需携带免票儿童，请提前至汽车站办理以免耽误行程。本车票由北京中交提供。</view>
+        <view class="warn-text" wx:if="{{isSecStyHeader=='A'&&!!ChargeFee}}">服务费全网售票平台均收，含技术接入费、短信费等；出票成功后退票服务费不予退还，出票失败将全额退还。</view>
+        <view>请您仔细阅读
+          <text catchtap="fnShowAgreement" data-id="5" style="color:#00f">《汽车票预订服务协议》</text>
+        </view>
+      </view>
+    </view>
+    <view class="reduceCardPop" wx:if="{{isHasRedCardBuy&&isShowRedCardPop}}">
+      <view class="lijian-pop">
+        <text class="lijian-jian-icon"></text>
+        <view class="circle bg-color-t"></view>
+        <view class="lijian-top bg-color">立减
+          <text>{{reduceCard_buy.discountMoney||''}}</text>元</view>
+        <view class="lijian-con">
+          <view class="fir">您可获得一份立减会员权益卡</view>
+          <view class="sec">可享
+            <text class="sub-color">{{reduceCard_buy.discountCount}}次</text>购票，单单
+            <text class="sub-color">立减</text>
+          </view>
+          <view class="thir">立减会员权益卡
+            <text bindtap="btnToggleLijianDesc" class="icon"></text>
+            <text class="money">¥ {{reduceCard_buy.sellPrice}}</text>
+          </view>
+          <view class="btn-in">
+            <view bindtap="btnNoNeed" class="btn color btn-l">不需要</view>
+            <view bindtap="btnBuyLiJian" class="btn btn-r btn-color">我要立减</view>
+          </view>
+        </view>
+      </view>
+      <view class="mask"></view>
+    </view>
+    <view class="pubPop layer" wx:if="{{isShowRCUsePop}}">
+      <view class="pContainer">
+        <view class="pTitle">
+          <view class="c bor-bottom">立减卡
+            <text bindtap="btnToggleRCpop" class="pClose iconf" id="pClose"></text>
+          </view>
+        </view>
+        <view class="pContentWrap">
+          <view class="pContent">
+            <view class="useContent">
+              <view class="useCount">
+                <view class="lj_info">
+                  <view class="lj_rmb">您已购买立减卡 每单立减
+                    <text class="sub-color">￥{{reduceCard_use.discountMoney}}</text>
+                  </view>
+                  <view class="lj_count">已使用
+                    <text class="sub-color">{{reduceCard_use.index-1}}</text>次 还可以使用
+                    <text class="sub-color">{{reduceCard_use.discountCount-reduceCard_use.index+1}}</text>次</view>
+                </view>
+                <image mode="widthFix" src="https://file.40017.cn/img140017cnproduct/touch/bus/wx_bus/fiveinone/lijian.png"></image>
+              </view>
+              <view class="ljc_explain">
+                <view wx:for="{{redCardExplain}}">{{item}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="pBtns bor-top">
+          <text bindtap="btnSwitchRC" class="c color border-color">{{ticketPriceLimitUse?isSelectedRedCard?'暂不使用':'立即使用':'总票价金额未满足使用条件'}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="bottom flex-box">
+      <view bindtap="btnShowDetail" class="flex1 flex-box flex-box-center bor-top">
+        <view class="bot-total {{isShortcutCancel?'bot-total-arrow':''}}">
+          <view>总额
+            <text class="bot-rmb">¥</text>
+            <text class="bot-price">{{totalPrice?totalPrice:0}}</text>
+            <text class="bot-arr {{isShowDetail?'bot-arr-up':''}}"></text>
+          </view>
+          <view class="bot-offer" wx:if="{{allDiscounts}}">已优惠¥{{allDiscounts}}</view>
+        </view>
+      </view>
+      <view class="less-text" wx:if="{{adjustPrice<0}}">{{adjustPriceContent?adjustPriceContent:adjustPriceTxt}}</view>
+      <view bindtap="btnBeforePay" class="bot-pay {{isCanclePay?'gray-pay':''}}">下一步</view>
+    </view>
+    <view class="less-text" wx:if="{{selectedPrefer&&preferInfo.preferentialType&&plists.length}}">{{preferInfo.showInformation}}</view>
+    <view class="detail{{isShowDetail?' detail-in':''}}" wx:if="{{!isShortcutCancel}}">
+      <view class="det-box">
+        <view class="detail-title">金额明细</view>
+        <view class="detail-box">
+          <block wx:if="{{localInfo.revenueType==2}}">
+            <view class="det-list flex-box" wx:if="{{adultPriceCount}}">
+              <view class="flex1">极速订票
+                <text class="per-type">成人</text>
+              </view>
+              <view class="det-price flex1">¥{{busInfo.ticketPrice+speedPrice}}×{{adultPriceCount}}</view>
+            </view>
+            <view class="det-list flex-box" wx:if="{{childPriceCount}}">
+              <view class="flex1">极速订票
+                <text class="per-type">儿童</text>
+              </view>
+              <view class="det-price flex1">¥{{childPrice+speedPrice}}×{{childPriceCount}}</view>
+            </view>
+          </block>
+          <block wx:elif="{{localInfo.revenueType==3}}">
+            <view class="det-list flex-box" wx:if="{{adultPriceCount}}">
+              <view class="flex1">超值套票
+                <text class="per-type">成人</text>
+              </view>
+              <view class="det-price flex1">¥{{busInfo.ticketPrice+localInfo.revenuePrice}}×{{adultPriceCount}}</view>
+            </view>
+            <view class="det-list flex-box" wx:if="{{childPriceCount}}">
+              <view class="flex1">超值套票
+                <text class="per-type">儿童</text>
+              </view>
+              <view class="det-price flex1">¥{{childPrice+localInfo.revenuePrice}}×{{childPriceCount}}</view>
+            </view>
+          </block>
+          <block wx:elif="{{localInfo.revenueType==4}}">
+            <view class="det-list flex-box" wx:if="{{adultPriceCount}}">
+              <view class="flex1">贵宾厅套票
+                <text class="per-type">成人</text>
+              </view>
+              <view class="det-price flex1">¥{{busInfo.ticketPrice+localInfo.revenuePrice}}×{{adultPriceCount}}</view>
+            </view>
+            <view class="det-list flex-box" wx:if="{{childPriceCount}}">
+              <view class="flex1">贵宾厅套票
+                <text class="per-type">儿童</text>
+              </view>
+              <view class="det-price flex1">¥{{childPrice+localInfo.revenuePrice}}×{{childPriceCount}}</view>
+            </view>
+          </block>
+          <block wx:else>
+            <view class="det-list flex-box" wx:if="{{adultPriceCount}}">
+              <view class="flex1">
+                <text class="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0?'double-line':''}}">{{isSupportChild?'成人票':'汽车票'}}</text>
+                <text class="double-lines" wx:if="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0}}">(含车站收取{{addressInfo.agentFee}}元代购费)</text>
+              </view>
+              <view class="det-price flex1" wx:if="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0}}">¥{{(busInfo.ticketPrice*1000+addressInfo.agentFee*1000)/1000}}×{{isSupportChild?adultPriceCount:plists.length}}</view>
+              <view class="det-price flex1" wx:else>¥{{busInfo.ticketPrice}}×{{isSupportChild?adultPriceCount:plists.length}}</view>
+              <view class="count-guangzhou" wx:if="{{busInfo.discount>0}}">票价已优惠¥ {{busInfo.discount}}×{{adultPriceCount}}</view>
+            </view>
+            <view class="det-list flex-box" wx:if="{{isSupportChild&&childPriceCount}}">
+              <view class="flex1">
+                <text class="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0?'double-line':''}}">儿童票</text>
+                <text class="double-lines" wx:if="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0}}">(含车站收取{{addressInfo.agentFee}}元代购费)</text>
+              </view>
+              <view class="det-price flex1" wx:if="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0}}">¥{{(childPrice*1000+addressInfo.agentFee*1000)/1000}}×{{childPriceCount}}</view>
+              <view class="det-price flex1" wx:else>¥{{childPrice}}×{{childPriceCount}}</view>
+              <view class="count-guangzhou" wx:if="{{busInfo.childDiscount>0}}">票价已优惠¥ {{busInfo.childDiscount}}×{{childPriceCount}}</view>
+            </view>
+          </block>
+          <block wx:if="{{!!isPeaceTravel}}">
+            <view class="det-list flex-box" wx:if="{{defIns.insCusPayTc&&plists.length&&isAdult&&defInsDb}}">
+              <view class="flex1">出行保障</view>
+              <view class="det-price flex1">¥{{defIns.insCusPayTc}}×{{plists.length}}</view>
+            </view>
+            <view class="det-list flex-box" wx:if="{{!pkg.isValue&&plists.length&&!defInsDb&&isAdult&&defaultOpt.sellPrice>0}}">
+              <view class="flex1">优选服务</view>
+              <view class="det-price flex1">¥{{defaultOpt.sellPrice}}×{{plists.length}}</view>
+            </view>
+            <view class="det-list flex-box" wx:if="{{!pkg.isValue&&plists.length&&!isAdult&&defaultExt.sellPrice>0}}">
+              <view class="flex1">至尊服务</view>
+              <view class="det-price flex1">¥{{defaultExt.sellPrice}}×{{plists.length}}</view>
+            </view>
+          </block>
+          <block wx:else>
+            <view class="det-list flex-box" wx:if="{{item.insCusPayTc&&plists.length&&isAdult}}" wx:for="{{defInsMulti}}" wx:key="insCode">
+              <view class="flex1">{{item.insName}}</view>
+              <view class="det-price flex1">¥{{item.insCusPayTc}}×{{plists.length}}</view>
+            </view>
+            <view class="det-list flex-box" wx:if="{{!pkg.isValue&&plists.length&&isAdult&&defaultOpt.sellPrice>0}}">
+              <view class="flex1">优选服务</view>
+              <view class="det-price flex1">¥{{defaultOpt.sellPrice}}×{{plists.length}}</view>
+            </view>
+            <view class="det-list flex-box" wx:if="{{!pkg.isValue&&plists.length&&!isAdult&&defaultExt.sellPrice>0}}">
+              <view class="flex1">至尊服务</view>
+              <view class="det-price flex1">¥{{defaultExt.sellPrice}}×{{plists.length}}</view>
+            </view>
+          </block>
+          <view class="det-list flex-box" wx:if="{{refundStatus&&plists.length}}">
+            <view class="flex1">{{isRefundChange?'退改无忧':isRefundOrder?'退票无忧':'随心退'}}</view>
+            <view class="det-price flex1">¥{{refundPice}}×{{plists.length}}</view>
+          </view>
+          <view class="det-list flex-box" wx:if="{{IssueStatus&&plists.length&&!pkg.isSpeed}}">
+            <view class="flex1">极速出票</view>
+            <view class="det-price flex1">¥{{speedPrice}}×{{plists.length}}</view>
+          </view>
+          <view class="det-list flex-box" wx:if="{{YyStatus&&plists.length}}">
+            <view class="flex1">{{YyData.name}}</view>
+            <view class="det-price flex1">¥{{YyData.price}}×{{plists.length}}</view>
+          </view>
+          <view class="det-list flex-box" wx:if="{{homeDeliveryStatus&&plists.length&&addressInfo.expressFee>0}}">
+            <view class="flex1">快递费
+              <text class="user-level" wx:if="{{featureValue>=3&&homeDelivery.show}}">V{{featureValue}}会员免费</text>
+            </view>
+            <view class="det-price flex1" wx:if="{{featureValue>=3&&homeDelivery.show}}">
+              <text class="free-price">¥0×1</text>
+              <text class="line-through">¥{{addressInfo.expressFee}}×1</text>
+            </view>
+            <view class="det-price flex1" wx:else>¥{{addressInfo.expressFee}}×1</view>
+          </view>
+          <view class="det-list flex-box" wx:if="{{selectedPrefer&&preferInfo.preferentialType&&plists.length}}">
+            <view class="flex1">立减优惠</view>
+            <view class="det-price txt-ml flex1">-¥{{preferInfo.preferentialType}}×{{!!preferInfo.preferentialDimension?plists.length:1}}</view>
+          </view>
+          <view class="det-list flex-box" wx:if="{{carCoupon.vouSellPrice&&carCouNum>0}}">
+            <view class="flex1">用车代金券</view>
+            <view class="det-price flex1">¥{{carCoupon.vouSellPrice}}×{{carCouNum}}</view>
+          </view>
+          <view class="det-list flex-box" wx:if="{{hotelCoupon.vouSellPrice&&hotelCouNum>0}}">
+            <view class="flex1">酒店代金券</view>
+            <view class="det-price flex1">¥{{hotelCoupon.vouSellPrice}}×{{hotelCouNum}}</view>
+          </view>
+          <view class="det-list flex-box" wx:if="{{busVoucherIsSel&&plists.length}}">
+            <view class="flex1">{{busVoucher.vouSellPrice}}元汽车票礼包</view>
+            <view class="det-price flex1">¥{{busVoucher.vouSellPrice}}×1</view>
+          </view>
+          <view class="det-list flex-box" wx:if="{{!!selectCode.showPrice&&selectCode.showPrice>0&&plists.length}}">
+            <view class="flex1">优惠券</view>
+            <view class="det-price txt-ml flex1">-¥{{selectCode.showPrice}}</view>
+          </view>
+          <view class="det-list flex-box" wx:if="{{vipSubscribe&&vipSubscribePrice&&!ASisExceedLimit&&subscribeInfoObj.isSubscribe}}">
+            <view class="flex1">高级预约</view>
+            <view class="det-price flex1">¥{{vipSubscribePrice}}×{{plists.length+childPassengers.length}}</view>
+          </view>
+          <view class="det-list flex-box" wx:if="{{isSelectedRedCard&&isHasRedCardBuy&&plists.length}}">
+            <view class="flex1">立减卡</view>
+            <view class="det-price flex1">¥{{reduceCard_buy.sellPrice||0}}</view>
+          </view>
+          <view class="det-list flex-box" wx:if="{{isSelectedRedCard&&plists.length}}">
+            <view class="flex1">立减卡优惠</view>
+            <view class="det-price txt-ml flex1">-¥{{(isHasRedCardUse?reduceCard_use.discountMoney:reduceCard_buy.discountMoney)||0}}</view>
+          </view>
+          <view class="det-list flex-box" wx:if="{{isHasService&&plists.length}}">
+            <view class="flex1">服务费</view>
+            <view class="det-price flex1">¥{{busInfo.serviceChargePrice}}×{{plists.length}}</view>
+          </view>
+          <view class="det-list flex-box" wx:if="{{adjustPrice}}">
+            <block wx:if="{{adjustPrice<0}}">
+              <view class="flex1">立减</view>
+              <view class="det-price flex1 txt-ml">-¥{{adjustPriceAbs}}×{{plists.length}}</view>
+            </block>
+            <block wx:else>
+              <view class="flex1">服务费</view>
+              <view class="det-price flex1">¥{{adjustPriceAbs}}×{{plists.length}}</view>
+            </block>
+          </view>
+        </view>
+      </view>
+      <block wx:if="{{isHasService&&plists.length}}">
+        <view class="det-service" wx:if="{{busInfo.serviceChargeType==2}}">该车站征收线上购票服务费，服务费发票可在车站窗口获取，如需退票服务费车站不予退还。</view>
+        <view class="det-service" wx:else>服务费全网售票平台均收，含技术接入费、短信费等；出票成功后退票服务费不予退还，出票失败将全额退还。</view>
+      </block>
+    </view>
+    <view class="detail{{isShowDetail?' detail-in':''}}" wx:else>
+      <view class="det-box">
+        <view class="detail-title">金额明细</view>
+        <scroll-view class="detail-box" id="det-box" scrollTop="{{scrollTop}}" scrollY="true">
+          <block wx:if="{{localInfo.revenueType==2}}">
+            <view class="det-list flex-box" wx:if="{{adultPriceCount}}">
+              <view class="flex2">极速订票
+                <text class="per-type">成人</text>
+              </view>
+              <view class="txt-center">¥{{busInfo.ticketPrice+speedPrice}}×{{adultPriceCount}}</view>
+              <view class="det-price flex1 detail-stxt">不可取消</view>
+            </view>
+            <view class="det-list flex-box" wx:if="{{childPriceCount}}">
+              <view class="flex2">极速订票
+                <text class="per-type">儿童</text>
+              </view>
+              <view class="txt-center">¥{{childPrice+speedPrice}}×{{childPriceCount}}</view>
+              <view class="det-price flex1 detail-stxt">不可取消</view>
+            </view>
+          </block>
+          <block wx:elif="{{localInfo.revenueType==3}}">
+            <view class="det-list flex-box" wx:if="{{adultPriceCount}}">
+              <view class="flex2">超值套票
+                <text class="per-type">成人</text>
+              </view>
+              <view class="txt-center">¥{{busInfo.ticketPrice+localInfo.revenuePrice}}×{{adultPriceCount}}</view>
+              <view class="det-price flex1 detail-stxt">不可取消</view>
+            </view>
+            <view class="det-list flex-box" wx:if="{{childPriceCount}}">
+              <view class="flex2">超值套票
+                <text class="per-type">儿童</text>
+              </view>
+              <view class="txt-center">¥{{childPrice+localInfo.revenuePrice}}×{{childPriceCount}}</view>
+              <view class="det-price flex1 detail-stxt">不可取消</view>
+            </view>
+          </block>
+          <block wx:elif="{{localInfo.revenueType==4}}">
+            <view class="det-list flex-box" wx:if="{{adultPriceCount}}">
+              <view class="flex2">贵宾厅套票
+                <text class="per-type">成人</text>
+              </view>
+              <view class="txt-center">¥{{busInfo.ticketPrice+localInfo.revenuePrice}}×{{adultPriceCount}}</view>
+              <view class="det-price flex1 detail-stxt">不可取消</view>
+            </view>
+            <view class="det-list flex-box" wx:if="{{childPriceCount}}">
+              <view class="flex2">贵宾厅套票
+                <text class="per-type">儿童</text>
+              </view>
+              <view class="txt-center">¥{{childPrice+localInfo.revenuePrice}}×{{childPriceCount}}</view>
+              <view class="det-price flex1 detail-stxt">不可取消</view>
+            </view>
+          </block>
+          <block wx:else>
+            <view class="det-list flex-box" wx:if="{{adultPriceCount}}">
+              <view class="flex2">
+                <text class="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0?'double-line':''}}">{{isSupportChild?'成人票':'汽车票'}}</text>
+                <text class="double-lines" wx:if="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0}}">(含车站收取{{addressInfo.agentFee}}元代购费)</text>
+              </view>
+              <view class="txt-center" wx:if="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0}}">¥{{(busInfo.ticketPrice*1000+addressInfo.agentFee*1000)/1000}}×{{isSupportChild?adultPriceCount:plists.length}}</view>
+              <view class="txt-center" wx:else>¥{{busInfo.ticketPrice}}×{{isSupportChild?adultPriceCount:plists.length}}</view>
+              <view class="det-price flex1 detail-stxt">不可取消</view>
+            </view>
+            <view class="det-list flex-box" wx:if="{{isSupportChild&&childPriceCount}}">
+              <view class="flex2">
+                <text class="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0?'double-line':''}}">儿童票</text>
+                <text class="double-lines" wx:if="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0}}">(含车站收取{{addressInfo.agentFee}}元代购费)</text>
+              </view>
+              <view class="txt-center" wx:if="{{homeDeliveryStatus&&!!addressInfo.agentFee&&addressInfo.agentFee>0}}">¥{{(childPrice*1000+addressInfo.agentFee*1000)/1000}}×{{childPriceCount}}</view>
+              <view class="txt-center" wx:else>¥{{childPrice}}×{{childPriceCount}}</view>
+              <view class="det-price flex1 detail-stxt">不可取消</view>
+            </view>
+          </block>
+          <block wx:if="{{!!isPeaceTravel}}">
+            <view class="det-list flex-box" wx:if="{{defIns.insCusPayTc&&plists.length&&isAdult&&defInsDb}}">
+              <view class="flex2">出行保障</view>
+              <view class="txt-center">¥{{defIns.insCusPayTc}}×{{plists.length}}</view>
+              <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.chuxingbaozhang?'hide-det-btn':''}}" data-type="chuxingbaozhang">取消购买</view>
+            </view>
+            <template is="quickcancel" data="{{show:!!showDetTipObj.chuxingbaozhang,content:'买一份保险，买一份安心，建议您购买',type:'chuxingbaozhang',buyIt:buyIt,buyMao:buyMao}}"></template>
+            <view class="det-list flex-box" wx:if="{{!pkg.isValue&&plists.length&&!defInsDb&&isAdult&&defaultOpt.sellPrice>0}}">
+              <view class="flex2">优选服务</view>
+              <view class="txt-center">¥{{defaultOpt.sellPrice}}×{{plists.length}}</view>
+              <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.youxuan?'hide-det-btn':''}}" data-type="youxuan">取消购买</view>
+            </view>
+            <template is="quickcancel" data="{{show:!!showDetTipObj.youxuan,content:defaultOpt.subTitle,type:'youxuan',buyIt:buyIt,buyMao:buyMao}}"></template>
+            <view class="det-list flex-box" wx:if="{{!pkg.isValue&&plists.length&&!isAdult&&defaultExt.sellPrice>0}}">
+              <view class="flex1">至尊服务</view>
+              <view class="txt-center">¥{{defaultExt.sellPrice}}×{{plists.length}}</view>
+              <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.zhizun?'hide-det-btn':''}}" data-type="zhizun">取消购买</view>
+            </view>
+            <template is="quickcancel" data="{{show:!!showDetTipObj.zhizun,content:defaultOpt.subTitle,type:'zhizun',buyIt:buyIt,buyMao:buyMao}}"></template>
+          </block>
+          <block wx:else>
+            <block wx:for="{{defInsMulti}}" wx:key="insCode">
+              <view class="det-list flex-box" wx:if="{{item.insCusPayTc&&plists.length&&isAdult}}">
+                <view class="flex2">{{item.insName}}</view>
+                <view class="txt-center">¥{{item.insCusPayTc}}×{{plists.length}}</view>
+                <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj['insurance'+item.insCode]?'hide-det-btn':''}}" data-type="{{'insurance'+item.insCode}}">取消购买</view>
+              </view>
+              <template is="quickcancel" data="{{show:!!showDetTipObj['insurance'+item.insCode],content:item.shortDescribe+'，买一份保险，买一份安心，建议您购买',type:'insurance'+item.insCode,index:index,buyIt:buyIt,buyMao:buyMao}}"></template>
+            </block>
+            <view class="det-list flex-box" wx:if="{{!pkg.isValue&&plists.length&&isAdult&&defaultOpt.sellPrice>0}}">
+              <view class="flex2">优选服务</view>
+              <view class="txt-center">¥{{defaultOpt.sellPrice}}×{{plists.length}}</view>
+              <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.youxuan?'hide-det-btn':''}}" data-type="youxuan">取消购买</view>
+            </view>
+            <template is="quickcancel" data="{{show:!!showDetTipObj.youxuan,content:defaultOpt.subTitle,type:'youxuan',buyIt:buyIt,buyMao:buyMao}}"></template>
+            <view class="det-list flex-box" wx:if="{{!pkg.isValue&&plists.length&&!isAdult&&defaultExt.sellPrice>0}}">
+              <view class="flex2">至尊服务</view>
+              <view class="txt-center">¥{{defaultExt.sellPrice}}×{{plists.length}}</view>
+              <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.zhizun?'hide-det-btn':''}}" data-type="zhizun">取消购买</view>
+            </view>
+            <template is="quickcancel" data="{{show:!!showDetTipObj.zhizun,content:defaultOpt.subTitle,type:'zhizun',buyIt:buyIt,buyMao:buyMao}}"></template>
+          </block>
+          <view class="det-list flex-box" wx:if="{{refundStatus&&plists.length}}">
+            <view class="flex2">{{isRefundChange?'退改无忧':isRefundOrder?'退票无忧':'随心退'}}</view>
+            <view class="txt-center">¥{{refundPice}}×{{plists.length}}</view>
+            <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.tgwuyou?'hide-det-btn':''}}" data-type="tgwuyou">取消购买</view>
+          </view>
+          <template is="quickcancel" data="{{show:!!showDetTipObj.tgwuyou,content:saveSTDes.refundCarefree,type:'tgwuyou',buyIt:buyIt,buyMao:buyMao}}"></template>
+          <view class="det-list flex-box" wx:if="{{IssueStatus&&plists.length&&!pkg.isSpeed}}">
+            <view class="flex2">极速出票</view>
+            <view class="txt-center">¥{{speedPrice}}×{{plists.length}}</view>
+            <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.fastTicketOut?'hide-det-btn':''}}" data-type="fastTicketOut">取消购买</view>
+          </view>
+          <template is="quickcancel" data="{{show:!!showDetTipObj.fastTicketOut,content:saveSTDes.FastTicketOut,type:'fastTicketOut',buyIt:buyIt,buyMao:buyMao}}"></template>
+          <view class="det-list flex-box" wx:if="{{YyStatus&&plists.length}}">
+            <view class="flex2">{{YyData.name}}</view>
+            <view class="txt-center">¥{{YyData.price}}×{{plists.length}}</view>
+            <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.busYiyuanFree?'hide-det-btn':''}}" data-type="busYiyuanFree">取消购买</view>
+          </view>
+          <template is="quickcancel" data="{{show:!!showDetTipObj.busYiyuanFree,content:saveSTDes.BusYiyuanFree,type:'busYiyuanFree',buyIt:buyIt,buyMao:buyMao}}"></template>
+          <view class="det-list flex-box" wx:if="{{homeDeliveryStatus&&plists.length&&addressInfo.expressFee>0}}">
+            <view class="flex2">快递费
+              <text class="user-level" wx:if="{{featureValue>=3&&homeDelivery.show}}">V{{featureValue}}会员免费</text>
+            </view>
+            <view class="txt-center" wx:if="{{featureValue>=3&&homeDelivery.show}}">
+              <text class="free-price">¥0×1</text>
+              <text class="line-through">¥{{addressInfo.expressFee}}×1</text>
+            </view>
+            <view class="txt-center" wx:else>¥{{addressInfo.expressFee}}×1</view>
+            <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.homeDelivery?'hide-det-btn':''}}" data-type="homeDelivery">取消购买</view>
+          </view>
+          <template is="quickcancel" data="{{show:!!showDetTipObj.homeDelivery,content:saveSTDes.homeDelivery,type:'homeDelivery',buyIt:buyIt,buyMao:buyMao}}"></template>
+          <view class="det-list flex-box" wx:if="{{selectedPrefer&&preferInfo.preferentialType&&plists.length}}">
+            <view class="flex2">立减优惠</view>
+            <view class="txt-center txt-ml">-¥{{preferInfo.preferentialType}}×{{!!preferInfo.preferentialDimension?plists.length:1}}</view>
+            <view class="det-price detail-stxt flex1">不可取消</view>
+          </view>
+          <view class="det-list flex-box" wx:if="{{carCoupon.vouSellPrice&&carCouNum>0}}">
+            <view class="flex2">用车代金券</view>
+            <view class="txt-center">¥{{carCoupon.vouSellPrice}}×{{carCouNum}}</view>
+            <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.carCoupon?'hide-det-btn':''}}" data-type="carCoupon">取消购买</view>
+          </view>
+          <template is="quickcancel" data="{{show:!!showDetTipObj.carCoupon,content:carCoupon.vouProductionName,type:'carCoupon',buyIt:buyIt,buyMao:buyMao}}"></template>
+          <view class="det-list flex-box" wx:if="{{hotelCoupon.vouSellPrice&&hotelCouNum>0}}">
+            <view class="flex2">酒店代金券</view>
+            <view class="txt-center">¥{{hotelCoupon.vouSellPrice}}×{{hotelCouNum}}</view>
+            <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.hotelCoupon?'hide-det-btn':''}}" data-type="hotelCoupon">取消购买</view>
+          </view>
+          <template is="quickcancel" data="{{show:!!showDetTipObj.hotelCoupon,content:hotelCoupon.vouProductionName,type:'hotelCoupon',buyIt:buyIt,buyMao:buyMao}}"></template>
+          <view class="det-list flex-box" wx:if="{{busVoucherIsSel&&plists.length}}">
+            <view class="flex2">{{busVoucher.vouSellPrice}}元汽车票礼包</view>
+            <view class="txt-center">¥{{busVoucher.vouSellPrice}}×1</view>
+            <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.busVoucher?'hide-det-btn':''}}" data-type="busVoucher">取消购买</view>
+          </view>
+          <template is="quickcancel" data="{{show:!!showDetTipObj.busVoucher,content:busVoucher.vouProductionName,type:'busVoucher',buyIt:buyIt,buyMao:buyMao}}"></template>
+          <view class="det-list flex-box" wx:if="{{!!selectCode.showPrice&&selectCode.showPrice>0&&plists.length}}">
+            <view class="flex2">优惠券</view>
+            <view class="txt-center txt-ml">-¥{{selectCode.showPrice}}</view>
+            <view class="det-price detail-stxt flex1">不可取消</view>
+          </view>
+          <view class="det-list flex-box" wx:if="{{vipSubscribe&&vipSubscribePrice&&!ASisExceedLimit&&subscribeInfoObj.isSubscribe}}">
+            <view class="flex2">高级预约</view>
+            <view class="txt-center">¥{{vipSubscribePrice}}×{{plists.length+childPassengers.length}}</view>
+            <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.vipSubscribe?'hide-det-btn':''}}" data-type="vipSubscribe">取消购买</view>
+          </view>
+          <template is="quickcancel" data="{{show:!!showDetTipObj.vipSubscribe,content:subscribeInfoObj.title+'，享优先出票服务，出票成功率更高',type:'vipSubscribe',buyIt:buyIt,buyMao:buyMao}}"></template>
+          <view class="det-list flex-box" wx:if="{{isHasService&&plists.length}}">
+            <view class="flex2">服务费</view>
+            <view class="txt-center">¥{{busInfo.serviceChargePrice}}×{{plists.length}}</view>
+            <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.serviceChargePrice?'hide-det-btn':''}}" data-type="serviceChargePrice">相关说明</view>
+          </view>
+          <view class="detail-content" wx:if="{{isHasService&&showDetTipObj.serviceChargePrice}}">
+            <view class="det-content">
+              <view wx:if="{{busInfo.serviceChargeType==2}}">该车站征收线上购票服务费，服务费发票可在车站窗口获取，如需退票服务费车站不予退还。</view>
+              <view wx:else>服务费全网售票平台均收，含技术接入费、短信费等；出票成功后退票服务费不予退还，出票失败将全额退还。</view>
+            </view>
+            <view class="flex-box">
+              <view bindtap="buyIt" class="flex2 t-center det-btn-buy" data-type="serviceChargePrice">我知道了</view>
+            </view>
+          </view>
+          <view class="det-list flex-box" wx:if="{{adjustPrice}}">
+            <block wx:if="{{adjustPrice<0}}">
+              <view class="flex2">立减</view>
+              <view class="txt-center txt-ml">-¥{{adjustPriceAbs}}×{{plists.length}}</view>
+              <view class="det-price detail-stxt flex1">不可取消</view>
+            </block>
+            <block wx:else>
+              <view class="flex2">服务费</view>
+              <view class="txt-center">¥{{adjustPriceAbs}}×{{plists.length}}</view>
+              <view bindtap="showDetContent" class="det-price detail-gtxt flex1 {{showDetTipObj.serviceChargePrice?'hide-det-btn':''}}" data-type="serviceChargePrice">相关说明</view>
+            </block>
+          </view>
+          <view class="detail-content" wx:if="{{adjustPrice>0&&showDetTipObj.serviceChargePrice}}">
+            <view class="det-content">
+              <view wx:if="{{busInfo.serviceChargeType==2}}">该车站征收线上购票服务费，服务费发票可在车站窗口获取，如需退票服务费车站不予退还。</view>
+              <view wx:else>服务费全网售票平台均收，含技术接入费、短信费等；出票成功后退票服务费不予退还，出票失败将全额退还。</view>
+            </view>
+            <view class="flex-box">
+              <view bindtap="buyIt" class="flex2 t-center det-btn-buy" data-type="serviceChargePrice">我知道了</view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+      <view class="detail-empty"></view>
+    </view>
+    <view bindtap="btnShowDetail" class="cover" wx:if="{{isShowDetail}}"></view>
+    <view class="passengers {{showPassengers?'detail-in':''}}">
+      <view class="prompt flex-box">
+        <view bindtap="btnCancel" class="cancel flex1">取消</view>
+        <view bindtap="refreshPlists" class="confirm flex1" data-callback="btnShowPassengers">确定</view>
+      </view>
+      <view bindtap="btnShowAddPage" class="add bor-bottom">
+        <text class="addicon"></text>添加乘客</view>
+      <scroll-view scrollY class="box" wx:if="{{passengers.length}}">
+        <view class="list flex-box flex-box-center bor-bottom {{item.selected?'selected':''}}" wx:if="{{item.source==0||item.source==1&&isCheck12306}}" wx:for="{{passengers}}" wx:key="id">
+          <view bindtap="btnEditPass" class="edit-icon" data-from="pop" data-pid="{{item.IDCard}}" data-pname="{{item.linkerName}}" data-type="{{item.type}}" wx:if="{{item.source==0}}"></view>
+          <view class="edit-icon opacity" wx:else></view>
+          <view bindtap="btnSelectPass" class="info flex-box flex1 flex-box-center" data-pid="{{item.IDCard}}" data-pname="{{item.linkerName}}" data-state="{{item.selected?1:0}}" data-type="{{item.type}}">
+            <view class="flex1">
+              <view class="name">{{item.linkerName}}
+                <text class="is12306" wx:if="{{item.source==1}}">12306</text>
+                <text class="child-icon" wx:if="{{isSupportChild&&item.type==1}}">儿童</text>
+              </view>
+              <view class="idcard">{{item.IDSpace}}</view>
+            </view>
+          </view>
+        </view>
+        <block wx:if="{{isHas12306}}">
+          <view class="new-fbox tips12306" wx:if="{{isCheck12306}}">
+            <view class="p">您曾在本平台预订过火车票出行服务，平台已为您补充12306乘客信息，作为汽车票常用旅客查询依据。</view>
+            <view bindtap="btnToggle12306" class="radio12306 chosed"></view>
+          </view>
+          <view class="new-fbox tips12306" wx:elif="{{isHasTcPass}}">
+            <view class="p">想选择的人不在列表内？从火车票12306乘客中补充吧</view>
+            <view bindtap="btnToggle12306" class="radio12306"></view>
+          </view>
+          <view class="new-fbox tips12306 no-pass" wx:else>
+            <view class="p">
+              <text>还未添加常用旅客？选择一名12306旅客作为乘车人吧</text>
+            </view>
+            <view bindtap="btnToggle12306" class="radio12306"></view>
+          </view>
+        </block>
+      </scroll-view>
+      <view class="box" wx:else></view>
+    </view>
+    <view bindtap="btnShowPassengers" class="cover" wx:if="{{showPassengers}}"></view>
+    <div class="notice-top {{isOpendetail?'notice-top-in':''}}">
+      <div class="nmain ins-pop">
+        <view class="item" wx:for="{{defIns.insContent}}" wx:key="*this">{{item}}</view>
+      </div>
+      <div bindtap="closeInsurance" class="close"></div>
+    </div>
+    <view class="notice-top {{isShowBaoXianDetail?'notice-top-in':''}}">
+      <view class="nmain ins-pop">
+        <view class="item" wx:for="{{insContentObj.insContent}}" wx:key="*this">{{item}}</view>
+      </view>
+      <view class="close-box flex-box">
+        <view bindtap="goDetailLink" class="close-link flex1" data-link="{{insLink}}" wx:if="{{!!insLink}}">条款详情</view>
+        <view bindtap="closeInsurance" class="close close1 flex1"></view>
+      </view>
+    </view>
+    <div class="notice-top {{isOpenCardetail?'notice-top-in':''}}">
+      <div class="nmain">
+        <view wx:if="{{carCoupon.vouInstruction.split}}">{{carCoupon.vouInstruction}}</view>
+        <block wx:else>
+          <view wx:for="{{carCoupon.vouInstruction}}" wx:key="*this">{{item}}</view>
+        </block>
+      </div>
+      <div bindtap="carCouponClose" class="close"></div>
+    </div>
+    <div class="notice-top {{isOpenhoteldetail?'notice-top-in':''}}">
+      <div class="nmain">
+        <view wx:if="{{hotelCoupon.vouInstruction.split}}">{{hotelCoupon.vouInstruction}}</view>
+        <block wx:else>
+          <view wx:for="{{hotelCoupon.vouInstruction}}" wx:key="*this">{{item}}</view>
+        </block>
+      </div>
+      <div bindtap="hotelCouponClose" class="close"></div>
+    </div>
+    <view class="notice-top {{isOpenTicketInfo?'notice-top-in':''}}">
+      <view class="nmain">
+        <view class="nmain-tit">极速出票明细说明</view>
+        <view wx:for="{{speedInfo}}" wx:key="*this">{{item}}</view>
+      </view>
+      <view bindtap="closeTicketInfo" class="close"></view>
+    </view>
+    <view class="notice-top {{isSendDoorInfo?'notice-top-in':''}}">
+      <view class="nmain">
+        <view class="nmain-tit">送票上门服务须知</view>
+        <view>预订须知：</view>
+        <view wx:for="{{svcNotice}}" wx:key="*this">{{item}}</view>
+      </view>
+      <view bindtap="closeTicketInfos" class="close"></view>
+    </view>
+    <view class="notice-top {{isOpenSf?'notice-top-in':''}}">
+      <view class="nmain">
+        <view class="nmain-tit">同程汽车票顺丰保价方案说明</view>
+        <view>【服务介绍】</view>
+        <view>针对购买顺丰保价服务的用户在车票邮寄过程中，因为快递原因导致发车前仍未接收快递而登车延误、快递丢失、快递损坏的情况下，将有快递公司全额赔偿用户订单。</view>
+        <view>【服务提供商】</view>
+        <view>保价服务由顺丰速运提供。</view>
+        <view>【保价说明】</view>
+        <view>如订单使用了顺丰保价服务，且满足理赔条件，我们将退还用户全额票价。</view>
+        <view>【保价范围】</view>
+        <view>1、本方案仅适用于同程汽车票顺丰送票上门产品，网购电子票不在本保价范围内。</view>
+        <view>2、配送范围适用于顺丰配送中国大陆区域及符合顺丰规定的其他港澳台等区域。</view>
+      </view>
+      <view bindtap="closeSfInfo" class="close"></view>
+    </view>
+    <view class="notice-top {{refundPop?'notice-top-in':''}}">
+      <view class="nmain">
+        <view class="nmain-tit"></view>
+        <view wx:for="{{refundInfo}}" wx:key="*this">{{item}}</view>
+      </view>
+      <view bindtap="btnRefundPop" class="close"></view>
+    </view>
+    <view class="notice-top {{vipMsgPop?'notice-top-in':''}}">
+      <view class="nmain">
+        <view class="nmain-tit">{{vipMsgTitle}}</view>
+        <view wx:for="{{vipMsgInfo}}" wx:key="*this">{{item}}</view>
+      </view>
+      <view bindtap="btnvipMsgPop" class="close"></view>
+    </view>
+    <view class="notice-top {{isOpenVoucherInfo?'notice-top-in':''}}">
+      <view class="nmain">
+        <view class="nmain-tit">{{busVoucher.vouSellPrice}}元汽车票礼包</view>
+        <view wx:for="{{busVoucher.vouInstruction}}" wx:key="*this">{{item}}</view>
+      </view>
+      <view bindtap="closeVoucherInfo" class="close"></view>
+    </view>
+    <view class="notice-top {{isShowRCDesc?'notice-top-in':''}}">
+      <view class="nmain">
+        <view class="nmain-tit"></view>
+        <view wx:for="{{redCardExplain}}" wx:key="*this">{{item}}</view>
+      </view>
+      <view bindtap="btnToggleLijianDesc" class="close"></view>
+    </view>
+    <view class="forceServiceFee" wx:if="{{showFSFee}}">系统检测到当前账户存在异常，已加收服务费。</view>
+    <view class="forceServiceFee" wx:if="{{showNoAdult}}">为保障出行安全，儿童需要有成人陪同</view>
+    <view class="addBackupBus {{isShowAlter?'detail-in':''}}" id="addBackupBus">
+      <view class="backup-title">{{alterTitle}}</view>
+      <view class="backup-content">
+        <view class="backup-trains row">
+          <view class="tit">备选日期</view>
+          <view class="new-fbox ul">
+            <view bindtap="btnChoseDate" class="li spare-date {{item.desc?'multi-row':'single-row'}} {{item.selected?'selected':''}}" data-idx="{{index}}" wx:for="{{alterDay}}" wx:key="day">
+              <text>{{item.day}}</text>
+              <text>{{item.desc||''}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="backup-date row">
+          <view class="tit">备选时段</view>
+          <view class="new-fbox ul">
+            <view bindtap="btnChoseSpan" class="li multi-row spare-time {{item.desc!='自定义'?'multi-row':'single-row'}} {{item.selected?'selected':''}}" data-idx="{{index}}" wx:for="{{alterHour}}" wx:key="desc">
+              <text>{{item.desc}}</text>
+              <text>{{item.desc=='自定义'?'':item.hour}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="new-fbox customArea" wx:if="{{isShowCustom}}">
+          <view style="text-align:left">当前选择：</view>
+          <picker bindchange="startTimeChange" end="23:59" mode="time" start="00:00" value="{{alterStartTime}}">
+            <view class="picker">{{alterStartTime}}</view>
+          </picker>
+          <view>至</view>
+          <picker bindchange="endTimeChange" end="23:59" mode="time" start="{{alterStartTime}}" value="{{alterEndTime}}">
+            <view class="picker">{{alterEndTime}}</view>
+          </picker>
+        </view>
+        <view class="backup-btn new-fbox new-fbox-center">
+          <text bindtap="btnNotChoseAlter" class="notCheckBtn">不需要备选</text>
+          <text bindtap="btnChoseAlter" class="checkBtn">确定</text>
+        </view>
+      </view>
+    </view>
+    <view bindtap="btnToggleAlter" class="cover" wx:if="{{isShowAlter}}"></view>
+    <view class="loading-car" hidden="{{isHiddenCar}}"></view>
+    <view class="loading-box" hidden="{{isHiddenCar}}">
+      <view class="pop-title">正在为您生成订单</view>
+      <view class="sch-box">
+        <view class="top-schMsg flex-box">
+          <view class="left-dotted">
+            <view class="single-line"></view>
+          </view>
+          <view class="flex1">
+            <view class="station-msg">{{busInfo.dptStation}}</view>
+            <view class="station-msg">{{busInfo.arrStation}}</view>
+          </view>
+        </view>
+        <view class="bot-schMsg flex-box">
+          <view class="left-clock"></view>
+          <view class="flex1 rlt-box">
+            <text>{{busInfo.formatDate}}</text>
+            <block wx:if="{{busInfo.runningSchFlag==1}}">
+              <text wx:if="{{busInfo.runningStartTime}}">{{busInfo.runningStartTime}}后发车</text>
+              <text wx:elif="{{!busInfo.runningStartTime&&busInfo.runningEndTime}}">{{busInfo.runningEndTime}}前发车</text>
+              <text wx:else>{{busInfo.dptTime}}发车</text>
+            </block>
+            <text wx:else>{{busInfo.dptTime}}发车</text>
+            <text class="owner-one">{{contactInfo.linkerName}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="science-bg">
+        <view class="ani-box">
+          <view animation="{{animationData}}" class="little-car"></view>
+          <view class="slider-bar">
+            <view animation="{{animationData}}" class="slider-blue"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="advancePop {{isShowSubscribe?'detail-in':''}}">
+      <view class="tips">该班次暂未到达发售时间，预约后估计
+        <label>{{busInfo.regularDateTime}}</label>为您出票</view>
+      <view class="wrap">
+        <view class="dl">
+          <view catchtap="SelectedSubscribe" class="dt new-fbox bor-bottom {{isSelectedSubscribe?'select':''}}">
+            <view class="new-flex title">高级预约
+              <label catchtap="showSubscribeInfo" class="ADIntro" id="ADIntro">!</label>
+            </view>
+            <view class="new-flex price">
+              <text id="ADRmb">{{vipSubscribePrice}}</text>元/人</view>
+            <label class="i chose"></label>
+          </view>
+          <view class="dd bor-bottom">
+            <view>无需提前支付，
+              <label class="i">出票成功后再扣款</label>，超省心;</view>
+            <view>享受优先出票服务,出票速度提升
+              <label class="i">30%</label>;</view>
+            <view>切换
+              <label class="i">专属通道出票</label>,出票成功率更高;</view>
+            <view>赠送
+              <label class="i">10元</label>国内用车代金券</view>
+          </view>
+        </view>
+        <view class="dl base">
+          <view catchtap="SelectedDefaultSubscribe" class="dt flex-box bor-bottom {{!isSelectedSubscribe?'select':''}}">
+            <view class="new-flex title">基础预约
+              <label class="empty"></label>
+            </view>
+            <view class="new-flex price">免费</view>
+            <label class="i chose"></label>
+          </view>
+          <view class="dd">
+            <view>先付款后出票，若出票失败自动退款</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view bindtap="btnToggleSubscribe" class="cover" wx:if="{{isShowSubscribe}}"></view>
+    <view class="ADFailPop" wx:if="{{isShowAdFailPop}}">
+      <view class="wrap">
+        <view class="inner">
+          <view class="title">您有
+            <lable class="i noPayCount">一</lable>笔订单未支付</view>
+          <view class="content">系统校验到您之前有
+            <lable class="i noPayCount">一</lable>笔订单微信代扣失败，请支付后再预订其他车票！</view>
+          <view bindtap="toOrderDetailPay" class="manualPay">去支付</view>
+        </view>
+      </view>
+    </view>
+    <view class="ADOrderPop {{isShowSubscribeInfo?'showinfo':''}}">
+      <view class="title">高级预约服务说明</view>
+      <view class="new-bmain">
+        <view class="subtitle">1、 什么是高级预约</view>
+        <view class="p">若您预订的班次暂未到达预售期，系统为您提供预约购票。当车站开放售票时会自动为您进行出票。针对预约期内班次，我们为您提供高级预约与基础预约服务。其中使用高级预约服务可额外享受先出票后付款、专属通道购票、系统优先出票服务，并免费赠送10元国内用车代金券。</view>
+        <view class="subtitle">2、 先出票后付款怎么操作</view>
+        <view class="p">先出票后付款是同程汽车票基于微信代扣支付推出的快捷购票功能，提交订单后无需付款，当出票成功后系统会自动从您绑定的支付账户中扣除实际票款。
+          <view>提交订单后您需要授权开通微信自动代扣才可享用先出票后付款服务，单笔限额500元，每天限5次支付。</view>
+          <view>请确认您的支付账户里余额充足，否则扣款失败将导致您购票失败。</view>
+        </view>
+        <view class="subtitle">3、 使用高级预约服务一定能出票成功吗？</view>
+        <view class="p">使用高级预约服务会使用专属通道为您优先出票，但系统无法保证100%出票成功，若出票失败该服务不会扣除您任何费用。</view>
+        <view class="subtitle">4、 出票后提示我代扣失败了</view>
+        <view class="p">出票成功后若系统代扣失败，请检查您的账户余额是否充足，并进入订单详情页中手动支付，支付成功后系统将会发送出票成功短信，凭短信中取票方式正常到车站取票乘车。</view>
+        <view class="subtitle">5、 扣款金额和提交订单金额不一致</view>
+        <view class="p">预约订单车站尚未开始售票，票价未定，预约班次以基础价格上浮10%展示，出票成功后系统会根据实际车票金额进行扣款。</view>
+      </view>
+      <view bindtap="showSubscribeInfo" class="new-close"></view>
+    </view>
+    <view bindtap="closeSericeCharge" class="showSericeCharge" hidden="{{!showSericeCharge}}">
+      <view class="charge-inner {{sshowType=='service'?'max-width':''}}">{{serviceMsg}}</view>
+    </view>
+  </label>
 </form>
