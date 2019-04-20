@@ -23,8 +23,6 @@
                 });
             },
 
-
-
             getUserInfo: function() {
                 var n = this;
                 // 获取openid然后
